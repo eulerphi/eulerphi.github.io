@@ -10614,43 +10614,75 @@ var $author$project$Grid$emptyParams = {
 	x: 0,
 	y: 0
 };
-var $author$project$Block$Model$Idle = {$: 'Idle'};
+var $author$project$Block$Block = function (a) {
+	return {$: 'Block', a: a};
+};
+var $author$project$Block$Internal$Types$Idle = {$: 'Idle'};
+var $author$project$Pos$fromInt = function (_v0) {
+	var x = _v0.a;
+	var y = _v0.b;
+	return {x: x, y: y};
+};
 var $author$project$Block$init = function (input) {
-	return {headerOffset: 0, key: input.key, quantity: input.quantity, state: $author$project$Block$Model$Idle, width: input.width, x: input.xy.a, y: input.xy.b};
+	return $author$project$Block$Block(
+		{
+			headerOffset: 0,
+			key: input.key,
+			pos: $author$project$Pos$fromInt(input.pos),
+			quantity: input.quantity,
+			state: $author$project$Block$Internal$Types$Idle,
+			width: input.width
+		});
+};
+var $author$project$Block$Context = function (a) {
+	return {$: 'Context', a: a};
+};
+var $author$project$Block$Msg = function (a) {
+	return {$: 'Msg', a: a};
 };
 var $zaboco$elm_draggable$Internal$NotDragging = {$: 'NotDragging'};
 var $zaboco$elm_draggable$Draggable$State = function (a) {
 	return {$: 'State', a: a};
 };
 var $zaboco$elm_draggable$Draggable$init = $zaboco$elm_draggable$Draggable$State($zaboco$elm_draggable$Internal$NotDragging);
-var $author$project$Block$initGroup = F2(
-	function (envelop, blocks) {
+var $author$project$Block$context = function (envelope) {
+	return $author$project$Block$Context(
+		{
+			drag: $zaboco$elm_draggable$Draggable$init,
+			envelop: function (submsg) {
+				return envelope(
+					$author$project$Block$Msg(submsg));
+			}
+		});
+};
+var $author$project$Block$Group$init = F2(
+	function (envelope, blocks) {
 		return {
 			active: $elm$core$Maybe$Nothing,
-			context: {drag: $zaboco$elm_draggable$Draggable$init, envelop: envelop},
+			context: $author$project$Block$context(envelope),
 			rest: blocks
 		};
 	});
 var $author$project$Main$init = function (_v0) {
 	var m = {
 		blocks: A2(
-			$author$project$Block$initGroup,
+			$author$project$Block$Group$init,
 			$author$project$Main$BlockMsg,
 			_List_fromArray(
 				[
 					$author$project$Block$init(
 					{
 						key: '1',
+						pos: _Utils_Tuple2(0, 0),
 						quantity: 43,
-						width: 10,
-						xy: _Utils_Tuple2(5, 5)
+						width: 10
 					}),
 					$author$project$Block$init(
 					{
 						key: '3',
+						pos: _Utils_Tuple2(0, 0),
 						quantity: 36,
-						width: 10,
-						xy: _Utils_Tuple2(15, 15)
+						width: 10
 					})
 				])),
 		grid: $author$project$Grid$emptyParams,
@@ -10850,7 +10882,7 @@ var $elm$browser$Browser$Events$onResize = function (func) {
 				A2($elm$json$Json$Decode$field, 'innerWidth', $elm$json$Json$Decode$int),
 				A2($elm$json$Json$Decode$field, 'innerHeight', $elm$json$Json$Decode$int))));
 };
-var $author$project$Block$Model$DragMsg = function (a) {
+var $author$project$Block$Internal$Types$DragMsg = function (a) {
 	return {$: 'DragMsg', a: a};
 };
 var $zaboco$elm_draggable$Internal$DragAt = function (a) {
@@ -10899,11 +10931,12 @@ var $zaboco$elm_draggable$Draggable$subscriptions = F2(
 						])));
 		}
 	});
-var $author$project$Block$subscriptions = function (context) {
+var $author$project$Block$subscriptions = function (_v0) {
+	var ctx = _v0.a;
 	return A2(
 		$zaboco$elm_draggable$Draggable$subscriptions,
-		A2($elm$core$Basics$composeL, context.envelop, $author$project$Block$Model$DragMsg),
-		context.drag);
+		A2($elm$core$Basics$composeL, ctx.envelop, $author$project$Block$Internal$Types$DragMsg),
+		ctx.drag);
 };
 var $author$project$Main$subscriptions = function (m) {
 	return $elm$core$Platform$Sub$batch(
@@ -10982,8 +11015,8 @@ var $author$project$Block$Group$partition = F2(
 			var active = _v0.a;
 			var rest = _v0.b;
 			if (active.$ === 'Just') {
-				var data = active.a;
-				if (_Utils_eq(data.key, id.key)) {
+				var bd = active.a.a;
+				if (_Utils_eq(bd.key, id.key)) {
 					return _Utils_Tuple2(active, rest);
 				} else {
 					var $temp$id = id,
@@ -10993,9 +11026,10 @@ var $author$project$Block$Group$partition = F2(
 							rest,
 							_List_fromArray(
 								[
+									$author$project$Block$Block(
 									_Utils_update(
-									data,
-									{state: $author$project$Block$Model$Idle})
+										bd,
+										{state: $author$project$Block$Internal$Types$Idle}))
 								])));
 					id = $temp$id;
 					_v0 = $temp$_v0;
@@ -11004,7 +11038,8 @@ var $author$project$Block$Group$partition = F2(
 			} else {
 				var _v2 = A2(
 					$elm$core$List$partition,
-					function (bd) {
+					function (_v3) {
+						var bd = _v3.a;
 						return _Utils_eq(bd.key, id.key);
 					},
 					rest);
@@ -11015,15 +11050,25 @@ var $author$project$Block$Group$partition = F2(
 			}
 		}
 	});
-var $author$project$Block$Model$Selected = {$: 'Selected'};
-var $author$project$Block$Model$DragMove = function (a) {
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Block$Internal$Types$Selected = {$: 'Selected'};
+var $author$project$Block$Internal$Types$DragMove = function (a) {
 	return {$: 'DragMove', a: a};
 };
-var $author$project$Block$Model$EndDrag = {$: 'EndDrag'};
-var $author$project$Block$Model$Select = function (a) {
+var $author$project$Block$Internal$Types$EndDrag = {$: 'EndDrag'};
+var $author$project$Block$Internal$Types$Select = function (a) {
 	return {$: 'Select', a: a};
 };
-var $author$project$Block$Model$StartDrag = function (a) {
+var $author$project$Block$Internal$Types$StartDrag = function (a) {
 	return {$: 'StartDrag', a: a};
 };
 var $zaboco$elm_draggable$Draggable$Config = function (a) {
@@ -11047,6 +11092,11 @@ var $zaboco$elm_draggable$Internal$defaultConfig = {
 var $zaboco$elm_draggable$Draggable$customConfig = function (events) {
 	return $zaboco$elm_draggable$Draggable$Config(
 		A3($elm$core$List$foldl, $elm$core$Basics$apL, $zaboco$elm_draggable$Internal$defaultConfig, events));
+};
+var $author$project$Delta$init = function (_v0) {
+	var dx = _v0.a;
+	var dy = _v0.b;
+	return {dx: dx, dy: dy};
 };
 var $zaboco$elm_draggable$Draggable$Events$onClick = F2(
 	function (toMsg, config) {
@@ -11080,138 +11130,68 @@ var $zaboco$elm_draggable$Draggable$Events$onDragStart = F2(
 				onDragStart: A2($elm$core$Basics$composeL, $elm$core$Maybe$Just, toMsg)
 			});
 	});
-var $author$project$Block$dragConfig = function (envelop) {
+var $author$project$Block$Internal$Update$dragConfig = function (envelop) {
 	return $zaboco$elm_draggable$Draggable$customConfig(
 		_List_fromArray(
 			[
 				$zaboco$elm_draggable$Draggable$Events$onDragStart(
-				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Model$StartDrag)),
+				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Internal$Types$StartDrag)),
 				$zaboco$elm_draggable$Draggable$Events$onDragBy(
 				A2(
 					$elm$core$Basics$composeL,
-					A2($elm$core$Basics$composeL, envelop, $author$project$Block$Model$DragMove),
-					$author$project$Pair$map($elm$core$Basics$round))),
+					A2($elm$core$Basics$composeL, envelop, $author$project$Block$Internal$Types$DragMove),
+					$author$project$Delta$init)),
 				$zaboco$elm_draggable$Draggable$Events$onDragEnd(
-				envelop($author$project$Block$Model$EndDrag)),
+				envelop($author$project$Block$Internal$Types$EndDrag)),
 				$zaboco$elm_draggable$Draggable$Events$onClick(
-				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Model$Select))
+				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Internal$Types$Select))
 			]));
 };
-var $author$project$Block$Model$Body = {$: 'Body'};
-var $author$project$Block$Model$Dragging = F2(
+var $author$project$Block$Internal$Types$Dragging = F2(
 	function (a, b) {
 		return {$: 'Dragging', a: a, b: b};
 	});
-var $author$project$Pair$add = F2(
-	function (p1, p2) {
-		return _Utils_Tuple2(p1.a + p2.a, p1.b + p2.b);
+var $author$project$Delta$add = F2(
+	function (d1, d2) {
+		return {dx: d1.dx + d2.dx, dy: d1.dy + d2.dy};
 	});
-var $author$project$Block$Model$AddControl = {$: 'AddControl'};
+var $author$project$Pos$addDelta = F2(
+	function (delta, p1) {
+		return {x: p1.x + delta.dx, y: p1.y + delta.dy};
+	});
+var $author$project$DragState$add = F2(
+	function (delta, state) {
+		var total_ = A2($author$project$Delta$add, state.delta.total, delta);
+		var current_ = A2(state.addFn, state.delta.total, delta);
+		var delta_ = {current: current_, total: total_};
+		var pos_ = {
+			current: A2($author$project$Pos$addDelta, current_, state.start),
+			total: A2($author$project$Pos$addDelta, total_, state.start)
+		};
+		return _Utils_update(
+			state,
+			{delta: delta_, pos: pos_});
+	});
+var $author$project$Block$Internal$Component$Body$dragMove = F3(
+	function (drag, _v0, bd) {
+		return _Utils_update(
+			bd,
+			{pos: drag.pos.current});
+	});
+var $author$project$Delta$div = F2(
+	function (unit, d) {
+		return {dx: d.dx / unit, dy: d.dy / unit};
+	});
+var $author$project$MathEx$minmax = F3(
+	function (minVal, maxVal, val) {
+		return A2(
+			$elm$core$Basics$max,
+			minVal,
+			A2($elm$core$Basics$min, val, maxVal));
+	});
 var $elm$core$Basics$abs = function (n) {
 	return (n < 0) ? (-n) : n;
 };
-var $author$project$Block$Internal$QuantityControl$dragMove = F3(
-	function (_v0, gd, bd) {
-		var dx = _v0.a;
-		var dy = _v0.b;
-		var remainder = A2($elm$core$Basics$modBy, bd.width, bd.quantity);
-		var quantityDeltaY = (dy / gd.unit) | 0;
-		var quantityDeltaX = (dx / gd.unit) | 0;
-		var qdy = (!(!quantityDeltaY)) ? (bd.width * quantityDeltaY) : 0;
-		var quantityDelta = (_Utils_cmp(
-			$elm$core$Basics$abs(quantityDeltaX),
-			$elm$core$Basics$abs(qdy)) > 0) ? quantityDeltaX : qdy;
-		var quantity_ = A2($elm$core$Basics$max, 0, bd.quantity + quantityDelta);
-		var qdx = A2($elm$core$Basics$max, remainder, (dx / gd.unit) | 0);
-		var dy_ = dy - (quantityDeltaY * gd.unit);
-		var dx_ = dx - (quantityDeltaX * gd.unit);
-		return _Utils_update(
-			bd,
-			{
-				quantity: quantity_,
-				state: A2(
-					$author$project$Block$Model$Dragging,
-					$author$project$Block$Model$AddControl,
-					_Utils_Tuple2(dx_, dy_))
-			});
-	});
-var $author$project$Block$Model$WidthControl = {$: 'WidthControl'};
-var $author$project$Block$Internal$WidthControl$dragMove = F3(
-	function (_v0, gd, bd) {
-		var dx = _v0.a;
-		var dy = _v0.b;
-		var deltaWidth = (dx / gd.unit) | 0;
-		var dx_ = dx - (deltaWidth * gd.unit);
-		var width_ = A2(
-			$elm$core$Basics$max,
-			1,
-			A2($elm$core$Basics$min, bd.width + deltaWidth, bd.quantity));
-		return _Utils_update(
-			bd,
-			{
-				state: A2(
-					$author$project$Block$Model$Dragging,
-					$author$project$Block$Model$WidthControl,
-					_Utils_Tuple2(dx_, dy)),
-				width: width_
-			});
-	});
-var $author$project$Block$Internal$Update$dragMove = F3(
-	function (newDelta, gd, bd) {
-		var block_ = function () {
-			var _v0 = bd.state;
-			_v0$3:
-			while (true) {
-				if (_v0.$ === 'Dragging') {
-					switch (_v0.a.$) {
-						case 'AddControl':
-							var _v1 = _v0.a;
-							var oldDelta = _v0.b;
-							return A3(
-								$author$project$Block$Internal$QuantityControl$dragMove,
-								A2($author$project$Pair$add, oldDelta, newDelta),
-								gd,
-								bd);
-						case 'Body':
-							var _v2 = _v0.a;
-							var oldDelta = _v0.b;
-							return _Utils_update(
-								bd,
-								{
-									state: A2(
-										$author$project$Block$Model$Dragging,
-										$author$project$Block$Model$Body,
-										A2($author$project$Pair$add, oldDelta, newDelta))
-								});
-						case 'WidthControl':
-							var _v3 = _v0.a;
-							var oldDelta = _v0.b;
-							return A3(
-								$author$project$Block$Internal$WidthControl$dragMove,
-								A2($author$project$Pair$add, oldDelta, newDelta),
-								gd,
-								bd);
-						default:
-							break _v0$3;
-					}
-				} else {
-					break _v0$3;
-				}
-			}
-			return bd;
-		}();
-		return block_;
-	});
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
 var $elm$core$List$sortBy = _List_sortBy;
 var $author$project$MathEx$roundNear = F2(
 	function (unit, value) {
@@ -11239,46 +11219,348 @@ var $author$project$MathEx$roundNear = F2(
 								},
 								A2(
 									$elm$core$List$map,
-									$elm$core$Basics$add((value / unit) | 0),
-									_List_fromArray(
-										[-1, 0, 1]))))))));
+									A2($elm$core$Basics$composeL, $elm$core$Basics$toFloat, $elm$core$Basics$round),
+									A2(
+										$elm$core$List$map,
+										$elm$core$Basics$add(value / unit),
+										_List_fromArray(
+											[-1, 0, 1])))))))));
+	});
+var $author$project$Delta$roundNear = F2(
+	function (unit, d) {
+		return {
+			dx: A2($author$project$MathEx$roundNear, unit, d.dx),
+			dy: A2($author$project$MathEx$roundNear, unit, d.dy)
+		};
+	});
+var $author$project$Block$Internal$Component$Quantity$dragMove = F3(
+	function (drag, gd, bd) {
+		var unitDelta = A2(
+			$author$project$Delta$div,
+			gd.unit,
+			A2($author$project$Delta$roundNear, gd.unit, drag.delta.current));
+		var remainder = A2($elm$core$Basics$modBy, drag.data.width, drag.data.quantity);
+		var minY = (remainder > 0) ? remainder : drag.data.width;
+		var dy = $elm$core$Basics$round(unitDelta.dy) * drag.data.width;
+		var quantity_ = A2($elm$core$Basics$max, minY, drag.data.quantity + dy);
+		var _v0 = (remainder > 0) ? _Utils_Tuple2(-remainder, drag.data.width - remainder) : _Utils_Tuple2(-drag.data.width, 0);
+		var minX = _v0.a;
+		var maxX = _v0.b;
+		var dx = A3(
+			$author$project$MathEx$minmax,
+			minX,
+			maxX,
+			$elm$core$Basics$round(unitDelta.dx));
+		var quantity__ = A2($elm$core$Basics$max, 0, quantity_ + dx);
+		return _Utils_update(
+			bd,
+			{quantity: quantity__});
+	});
+var $author$project$Block$Internal$Update$dragMove = F3(
+	function (newDelta, gd, bd) {
+		var _v0 = bd.state;
+		if (_v0.$ === 'Dragging') {
+			var component = _v0.a;
+			var drag = _v0.b;
+			var drag_ = A2($author$project$DragState$add, newDelta, drag);
+			var bd_ = function () {
+				switch (component.$) {
+					case 'Body':
+						return A3($author$project$Block$Internal$Component$Body$dragMove, drag_, gd, bd);
+					case 'Quantity':
+						return A3($author$project$Block$Internal$Component$Quantity$dragMove, drag_, gd, bd);
+					default:
+						return bd;
+				}
+			}();
+			return _Utils_update(
+				bd_,
+				{
+					state: A2($author$project$Block$Internal$Types$Dragging, component, drag_)
+				});
+		} else {
+			return bd;
+		}
+	});
+var $author$project$Pos$roundNear = F2(
+	function (input, pos) {
+		return {
+			x: input.pos.x + A2($author$project$MathEx$roundNear, input.unit, pos.x - input.pos.x),
+			y: input.pos.y + A2($author$project$MathEx$roundNear, input.unit, pos.y - input.pos.y)
+		};
+	});
+var $author$project$Block$Internal$Component$Body$dragEnd = F3(
+	function (drag, gd, bd) {
+		var pos_ = A2(
+			$author$project$Pos$roundNear,
+			{
+				pos: $author$project$Pos$fromInt(
+					_Utils_Tuple2(gd.x, gd.y)),
+				unit: gd.unit
+			},
+			drag.pos.current);
+		return _Utils_update(
+			bd,
+			{pos: pos_});
 	});
 var $author$project$Block$Internal$Update$endDrag = F2(
 	function (gd, bd) {
-		var dragDelta = function () {
-			var _v1 = bd.state;
-			if ((_v1.$ === 'Dragging') && (_v1.a.$ === 'Body')) {
-				var _v2 = _v1.a;
-				var delta = _v1.b;
-				return delta;
-			} else {
-				return _Utils_Tuple2(0, 0);
+		var _v0 = bd.state;
+		if (_v0.$ === 'Dragging') {
+			var component = _v0.a;
+			var drag = _v0.b;
+			var bd_ = function () {
+				if (component.$ === 'Body') {
+					return A3($author$project$Block$Internal$Component$Body$dragEnd, drag, gd, bd);
+				} else {
+					return bd;
+				}
+			}();
+			return _Utils_update(
+				bd_,
+				{state: $author$project$Block$Internal$Types$Selected});
+		} else {
+			return bd;
+		}
+	});
+var $author$project$Pos$add = F2(
+	function (p1, p2) {
+		return {x: p1.x + p2.x, y: p1.y + p2.y};
+	});
+var $author$project$ViewData$addPos = F2(
+	function (pos, vd) {
+		return _Utils_update(
+			vd,
+			{
+				pos: A2($author$project$Pos$add, vd.pos, pos)
+			});
+	});
+var $author$project$Block$Internal$View$BodyModel$addPos = F2(
+	function (pos, body) {
+		return {
+			bot: A2(
+				$elm$core$Maybe$map,
+				$author$project$ViewData$addPos(pos),
+				body.bot),
+			mid: A2($author$project$ViewData$addPos, pos, body.mid),
+			top: A2(
+				$elm$core$Maybe$map,
+				$author$project$ViewData$addPos(pos),
+				body.top)
+		};
+	});
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (maybeValue.$ === 'Just') {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$MaybeEx$filter = F2(
+	function (fn, maybe) {
+		var filterFn = function (val) {
+			return fn(val) ? maybe : $elm$core$Maybe$Nothing;
+		};
+		return A2($elm$core$Maybe$andThen, filterFn, maybe);
+	});
+var $author$project$ViewData$hasSize = function (vd) {
+	return (vd.size.width > 0) && (vd.size.height > 0);
+};
+var $author$project$Block$Internal$View$BodyModel$filterEmpty = function (body) {
+	return {
+		bot: A2($author$project$MaybeEx$filter, $author$project$ViewData$hasSize, body.bot),
+		mid: body.mid,
+		top: A2($author$project$MaybeEx$filter, $author$project$ViewData$hasSize, body.top)
+	};
+};
+var $author$project$Size$fromInt = function (_v0) {
+	var w = _v0.a;
+	var h = _v0.b;
+	return {height: h, width: w};
+};
+var $author$project$Pos$scale = F2(
+	function (unit, pos) {
+		return {x: unit * pos.x, y: unit * pos.y};
+	});
+var $author$project$Pos$scaleByInt = F2(
+	function (unit, pos) {
+		return A2($author$project$Pos$scale, unit, pos);
+	});
+var $author$project$Size$scale = F2(
+	function (unit, size) {
+		return {height: size.height * unit, width: size.width * unit};
+	});
+var $author$project$Size$scaleByInt = F2(
+	function (unit, size) {
+		return A2($author$project$Size$scale, unit, size);
+	});
+var $author$project$ViewData$scaleByInt = F2(
+	function (unit, vd) {
+		return _Utils_update(
+			vd,
+			{
+				pos: A2($author$project$Pos$scaleByInt, unit, vd.pos),
+				size: A2($author$project$Size$scaleByInt, unit, vd.size)
+			});
+	});
+var $author$project$Block$Internal$View$BodyModel$scale = F2(
+	function (gd, body) {
+		var scaleFn = $author$project$ViewData$scaleByInt(gd.unit);
+		return {
+			bot: A2($elm$core$Maybe$map, scaleFn, body.bot),
+			mid: scaleFn(body.mid),
+			top: A2($elm$core$Maybe$map, scaleFn, body.top)
+		};
+	});
+var $author$project$Block$Internal$View$BodyModel$forBlock = F2(
+	function (gd, bd) {
+		var _v0 = ((bd.headerOffset > 0) && (_Utils_cmp(bd.width, bd.headerOffset) > 0)) ? _Utils_Tuple2(bd.width - bd.headerOffset, 1) : _Utils_Tuple2(0, 0);
+		var topWidth = _v0.a;
+		var topHeight = _v0.b;
+		var top = {
+			_class: 'body-top',
+			pos: $author$project$Pos$fromInt(
+				_Utils_Tuple2(bd.headerOffset, 0)),
+			size: $author$project$Size$fromInt(
+				_Utils_Tuple2(topWidth, topHeight))
+		};
+		var _v1 = _Utils_Tuple2(bd.width, ((bd.quantity - topWidth) / bd.width) | 0);
+		var midWidth = _v1.a;
+		var midHeight = _v1.b;
+		var mid = {
+			_class: 'body-mid',
+			pos: $author$project$Pos$fromInt(
+				_Utils_Tuple2(0, topHeight)),
+			size: $author$project$Size$fromInt(
+				_Utils_Tuple2(midWidth, midHeight))
+		};
+		var _v2 = _Utils_Tuple2((bd.quantity - topWidth) - (midWidth * midHeight), 1);
+		var botWidth = _v2.a;
+		var botHeight = _v2.b;
+		var bot = {
+			_class: 'body-bot',
+			pos: $author$project$Pos$fromInt(
+				_Utils_Tuple2(0, topHeight + midHeight)),
+			size: $author$project$Size$fromInt(
+				_Utils_Tuple2(botWidth, botHeight))
+		};
+		return $author$project$Block$Internal$View$BodyModel$filterEmpty(
+			A2(
+				$author$project$Block$Internal$View$BodyModel$addPos,
+				bd.pos,
+				A2(
+					$author$project$Block$Internal$View$BodyModel$scale,
+					gd,
+					{
+						bot: $elm$core$Maybe$Just(bot),
+						mid: mid,
+						top: $elm$core$Maybe$Just(top)
+					})));
+	});
+var $author$project$Size$add3 = F3(
+	function (s1, s2, s3) {
+		return {height: (s1.height + s2.height) + s3.height, width: (s1.width + s2.width) + s3.width};
+	});
+var $author$project$Size$init = function (_v0) {
+	var w = _v0.a;
+	var h = _v0.b;
+	return {height: h, width: w};
+};
+var $author$project$Size$none = $author$project$Size$init(
+	_Utils_Tuple2(0, 0));
+var $author$project$Block$Internal$View$BodyModel$size = function (body) {
+	var getSizeOrNone = function (mvd) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			$author$project$Size$none,
+			A2(
+				$elm$core$Maybe$map,
+				function (vd) {
+					return vd.size;
+				},
+				mvd));
+	};
+	return A3(
+		$author$project$Size$add3,
+		getSizeOrNone(body.top),
+		body.mid.size,
+		getSizeOrNone(body.bot));
+};
+var $author$project$Block$Internal$View$Model$forBlock = F2(
+	function (gd, bd) {
+		var body = A2($author$project$Block$Internal$View$BodyModel$forBlock, gd, bd);
+		return {
+			block: {
+				pos: bd.pos,
+				size: $author$project$Block$Internal$View$BodyModel$size(body),
+				state: bd.state,
+				width: bd.width
+			},
+			body: body,
+			grid: {
+				pos: $author$project$Pos$fromInt(
+					_Utils_Tuple2(gd.x, gd.y)),
+				size: $author$project$Size$fromInt(
+					_Utils_Tuple2(gd.width, gd.height)),
+				unit: gd.unit
+			}
+		};
+	});
+var $author$project$Delta$none = $author$project$Delta$init(
+	_Utils_Tuple2(0, 0));
+var $author$project$DragState$init = function (input) {
+	return {
+		addFn: input.addFn,
+		data: input.data,
+		delta: {current: $author$project$Delta$none, total: $author$project$Delta$none},
+		pos: {current: input.start, total: input.start},
+		start: input.start
+	};
+};
+var $author$project$Block$Internal$Component$Body$startDrag = F2(
+	function (vm, bd) {
+		return $author$project$DragState$init(
+			{addFn: $author$project$Delta$add, data: bd, start: vm.block.pos});
+	});
+var $author$project$Delta$addX = F2(
+	function (d1, d2) {
+		return {dx: d1.dx + d2.dx, dy: d1.dy};
+	});
+var $author$project$Block$Internal$Component$Quantity$rootPos = function (vm) {
+	var root = A2($elm$core$Maybe$withDefault, vm.body.mid, vm.body.bot);
+	var delta = $author$project$Delta$init(
+		_Utils_Tuple2(root.size.width - vm.grid.unit, root.size.height - vm.grid.unit));
+	return A2($author$project$Pos$addDelta, delta, root.pos);
+};
+var $author$project$Block$Internal$Component$Quantity$startDrag = F2(
+	function (vm, bd) {
+		return $author$project$DragState$init(
+			{
+				addFn: $author$project$Delta$addX,
+				data: bd,
+				start: $author$project$Block$Internal$Component$Quantity$rootPos(vm)
+			});
+	});
+var $author$project$Block$Internal$Update$startDrag = F3(
+	function (id, gd, bd) {
+		var vm = A2($author$project$Block$Internal$View$Model$forBlock, gd, bd);
+		var drag = function () {
+			var _v0 = id.part;
+			switch (_v0.$) {
+				case 'Body':
+					return A2($author$project$Block$Internal$Component$Body$startDrag, vm, bd);
+				case 'Quantity':
+					return A2($author$project$Block$Internal$Component$Quantity$startDrag, vm, bd);
+				default:
+					return A2($author$project$Block$Internal$Component$Body$startDrag, vm, bd);
 			}
 		}();
-		var _v0 = A2(
-			$author$project$Pair$map,
-			function (v) {
-				return (v / gd.unit) | 0;
-			},
-			A2(
-				$author$project$Pair$map,
-				$author$project$MathEx$roundNear(gd.unit),
-				dragDelta));
-		var dx = _v0.a;
-		var dy = _v0.b;
-		return _Utils_update(
-			bd,
-			{state: $author$project$Block$Model$Selected, x: bd.x + dx, y: bd.y + dy});
-	});
-var $author$project$Block$Internal$Update$startDrag = F2(
-	function (id, bd) {
 		return _Utils_update(
 			bd,
 			{
-				state: A2(
-					$author$project$Block$Model$Dragging,
-					id.part,
-					_Utils_Tuple2(0, 0))
+				state: A2($author$project$Block$Internal$Types$Dragging, id.part, drag)
 			});
 	});
 var $zaboco$elm_draggable$Cmd$Extra$message = function (x) {
@@ -11383,14 +11665,14 @@ var $zaboco$elm_draggable$Draggable$update = F3(
 				{drag: dragState}),
 			dragCmd);
 	});
-var $author$project$Block$update = F4(
+var $author$project$Block$Internal$Update$update = F4(
 	function (context, gd, msg, model) {
 		switch (msg.$) {
 			case 'DragMsg':
 				var subMsg = msg.a;
 				var _v1 = A3(
 					$zaboco$elm_draggable$Draggable$update,
-					$author$project$Block$dragConfig(context.envelop),
+					$author$project$Block$Internal$Update$dragConfig(context.envelop),
 					subMsg,
 					context);
 				var context_ = _v1.a;
@@ -11401,7 +11683,7 @@ var $author$project$Block$update = F4(
 				return _Utils_Tuple3(
 					A2(
 						$elm$core$Maybe$map,
-						$author$project$Block$Internal$Update$startDrag(id),
+						A2($author$project$Block$Internal$Update$startDrag, id, gd),
 						model),
 					context,
 					$elm$core$Platform$Cmd$none);
@@ -11422,17 +11704,6 @@ var $author$project$Block$update = F4(
 						model),
 					context,
 					$elm$core$Platform$Cmd$none);
-			case 'DragWidthControl':
-				var delta = msg.a;
-				return _Utils_Tuple3(model, context, $elm$core$Platform$Cmd$none);
-			case 'UpdateWidth':
-				return _Utils_Tuple3(
-					A2(
-						$elm$core$Maybe$map,
-						$author$project$Block$Internal$Update$endDrag(gd),
-						model),
-					context,
-					$elm$core$Platform$Cmd$none);
 			default:
 				var id = msg.a;
 				return _Utils_Tuple3(
@@ -11441,18 +11712,44 @@ var $author$project$Block$update = F4(
 						function (m) {
 							return _Utils_update(
 								m,
-								{state: $author$project$Block$Model$Selected});
+								{state: $author$project$Block$Internal$Types$Selected});
 						},
 						model),
 					context,
 					$elm$core$Platform$Cmd$none);
 		}
 	});
+var $author$project$Block$update = F4(
+	function (_v0, gd, _v1, block) {
+		var ctx = _v0.a;
+		var msg = _v1.a;
+		var bd = A2(
+			$elm$core$Maybe$map,
+			function (_v3) {
+				var b = _v3.a;
+				return b;
+			},
+			block);
+		var _v2 = A4($author$project$Block$Internal$Update$update, ctx, gd, msg, bd);
+		var bd_ = _v2.a;
+		var ctx_ = _v2.b;
+		var cmd_ = _v2.c;
+		var block_ = A2(
+			$elm$core$Maybe$map,
+			function (b) {
+				return $author$project$Block$Block(b);
+			},
+			bd_);
+		return _Utils_Tuple3(
+			block_,
+			$author$project$Block$Context(ctx_),
+			cmd_);
+	});
 var $author$project$Block$Group$update = F3(
 	function (gd, msg, model) {
-		switch (msg.$) {
+		switch (msg.a.$) {
 			case 'StartDrag':
-				var id = msg.a;
+				var id = msg.a.a;
 				var _v1 = A2(
 					$author$project$Block$Group$partition,
 					id,
@@ -11469,7 +11766,7 @@ var $author$project$Block$Group$update = F3(
 						{active: active__, context: context_, rest: rest_}),
 					cmd_);
 			case 'Select':
-				var id = msg.a;
+				var id = msg.a.a;
 				var _v3 = A2(
 					$author$project$Block$Group$partition,
 					id,
@@ -11539,17 +11836,20 @@ var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
-var $author$project$MaybeEx$toList = function (maybe) {
-	if (maybe.$ === 'Nothing') {
+var $elm_community$maybe_extra$Maybe$Extra$toList = function (m) {
+	if (m.$ === 'Nothing') {
 		return _List_Nil;
 	} else {
-		var value = maybe.a;
+		var x = m.a;
 		return _List_fromArray(
-			[value]);
+			[x]);
 	}
 };
+var $author$project$Block$Internal$Component$Body = {$: 'Body'};
+var $author$project$Block$Internal$Component$Quantity = {$: 'Quantity'};
+var $author$project$Block$Internal$Component$Width = {$: 'Width'};
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
-var $author$project$Block$Model$Id = F2(
+var $author$project$Block$Internal$Types$Id = F2(
 	function (key, part) {
 		return {key: key, part: part};
 	});
@@ -11759,485 +12059,30 @@ var $zaboco$elm_draggable$Draggable$touchTriggers = F2(
 					}))
 			]);
 	});
-var $author$project$Block$eventAttrs = F3(
+var $author$project$Block$Internal$View$eventAttrs = F3(
 	function (envelop, key, part) {
-		var id = A2($author$project$Block$Model$Id, key, part);
+		var id = A2($author$project$Block$Internal$Types$Id, key, part);
 		return A2(
 			$elm$core$List$cons,
 			A2(
 				$zaboco$elm_draggable$Draggable$mouseTrigger,
 				id,
-				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Model$DragMsg)),
+				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Internal$Types$DragMsg)),
 			A2(
 				$zaboco$elm_draggable$Draggable$touchTriggers,
 				id,
-				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Model$DragMsg)));
+				A2($elm$core$Basics$composeL, envelop, $author$project$Block$Internal$Types$DragMsg)));
 	});
-var $author$project$Pos$add3 = F3(
-	function (p1, p2, p3) {
-		return {x: (p1.x + p2.x) + p3.x, y: (p1.y + p2.y) + p3.y};
-	});
-var $author$project$Pos$fromInt = function (_v0) {
-	var x = _v0.a;
-	var y = _v0.b;
-	return {x: x, y: y};
-};
-var $author$project$Size$fromInt = function (_v0) {
-	var w = _v0.a;
-	var h = _v0.b;
-	return {height: h, width: w};
-};
-var $author$project$Pos$scale = F2(
-	function (unit, pos) {
-		return {x: unit * pos.x, y: unit * pos.y};
-	});
-var $author$project$Pos$scaleByInt = F2(
-	function (unit, pos) {
-		return A2($author$project$Pos$scale, unit, pos);
-	});
-var $author$project$Size$add3 = F3(
-	function (s1, s2, s3) {
-		return {height: (s1.height + s2.height) + s3.height, width: (s1.width + s2.width) + s3.width};
-	});
-var $author$project$Size$init = function (_v0) {
-	var w = _v0.a;
-	var h = _v0.b;
-	return {height: h, width: w};
-};
-var $author$project$Size$none = $author$project$Size$init(
-	_Utils_Tuple2(0, 0));
-var $author$project$Block$Internal$Body$size = function (body) {
-	var getSizeOrNone = function (mvd) {
-		return A2(
-			$elm$core$Maybe$withDefault,
-			$author$project$Size$none,
-			A2(
-				$elm$core$Maybe$map,
-				function (vd) {
-					return vd.size;
-				},
-				mvd));
-	};
-	return A3(
-		$author$project$Size$add3,
-		getSizeOrNone(body.top),
-		body.mid.size,
-		getSizeOrNone(body.bot));
-};
-var $elm$core$Maybe$andThen = F2(
-	function (callback, maybeValue) {
-		if (maybeValue.$ === 'Just') {
-			var value = maybeValue.a;
-			return callback(value);
+var $elm_community$maybe_extra$Maybe$Extra$cons = F2(
+	function (item, list) {
+		if (item.$ === 'Just') {
+			var v = item.a;
+			return A2($elm$core$List$cons, v, list);
 		} else {
-			return $elm$core$Maybe$Nothing;
+			return list;
 		}
 	});
-var $author$project$MaybeEx$filter = F2(
-	function (fn, maybe) {
-		var filterFn = function (val) {
-			return fn(val) ? maybe : $elm$core$Maybe$Nothing;
-		};
-		return A2($elm$core$Maybe$andThen, filterFn, maybe);
-	});
-var $author$project$ViewData$hasSize = function (vd) {
-	return (vd.size.width > 0) && (vd.size.height > 0);
-};
-var $author$project$Block$Internal$Body$filterEmpty = function (body) {
-	return {
-		bot: A2($author$project$MaybeEx$filter, $author$project$ViewData$hasSize, body.bot),
-		mid: body.mid,
-		top: A2($author$project$MaybeEx$filter, $author$project$ViewData$hasSize, body.top)
-	};
-};
-var $author$project$Size$scale = F2(
-	function (unit, size) {
-		return {height: size.height * unit, width: size.width * unit};
-	});
-var $author$project$Size$scaleByInt = F2(
-	function (unit, size) {
-		return A2($author$project$Size$scale, unit, size);
-	});
-var $author$project$ViewData$scaleByInt = F2(
-	function (unit, vd) {
-		return _Utils_update(
-			vd,
-			{
-				pos: A2($author$project$Pos$scaleByInt, unit, vd.pos),
-				size: A2($author$project$Size$scaleByInt, unit, vd.size)
-			});
-	});
-var $author$project$Block$Internal$Body$scale = F2(
-	function (gd, body) {
-		var scaleFn = $author$project$ViewData$scaleByInt(gd.unit);
-		return {
-			bot: A2($elm$core$Maybe$map, scaleFn, body.bot),
-			mid: scaleFn(body.mid),
-			top: A2($elm$core$Maybe$map, scaleFn, body.top)
-		};
-	});
-var $author$project$Block$Internal$Body$toBody = F2(
-	function (gd, bd) {
-		var _v0 = ((bd.headerOffset > 0) && (_Utils_cmp(bd.width, bd.headerOffset) > 0)) ? _Utils_Tuple2(bd.width - bd.headerOffset, 1) : _Utils_Tuple2(0, 0);
-		var topWidth = _v0.a;
-		var topHeight = _v0.b;
-		var top = {
-			_class: 'body-top',
-			pos: $author$project$Pos$fromInt(
-				_Utils_Tuple2(bd.headerOffset, 0)),
-			size: $author$project$Size$fromInt(
-				_Utils_Tuple2(topWidth, topHeight))
-		};
-		var _v1 = _Utils_Tuple2(bd.width, ((bd.quantity - topWidth) / bd.width) | 0);
-		var midWidth = _v1.a;
-		var midHeight = _v1.b;
-		var mid = {
-			_class: 'body-mid',
-			pos: $author$project$Pos$fromInt(
-				_Utils_Tuple2(0, topHeight)),
-			size: $author$project$Size$fromInt(
-				_Utils_Tuple2(midWidth, midHeight))
-		};
-		var _v2 = _Utils_Tuple2((bd.quantity - topWidth) - (midWidth * midHeight), 1);
-		var botWidth = _v2.a;
-		var botHeight = _v2.b;
-		var bot = {
-			_class: 'body-bot',
-			pos: $author$project$Pos$fromInt(
-				_Utils_Tuple2(0, topHeight + midHeight)),
-			size: $author$project$Size$fromInt(
-				_Utils_Tuple2(botWidth, botHeight))
-		};
-		return $author$project$Block$Internal$Body$filterEmpty(
-			A2(
-				$author$project$Block$Internal$Body$scale,
-				gd,
-				{
-					bot: $elm$core$Maybe$Just(bot),
-					mid: mid,
-					top: $elm$core$Maybe$Just(top)
-				}));
-	});
-var $author$project$Block$Internal$ViewModel$forBlock = F2(
-	function (gd, bd) {
-		var delta = function () {
-			var _v0 = bd.state;
-			if ((_v0.$ === 'Dragging') && (_v0.a.$ === 'Body')) {
-				var _v1 = _v0.a;
-				var _v2 = _v0.b;
-				var dx = _v2.a;
-				var dy = _v2.b;
-				return _Utils_Tuple2(dx, dy);
-			} else {
-				return _Utils_Tuple2(0, 0);
-			}
-		}();
-		var pos = A3(
-			$author$project$Pos$add3,
-			$author$project$Pos$fromInt(
-				_Utils_Tuple2(gd.x, gd.y)),
-			$author$project$Pos$fromInt(delta),
-			A2(
-				$author$project$Pos$scaleByInt,
-				gd.unit,
-				$author$project$Pos$fromInt(
-					_Utils_Tuple2(bd.x, bd.y))));
-		var body = A2($author$project$Block$Internal$Body$toBody, gd, bd);
-		return {
-			block: {
-				pos: pos,
-				size: $author$project$Block$Internal$Body$size(body),
-				state: bd.state,
-				width: bd.width
-			},
-			body: body,
-			grid: {
-				pos: $author$project$Pos$fromInt(
-					_Utils_Tuple2(gd.x, gd.y)),
-				size: $author$project$Size$fromInt(
-					_Utils_Tuple2(gd.width, gd.height)),
-				unit: gd.unit
-			}
-		};
-	});
-var $author$project$Pos$add = F2(
-	function (p1, p2) {
-		return {x: p1.x + p2.x, y: p1.y + p2.y};
-	});
-var $author$project$Pos$add4 = F4(
-	function (p1, p2, p3, p4) {
-		return {x: ((p1.x + p2.x) + p3.x) + p4.x, y: ((p1.y + p2.y) + p3.y) + p4.y};
-	});
-var $author$project$Pos$addY = F2(
-	function (p1, p2) {
-		return {x: p1.x, y: p1.y + p2.y};
-	});
-var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
-var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
-var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
-var $author$project$Pos$init = function (_v0) {
-	var x = _v0.a;
-	var y = _v0.b;
-	return {x: x, y: y};
-};
-var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
-var $author$project$Pos$origin = $author$project$Pos$init(
-	_Utils_Tuple2(0, 0));
-var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
-var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
-var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
-var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
-var $author$project$Size$toHeightString = function (size) {
-	return $elm$core$String$fromFloat(size.height);
-};
-var $author$project$Size$toWidthString = function (size) {
-	return $elm$core$String$fromFloat(size.width);
-};
-var $author$project$Pos$toXString = function (pos) {
-	return $elm$core$String$fromFloat(pos.x);
-};
-var $author$project$Pos$toYString = function (pos) {
-	return $elm$core$String$fromFloat(pos.y);
-};
-var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
-var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
-var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
-var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
-var $elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
-var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
-var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
-var $author$project$Block$Internal$QuantityControl$viewControl = F2(
-	function (attrs, vm) {
-		var unit = vm.grid.unit;
-		var root = A2($elm$core$Maybe$withDefault, vm.body.mid, vm.body.bot);
-		var rectSize = $author$project$Size$fromInt(
-			_Utils_Tuple2(vm.grid.unit, vm.grid.unit));
-		var lineWidth = 1.5;
-		var halfUnit = unit / 2;
-		var _v0 = function () {
-			var _v1 = vm.block.state;
-			if ((_v1.$ === 'Dragging') && (_v1.a.$ === 'AddControl')) {
-				var _v2 = _v1.a;
-				var _v3 = _v1.b;
-				var dx = _v3.a;
-				var dy = _v3.b;
-				return _Utils_Tuple2(
-					$elm$core$Basics$round(vm.grid.unit / 1.2),
-					$author$project$Pos$fromInt(
-						_Utils_Tuple2(dx, dy)));
-			} else {
-				return _Utils_Tuple2(
-					$elm$core$Basics$round(vm.grid.unit / 1.5),
-					$author$project$Pos$origin);
-			}
-		}();
-		var radius = _v0.a;
-		var delta = _v0.b;
-		var rectPos = function () {
-			var offset = (_Utils_cmp(root.size.width, vm.block.size.width) < 0) ? $author$project$Pos$init(
-				_Utils_Tuple2(root.size.width, 0.0)) : $author$project$Pos$init(
-				_Utils_Tuple2(0.0, root.size.height));
-			return A4($author$project$Pos$add4, root.pos, vm.block.pos, offset, delta);
-		}();
-		var lineP1 = A2(
-			$author$project$Pos$add,
-			rectPos,
-			$author$project$Pos$init(
-				_Utils_Tuple2(halfUnit, halfUnit)));
-		var lineP2 = A2(
-			$author$project$Pos$addY,
-			lineP1,
-			$author$project$Pos$init(
-				_Utils_Tuple2(0, 1.5 * unit)));
-		var circlePos = lineP2;
-		return A2(
-			$elm$svg$Svg$g,
-			A2(
-				$elm$core$List$cons,
-				$elm$svg$Svg$Attributes$class('quantity-control'),
-				attrs),
-			_List_fromArray(
-				[
-					A2(
-					$elm$svg$Svg$rect,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$x(
-							$author$project$Pos$toXString(rectPos)),
-							$elm$svg$Svg$Attributes$y(
-							$author$project$Pos$toYString(rectPos)),
-							$elm$svg$Svg$Attributes$width(
-							$author$project$Size$toWidthString(rectSize)),
-							$elm$svg$Svg$Attributes$height(
-							$author$project$Size$toHeightString(rectSize))
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$line,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$x1(
-							$author$project$Pos$toXString(lineP1)),
-							$elm$svg$Svg$Attributes$y1(
-							$author$project$Pos$toYString(lineP1)),
-							$elm$svg$Svg$Attributes$x2(
-							$author$project$Pos$toXString(lineP2)),
-							$elm$svg$Svg$Attributes$y2(
-							$author$project$Pos$toYString(lineP2)),
-							$elm$svg$Svg$Attributes$strokeWidth(
-							$elm$core$String$fromFloat(lineWidth)),
-							$elm$svg$Svg$Attributes$stroke('black')
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$circle,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$cx(
-							$author$project$Pos$toXString(circlePos)),
-							$elm$svg$Svg$Attributes$cy(
-							$author$project$Pos$toYString(circlePos)),
-							$elm$svg$Svg$Attributes$r(
-							$elm$core$String$fromInt(radius))
-						]),
-					_List_Nil)
-				]));
-	});
-var $author$project$Block$Internal$QuantityControl$view = F2(
-	function (attrs, vm) {
-		var _v0 = vm.block.state;
-		_v0$2:
-		while (true) {
-			switch (_v0.$) {
-				case 'Dragging':
-					if (_v0.a.$ === 'AddControl') {
-						var _v1 = _v0.a;
-						return A2($author$project$Block$Internal$QuantityControl$viewControl, attrs, vm);
-					} else {
-						break _v0$2;
-					}
-				case 'Selected':
-					return A2($author$project$Block$Internal$QuantityControl$viewControl, attrs, vm);
-				default:
-					break _v0$2;
-			}
-		}
-		return A2($elm$svg$Svg$g, _List_Nil, _List_Nil);
-	});
-var $author$project$Block$Internal$WidthControl$viewControl = F2(
-	function (attrs, vm) {
-		var root = A2($elm$core$Maybe$withDefault, vm.body.mid, vm.body.top);
-		var lineWidth = 3.0;
-		var _v0 = function () {
-			var _v1 = vm.block.state;
-			if ((_v1.$ === 'Dragging') && (_v1.a.$ === 'WidthControl')) {
-				var _v2 = _v1.a;
-				var _v3 = _v1.b;
-				var dx = _v3.a;
-				var dy = _v3.b;
-				return _Utils_Tuple2(
-					$elm$core$Basics$round(vm.grid.unit / 1.2),
-					$author$project$Pos$fromInt(
-						_Utils_Tuple2(dx, dy)));
-			} else {
-				return _Utils_Tuple2(
-					$elm$core$Basics$round(vm.grid.unit / 1.5),
-					$author$project$Pos$origin);
-			}
-		}();
-		var radius = _v0.a;
-		var delta = _v0.b;
-		var p1 = A4(
-			$author$project$Pos$add4,
-			$author$project$Pos$init(
-				_Utils_Tuple2(root.size.width + lineWidth, root.pos.y)),
-			vm.block.pos,
-			root.pos,
-			{x: delta.x, y: 0.0});
-		var cpos = A2($author$project$Pos$addY, p1, delta);
-		var p2 = A2(
-			$author$project$Pos$addY,
-			p1,
-			{x: 0.0, y: vm.block.size.height});
-		return A2(
-			$elm$svg$Svg$g,
-			A2(
-				$elm$core$List$cons,
-				$elm$svg$Svg$Attributes$class('width-control'),
-				attrs),
-			_List_fromArray(
-				[
-					A2(
-					$elm$svg$Svg$line,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$x1(
-							$author$project$Pos$toXString(p1)),
-							$elm$svg$Svg$Attributes$y1(
-							$author$project$Pos$toYString(p1)),
-							$elm$svg$Svg$Attributes$x2(
-							$author$project$Pos$toXString(p2)),
-							$elm$svg$Svg$Attributes$y2(
-							$author$project$Pos$toYString(p2)),
-							$elm$svg$Svg$Attributes$strokeWidth(
-							$elm$core$String$fromFloat(lineWidth))
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$circle,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$cx(
-							$author$project$Pos$toXString(cpos)),
-							$elm$svg$Svg$Attributes$cy(
-							$author$project$Pos$toYString(cpos)),
-							$elm$svg$Svg$Attributes$r(
-							$elm$core$String$fromInt(radius))
-						]),
-					_List_Nil)
-				]));
-	});
-var $author$project$Block$Internal$WidthControl$view = F2(
-	function (attrs, vm) {
-		var _v0 = vm.block.state;
-		_v0$2:
-		while (true) {
-			switch (_v0.$) {
-				case 'Dragging':
-					if (_v0.a.$ === 'WidthControl') {
-						var _v1 = _v0.a;
-						return A2($author$project$Block$Internal$WidthControl$viewControl, attrs, vm);
-					} else {
-						break _v0$2;
-					}
-				case 'Selected':
-					return A2($author$project$Block$Internal$WidthControl$viewControl, attrs, vm);
-				default:
-					break _v0$2;
-			}
-		}
-		return A2($elm$svg$Svg$g, _List_Nil, _List_Nil);
-	});
-var $author$project$MaybeEx$toMappedList = F2(
-	function (fn, maybe) {
-		if (maybe.$ === 'Nothing') {
-			return _List_Nil;
-		} else {
-			var value = maybe.a;
-			return _List_fromArray(
-				[
-					fn(value)
-				]);
-		}
-	});
-var $author$project$ViewData$addPos = F2(
-	function (val, vd) {
-		return _Utils_update(
-			vd,
-			{
-				pos: A2($author$project$Pos$add, val.pos, vd.pos)
-			});
-	});
+var $elm_community$maybe_extra$Maybe$Extra$values = A2($elm$core$List$foldr, $elm_community$maybe_extra$Maybe$Extra$cons, _List_Nil);
 var $author$project$Grid$forViewData = F2(
 	function (unit, vd) {
 		return {
@@ -12251,6 +12096,11 @@ var $author$project$Grid$forViewData = F2(
 			y: $elm$core$Basics$round(vd.pos.y)
 		};
 	});
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
 var $author$project$Grid$line = F3(
 	function (p1, p2, _class) {
 		return A2(
@@ -12284,6 +12134,7 @@ var $author$project$Grid$hline = F2(
 			'grid-hline');
 		return A3($author$project$Grid$line, p1, p2, _class);
 	});
+var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $author$project$Grid$vline = F2(
 	function (p, index) {
 		var offset = index * p.unit;
@@ -12295,6 +12146,9 @@ var $author$project$Grid$vline = F2(
 			'grid-vline');
 		return A3($author$project$Grid$line, p1, p2, _class);
 	});
+var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
+var $elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
 var $author$project$Grid$view = function (params) {
 	var verticalLines = A2(
 		$elm$core$List$map,
@@ -12324,9 +12178,8 @@ var $author$project$Grid$view = function (params) {
 		rect,
 		_Utils_ap(horizontalLines, verticalLines));
 };
-var $author$project$Block$Internal$View$viewRect = F2(
+var $author$project$Block$Internal$Component$Body$viewRect = F2(
 	function (vm, vd) {
-		var vd_ = A2($author$project$ViewData$addPos, vm.block, vd);
 		return A2(
 			$elm$svg$Svg$g,
 			_List_fromArray(
@@ -12334,26 +12187,25 @@ var $author$project$Block$Internal$View$viewRect = F2(
 					$elm$svg$Svg$Attributes$class(vd._class)
 				]),
 			$author$project$Grid$view(
-				A2($author$project$Grid$forViewData, vm.grid.unit, vd_)));
+				A2(
+					$author$project$Grid$forViewData,
+					$elm$core$Basics$round(vm.grid.unit),
+					vd)));
 	});
-var $author$project$Block$Internal$View$viewBody = F2(
+var $author$project$Block$Internal$Component$Body$view = F2(
 	function (eventAttrs, vm) {
-		var viewFn = function (mvd) {
-			return A2(
-				$author$project$MaybeEx$toMappedList,
-				$author$project$Block$Internal$View$viewRect(vm),
-				mvd);
-		};
-		var optional = $elm$core$List$concat(
+		var viewFn = $author$project$Block$Internal$Component$Body$viewRect(vm);
+		var optional = A2(
+			$elm$core$List$map,
+			$elm$core$Maybe$map(viewFn),
+			_List_fromArray(
+				[vm.body.top, vm.body.bot]));
+		var elements = $elm_community$maybe_extra$Maybe$Extra$values(
 			A2(
-				$elm$core$List$map,
-				viewFn,
-				_List_fromArray(
-					[vm.body.top, vm.body.bot])));
-		var elements = A2(
-			$elm$core$List$cons,
-			A2($author$project$Block$Internal$View$viewRect, vm, vm.body.mid),
-			optional);
+				$elm$core$List$cons,
+				$elm$core$Maybe$Just(
+					viewFn(vm.body.mid)),
+				optional));
 		return A2(
 			$elm$svg$Svg$g,
 			A2(
@@ -12362,43 +12214,219 @@ var $author$project$Block$Internal$View$viewBody = F2(
 				eventAttrs),
 			elements);
 	});
-var $author$project$Block$Internal$View$view = F2(
-	function (eventAttrsFn, vm) {
-		var controls = _List_fromArray(
-			[
-				A2(
-				$author$project$Block$Internal$WidthControl$view,
-				eventAttrsFn($author$project$Block$Model$WidthControl),
-				vm),
-				A2(
-				$author$project$Block$Internal$QuantityControl$view,
-				eventAttrsFn($author$project$Block$Model$AddControl),
-				vm)
-			]);
-		var body = A2(
-			$author$project$Block$Internal$View$viewBody,
-			eventAttrsFn($author$project$Block$Model$Body),
-			vm);
-		return A2($elm$core$List$cons, body, controls);
+var $author$project$Pos$addY = F2(
+	function (p1, p2) {
+		return {x: p1.x, y: p1.y + p2.y};
 	});
-var $author$project$Block$view = F3(
+var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
+var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
+var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
+var $elm$svg$Svg$Attributes$fillOpacity = _VirtualDom_attribute('fill-opacity');
+var $author$project$Pos$init = function (_v0) {
+	var x = _v0.a;
+	var y = _v0.b;
+	return {x: x, y: y};
+};
+var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
+var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
+var $author$project$Size$toHeightString = function (size) {
+	return $elm$core$String$fromFloat(size.height);
+};
+var $author$project$Size$toWidthString = function (size) {
+	return $elm$core$String$fromFloat(size.width);
+};
+var $author$project$Pos$toXString = function (pos) {
+	return $elm$core$String$fromFloat(pos.x);
+};
+var $author$project$Pos$toYString = function (pos) {
+	return $elm$core$String$fromFloat(pos.y);
+};
+var $author$project$Block$Internal$Component$Quantity$viewControl = F2(
+	function (attrs, vm) {
+		var unit = vm.grid.unit;
+		var lineWidth = 3;
+		var rectSize = $author$project$Size$init(
+			_Utils_Tuple2(unit + (2 * lineWidth), unit + (2 * lineWidth)));
+		var halfUnit = unit / 2;
+		var _v0 = function () {
+			var _v1 = vm.block.state;
+			if ((_v1.$ === 'Dragging') && (_v1.a.$ === 'Quantity')) {
+				var _v2 = _v1.a;
+				var drag = _v1.b;
+				return _Utils_Tuple2(
+					$elm$core$Basics$round(vm.grid.unit / 1.2),
+					drag.pos.total);
+			} else {
+				return _Utils_Tuple2(
+					$elm$core$Basics$round(vm.grid.unit / 1.5),
+					$author$project$Block$Internal$Component$Quantity$rootPos(vm));
+			}
+		}();
+		var radius = _v0.a;
+		var pos = _v0.b;
+		var rectPos = function () {
+			var delta = $author$project$Delta$init(
+				_Utils_Tuple2(-lineWidth, -lineWidth));
+			return A2($author$project$Pos$addDelta, delta, pos);
+		}();
+		var vlineP1 = A2(
+			$author$project$Pos$add,
+			rectPos,
+			$author$project$Pos$init(
+				_Utils_Tuple2(halfUnit + lineWidth, rectSize.height)));
+		var vlineP2 = A2(
+			$author$project$Pos$addY,
+			vlineP1,
+			$author$project$Pos$init(
+				_Utils_Tuple2(0, unit)));
+		var circlePos = vlineP2;
+		return A2(
+			$elm$svg$Svg$g,
+			A2(
+				$elm$core$List$cons,
+				$elm$svg$Svg$Attributes$class('quantity-control'),
+				attrs),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x(
+							$author$project$Pos$toXString(rectPos)),
+							$elm$svg$Svg$Attributes$y(
+							$author$project$Pos$toYString(rectPos)),
+							$elm$svg$Svg$Attributes$width(
+							$author$project$Size$toWidthString(rectSize)),
+							$elm$svg$Svg$Attributes$height(
+							$author$project$Size$toHeightString(rectSize)),
+							$elm$svg$Svg$Attributes$height(
+							$author$project$Size$toHeightString(rectSize)),
+							$elm$svg$Svg$Attributes$fillOpacity('0'),
+							$elm$svg$Svg$Attributes$stroke('black')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$line,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x1(
+							$author$project$Pos$toXString(vlineP1)),
+							$elm$svg$Svg$Attributes$y1(
+							$author$project$Pos$toYString(vlineP1)),
+							$elm$svg$Svg$Attributes$x2(
+							$author$project$Pos$toXString(vlineP2)),
+							$elm$svg$Svg$Attributes$y2(
+							$author$project$Pos$toYString(vlineP2)),
+							$elm$svg$Svg$Attributes$strokeWidth(
+							$elm$core$String$fromFloat(lineWidth)),
+							$elm$svg$Svg$Attributes$stroke('black')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$circle,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$cx(
+							$author$project$Pos$toXString(circlePos)),
+							$elm$svg$Svg$Attributes$cy(
+							$author$project$Pos$toYString(circlePos)),
+							$elm$svg$Svg$Attributes$r(
+							$elm$core$String$fromInt(radius))
+						]),
+					_List_Nil)
+				]));
+	});
+var $author$project$Block$Internal$Component$Quantity$view = F2(
+	function (attrs, vm) {
+		var _v0 = vm.block.state;
+		_v0$2:
+		while (true) {
+			switch (_v0.$) {
+				case 'Dragging':
+					if (_v0.a.$ === 'Quantity') {
+						var _v1 = _v0.a;
+						return $elm$core$Maybe$Just(
+							A2($author$project$Block$Internal$Component$Quantity$viewControl, attrs, vm));
+					} else {
+						break _v0$2;
+					}
+				case 'Selected':
+					return $elm$core$Maybe$Just(
+						A2($author$project$Block$Internal$Component$Quantity$viewControl, attrs, vm));
+				default:
+					break _v0$2;
+			}
+		}
+		return $elm$core$Maybe$Nothing;
+	});
+var $author$project$Block$Internal$Component$Width$viewControl = F2(
+	function (attrs, vm) {
+		return A2($elm$svg$Svg$g, _List_Nil, _List_Nil);
+	});
+var $author$project$Block$Internal$Component$Width$view = F2(
+	function (attrs, vm) {
+		var _v0 = vm.block.state;
+		_v0$2:
+		while (true) {
+			switch (_v0.$) {
+				case 'Dragging':
+					if (_v0.a.$ === 'Width') {
+						var _v1 = _v0.a;
+						return $elm$core$Maybe$Just(
+							A2($author$project$Block$Internal$Component$Width$viewControl, attrs, vm));
+					} else {
+						break _v0$2;
+					}
+				case 'Selected':
+					return $elm$core$Maybe$Just(
+						A2($author$project$Block$Internal$Component$Width$viewControl, attrs, vm));
+				default:
+					break _v0$2;
+			}
+		}
+		return $elm$core$Maybe$Nothing;
+	});
+var $author$project$Block$Internal$View$view = F3(
 	function (context, gd, bd) {
-		var vm = A2($author$project$Block$Internal$ViewModel$forBlock, gd, bd);
-		var eventAttrsFn = A2($author$project$Block$eventAttrs, context.envelop, bd.key);
-		var elements = A2($author$project$Block$Internal$View$view, eventAttrsFn, vm);
+		var vm = A2($author$project$Block$Internal$View$Model$forBlock, gd, bd);
+		var eventAttrsFn = A2($author$project$Block$Internal$View$eventAttrs, context.envelop, bd.key);
+		var controls = $elm_community$maybe_extra$Maybe$Extra$values(
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Block$Internal$Component$Width$view,
+					eventAttrsFn($author$project$Block$Internal$Component$Width),
+					vm),
+					A2(
+					$author$project$Block$Internal$Component$Quantity$view,
+					eventAttrsFn($author$project$Block$Internal$Component$Quantity),
+					vm)
+				]));
+		var body = A2(
+			$author$project$Block$Internal$Component$Body$view,
+			eventAttrsFn($author$project$Block$Internal$Component$Body),
+			vm);
 		return A2(
 			$elm$svg$Svg$g,
 			_List_fromArray(
 				[
 					$elm$svg$Svg$Attributes$class('block')
 				]),
-			elements);
+			A2($elm$core$List$cons, body, controls));
+	});
+var $author$project$Block$view = F3(
+	function (_v0, gd, _v1) {
+		var ctx = _v0.a;
+		var bd = _v1.a;
+		return A3($author$project$Block$Internal$View$view, ctx, gd, bd);
 	});
 var $author$project$Block$Group$view = F2(
 	function (gd, group) {
 		var viewBlock = A2($author$project$Block$view, group.context, gd);
 		var idleBlocks = A2($elm$core$List$map, viewBlock, group.rest);
-		var activeBlock = $author$project$MaybeEx$toList(
+		var activeBlock = $elm_community$maybe_extra$Maybe$Extra$toList(
 			A2($elm$core$Maybe$map, viewBlock, group.active));
 		return _Utils_ap(idleBlocks, activeBlock);
 	});
@@ -12443,4 +12471,4 @@ var $author$project$Main$view = function (m) {
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Block.Model.Id":{"args":[],"type":"{ key : String.String, part : Block.Model.Part }"},"Internal.Position":{"args":[],"type":"{ x : Basics.Int, y : Basics.Int }"}},"unions":{"Main.Msg":{"args":[],"tags":{"NoOp":[],"SizeChanged":["( Basics.Int, Basics.Int )"],"WindowResized":[],"BlockMsg":["Block.Model.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Block.Model.Msg":{"args":[],"tags":{"DragMsg":["Draggable.Msg Block.Model.Id"],"StartDrag":["Block.Model.Id"],"DragMove":["( Basics.Int, Basics.Int )"],"DragWidthControl":["( Basics.Int, Basics.Int )"],"EndDrag":[],"Select":["Block.Model.Id"],"UpdateWidth":[]}},"Draggable.Msg":{"args":["a"],"tags":{"Msg":["Internal.Msg a"]}},"Block.Model.Part":{"args":[],"tags":{"Body":[],"AddControl":[],"OffsetControl":[],"WidthControl":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Internal.Msg":{"args":["a"],"tags":{"StartDragging":["a","Internal.Position"],"DragAt":["Internal.Position"],"StopDragging":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Delta.Delta":{"args":[],"type":"{ dx : Basics.Float, dy : Basics.Float }"},"Block.Internal.Types.Id":{"args":[],"type":"{ key : String.String, part : Block.Internal.Component.Component }"},"Internal.Position":{"args":[],"type":"{ x : Basics.Int, y : Basics.Int }"}},"unions":{"Main.Msg":{"args":[],"tags":{"NoOp":[],"SizeChanged":["( Basics.Int, Basics.Int )"],"WindowResized":[],"BlockMsg":["Block.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Block.Msg":{"args":[],"tags":{"Msg":["Block.Internal.Types.Msg"]}},"Block.Internal.Types.Msg":{"args":[],"tags":{"DragMsg":["Draggable.Msg Block.Internal.Types.Id"],"StartDrag":["Block.Internal.Types.Id"],"DragMove":["Delta.Delta"],"EndDrag":[],"Select":["Block.Internal.Types.Id"]}},"Block.Internal.Component.Component":{"args":[],"tags":{"Body":[],"Offset":[],"Quantity":[],"Width":[]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"Draggable.Msg":{"args":["a"],"tags":{"Msg":["Internal.Msg a"]}},"String.String":{"args":[],"tags":{"String":[]}},"Internal.Msg":{"args":["a"],"tags":{"StartDragging":["a","Internal.Position"],"DragAt":["Internal.Position"],"StopDragging":[]}}}}})}});}(this));
