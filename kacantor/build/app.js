@@ -11310,7 +11310,7 @@ var $author$project$Block$Internal$Component$Quantity$dragMove = F3(
 					A2($author$project$Pos$deltaBetween, bd.pos, pos))));
 		var dx = _v0.a;
 		var dy = _v0.b;
-		var quantity_ = ((dy * bd.width) + dx) - bd.headerOffset;
+		var quantity_ = ((dy * bd.width) + A2($elm$core$Basics$min, dx, bd.width)) - bd.headerOffset;
 		return _Utils_update(
 			bd,
 			{quantity: quantity_});
