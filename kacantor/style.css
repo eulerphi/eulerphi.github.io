@@ -39,6 +39,12 @@
     stroke: rgb(174,138,180);
 }
 
+.block .body-top text,
+.block .body-bot text {
+    stroke: rgb(255, 255, 255);
+    fill: rgb(255, 255, 255);
+}
+
 /* BLOCK: BODY */
 
 .block .body-mid .grid-rect {
@@ -52,6 +58,26 @@
 
 .block .body-mid .grid-vline {
     stroke: rgb(37,166,201);
+}
+
+.block .body-mid text {
+    stroke: rgb(255, 255, 255);
+    fill: rgb(255, 255, 255);
+}
+
+/* CONTROLS */
+
+.block .offset-control {
+    cursor: w-resize;
+    fill: rgb(85,209,229);
+    stroke: rgb(85,209,229);
+}
+
+.block .outline {
+    fill: rgba(255, 255, 255, 0);
+    stroke: rgb(156, 151, 151);
+    stroke-dasharray: 6;
+    stroke-width: 2;
 }
 
 .block .width-control {
