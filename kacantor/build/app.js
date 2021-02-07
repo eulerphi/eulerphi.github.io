@@ -11497,7 +11497,9 @@ var $author$project$Block$Internal$View$BodyModel$scale = F2(
 	});
 var $author$project$Block$Internal$View$BodyModel$forBlock = F2(
 	function (gd, bd) {
-		var _v0 = ((bd.headerOffset > 0) && (_Utils_cmp(bd.width, bd.headerOffset) > 0)) ? _Utils_Tuple2(bd.width - bd.headerOffset, 1) : _Utils_Tuple2(0, 0);
+		var _v0 = (bd.headerOffset > 0) ? _Utils_Tuple2(
+			A2($elm$core$Basics$min, bd.quantity, bd.width - bd.headerOffset),
+			1) : _Utils_Tuple2(0, 0);
 		var topWidth = _v0.a;
 		var topHeight = _v0.b;
 		var top = {
