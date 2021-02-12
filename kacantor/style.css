@@ -22,6 +22,18 @@
     stroke: rgb(255, 255, 255);
 }
 
+/* DRAG CONTROL */
+.drag-control {
+    stroke: rgb(101,197,219);
+    fill: rgba(101, 197, 219);
+}
+
+.drag-control .grip {
+    stroke: rgba(101, 197, 219, 0);
+    fill: rgba(101, 197, 219, 0);
+}
+
+
 /* GRID */
 
 #grid .grid-rect {
@@ -37,6 +49,23 @@
 #grid .grid-hline-alternate,
 #grid .grid-vline-alternate {
     stroke: rgb(229,229,229)
+}
+
+.title rect {
+    fill:rgb(156, 151, 151);
+}
+
+.title line {
+    stroke: rgb(156, 151, 151);
+    stroke-dasharray: 6;
+    stroke-width: 2;
+}
+
+.title text {
+    fill:rgb(255, 255, 255);
+    font-family: monospace;
+    font-size: 18px;
+    pointer-events: none;
 }
 
 /* BLOCK: HEADER / FOOTER */
@@ -68,7 +97,7 @@
 
 .block .body-mid .grid-rect {
     stroke: rgb(101,197,219);
-    fill: rgb(25,156,194);
+    fill: rgba(25, 157, 194);
 }
 
 .block .body-mid .grid-hline {
@@ -88,7 +117,6 @@
 /* CONTROLS */
 
 .block .offset-control {
-    cursor: w-resize;
     fill: rgb(85,209,229);
     stroke: rgb(85,209,229);
 }
@@ -101,8 +129,8 @@
 }
 
 .block .ruler {
-    /* fill: rgb(156, 151, 151);
-    stroke: rgb(156, 151, 151); */
+    /* fill: rgb(255, 255, 255);
+    stroke: rgb(255, 255, 255); */
     fill: rgb(85,209,229);
     stroke: rgb(85,209,229);
     stroke-width: 2;
@@ -110,6 +138,7 @@
 
 .block .ruler text {
     fill: rgb(255, 255, 255);
+    font-size: 12px;
     pointer-events: none;
     stroke: rgb(255, 255, 255);
     stroke-width: 1;
