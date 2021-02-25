@@ -11706,36 +11706,25 @@ var $author$project$Block$Internal$Section$forBlock = F2(
 			sizeInUnits: topSize
 		};
 		var midSize = A2($author$project$Size$IntSize, bd.width, ((bd.quantity - topSize.width) / bd.width) | 0);
-		var botSize = A2($author$project$Size$IntSize, (bd.quantity - topSize.width) - (midSize.width * midSize.height), 1);
-		var _v0 = (bd.headerOffset > 0) ? _Utils_Tuple2(
-			A2($elm$core$Basics$min, bd.quantity, bd.width - bd.headerOffset),
-			1) : _Utils_Tuple2(0, 0);
-		var topWidth = _v0.a;
-		var topHeight = _v0.b;
 		var mid = {
 			_class: 'body-mid',
 			isMid: true,
 			pos: $author$project$Pos$fromInt(
-				_Utils_Tuple2(0, topHeight)),
+				_Utils_Tuple2(0, topSize.height)),
 			quantity: $author$project$Size$area(midSize),
 			size: $author$project$Size$toFloat(midSize),
 			sizeInUnits: midSize
 		};
-		var _v1 = _Utils_Tuple2(bd.width, ((bd.quantity - topWidth) / bd.width) | 0);
-		var midWidth = _v1.a;
-		var midHeight = _v1.b;
+		var botSize = A2($author$project$Size$IntSize, (bd.quantity - topSize.width) - (midSize.width * midSize.height), 1);
 		var bot = {
 			_class: 'body-bot',
 			isMid: false,
 			pos: $author$project$Pos$fromInt(
-				_Utils_Tuple2(0, topHeight + midHeight)),
+				_Utils_Tuple2(0, topSize.height + midSize.height)),
 			quantity: $author$project$Size$area(botSize),
 			size: $author$project$Size$toFloat(botSize),
 			sizeInUnits: botSize
 		};
-		var _v2 = _Utils_Tuple2((bd.quantity - topWidth) - (midWidth * midHeight), 1);
-		var botWidth = _v2.a;
-		var botHeight = _v2.b;
 		return A2(
 			$elm$core$List$map,
 			$author$project$Block$Internal$Section$addPos(bd.pos),
@@ -13001,7 +12990,7 @@ var $author$project$Block$Internal$Section$midSection = function (sections) {
 		A2(
 			$elm$core$List$filter,
 			function (s) {
-				return s._class === 'body-mid';
+				return s.isMid;
 			},
 			sections));
 };
@@ -13176,160 +13165,6 @@ var $author$project$Block$Internal$Component$Ruler$view = F2(
 		}
 		return $elm$core$Maybe$Nothing;
 	});
-var $elm$core$String$append = _String_append;
-var $elm$core$String$concat = function (strings) {
-	return A2($elm$core$String$join, '', strings);
-};
-var $author$project$Block$Internal$Component$Title$quantityText = function (vm) {
-	return $elm$core$String$fromInt(vm.block.quantity);
-};
-var $author$project$Block$Internal$Component$Title$dragOffsetText = F2(
-	function (vm, _v0) {
-		return function (s) {
-			return A2(
-				$elm$core$String$append,
-				s,
-				$author$project$Block$Internal$Component$Title$quantityText(vm));
-		}(
-			function (s) {
-				return A2($elm$core$String$append, s, ' = ');
-			}(
-				$elm$core$String$concat(
-					A2(
-						$elm$core$List$intersperse,
-						' + ',
-						A2(
-							$elm$core$List$map,
-							$elm$core$String$fromInt,
-							A2(
-								$elm$core$List$map,
-								function ($) {
-									return $.quantity;
-								},
-								vm.sections))))));
-	});
-var $author$project$Block$Internal$Component$Title$dragQuantityText = F2(
-	function (vm, _v0) {
-		var bd = _v0.bd;
-		var change = (_Utils_cmp(vm.block.quantity, bd.quantity) > -1) ? (' + ' + $elm$core$String$fromInt(vm.block.quantity - bd.quantity)) : (' - ' + $elm$core$String$fromInt(bd.quantity - vm.block.quantity));
-		return $elm$core$String$fromInt(bd.quantity) + (change + (' = ' + $elm$core$String$fromInt(vm.block.quantity)));
-	});
-var $author$project$Block$Internal$Component$Title$dragWidthText = F2(
-	function (vm, _v0) {
-		return function (s) {
-			return A2(
-				$elm$core$String$append,
-				s,
-				$author$project$Block$Internal$Component$Title$quantityText(vm));
-		}(
-			function (s) {
-				return A2($elm$core$String$append, s, ' = ');
-			}(
-				$elm$core$String$concat(
-					A2(
-						$elm$core$List$intersperse,
-						' + ',
-						A2(
-							$elm$core$List$map,
-							function (s) {
-								return s.isMid ? ('(' + ($elm$core$String$fromInt(s.sizeInUnits.height) + (' x ' + ($elm$core$String$fromInt(s.sizeInUnits.width) + ')')))) : $elm$core$String$fromInt(s.quantity);
-							},
-							vm.sections)))));
-	});
-var $author$project$Line$addXY = F3(
-	function (x, y, pos) {
-		return A2(
-			$author$project$Line$Line,
-			pos,
-			A2(
-				$author$project$Pos$addY,
-				y,
-				A2($author$project$Pos$addX, x, pos)));
-	});
-var $author$project$Block$Internal$Component$Title$titleSize = F3(
-	function (vm, txt, height) {
-		return function (w) {
-			return A2($author$project$Size$Size, w, height);
-		}(
-			A2(
-				$elm$core$Basics$max,
-				height,
-				A2(
-					$author$project$MathEx$roundNear,
-					vm.grid.unit,
-					13 * $elm$core$String$length(txt))));
-	});
-var $author$project$Block$Internal$Component$Title$viewTitle = F2(
-	function (vm, txt) {
-		var txtSize = A3($author$project$Block$Internal$Component$Title$titleSize, vm, txt, (3 * vm.grid.unit) / 2);
-		var line = A3(
-			$author$project$Line$addXY,
-			-((vm.grid.unit / 2) - $author$project$Block$Internal$Config$outlinePadding),
-			vm.grid.unit / 2,
-			A2(
-				$author$project$Pos$addY,
-				vm.size.height + $author$project$Block$Internal$Config$outlinePadding,
-				A2($author$project$Pos$addX, -$author$project$Block$Internal$Config$outlinePadding, vm.pos)));
-		var txtBox = A2(
-			$author$project$Box$Box,
-			A2($author$project$Pos$addX, -txtSize.width, line.p2),
-			txtSize);
-		return A2(
-			$elm$svg$Svg$g,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$class('title')
-				]),
-			_List_fromArray(
-				[
-					A2($author$project$SvgEx$line, _List_Nil, line),
-					A3($author$project$SvgEx$textWithBackground, _List_Nil, txtBox, txt)
-				]));
-	});
-var $author$project$Block$Internal$Component$Title$view = F2(
-	function (_v0, vm) {
-		var _v1 = vm.block.state;
-		_v1$4:
-		while (true) {
-			switch (_v1.$) {
-				case 'Dragging':
-					switch (_v1.b.$) {
-						case 'DragOffset':
-							var ctx = _v1.a;
-							return $elm$core$Maybe$Just(
-								A2(
-									$author$project$Block$Internal$Component$Title$viewTitle,
-									vm,
-									A2($author$project$Block$Internal$Component$Title$dragOffsetText, vm, ctx)));
-						case 'DragQuantity':
-							var ctx = _v1.a;
-							return $elm$core$Maybe$Just(
-								A2(
-									$author$project$Block$Internal$Component$Title$viewTitle,
-									vm,
-									A2($author$project$Block$Internal$Component$Title$dragQuantityText, vm, ctx)));
-						case 'DragWidth':
-							var ctx = _v1.a;
-							return $elm$core$Maybe$Just(
-								A2(
-									$author$project$Block$Internal$Component$Title$viewTitle,
-									vm,
-									A2($author$project$Block$Internal$Component$Title$dragWidthText, vm, ctx)));
-						default:
-							break _v1$4;
-					}
-				case 'Selected':
-					return $elm$core$Maybe$Just(
-						A2(
-							$author$project$Block$Internal$Component$Title$viewTitle,
-							vm,
-							$author$project$Block$Internal$Component$Title$quantityText(vm)));
-				default:
-					break _v1$4;
-			}
-		}
-		return $elm$core$Maybe$Nothing;
-	});
 var $author$project$Block$Internal$Component$Width$viewControl = F3(
 	function (attrs, vm, _v0) {
 		var active = _v0.active;
@@ -13422,7 +13257,6 @@ var $author$project$Block$Internal$View$view = F3(
 				_List_fromArray(
 					[
 						$author$project$Block$Internal$Component$Outline$view(_List_Nil),
-						$author$project$Block$Internal$Component$Title$view(_List_Nil),
 						$author$project$Block$Internal$Component$Ruler$view(_List_Nil),
 						$author$project$Block$Internal$Component$Offset$view(
 						attrsFn($author$project$Block$Internal$Component$Offset)),
@@ -13452,6 +13286,257 @@ var $author$project$Block$Group$view = F2(
 		var activeBlock = $elm_community$maybe_extra$Maybe$Extra$toList(
 			A2($elm$core$Maybe$map, viewBlock, group.active));
 		return _Utils_ap(idleBlocks, activeBlock);
+	});
+var $elm$core$String$append = _String_append;
+var $author$project$StringEx$prepend = F2(
+	function (base, prefix) {
+		return A2($elm$core$String$append, prefix, base);
+	});
+var $author$project$Block$Title$fontSize = function (box) {
+	var padding = 8;
+	var factor = 3 / 4;
+	return A2(
+		$author$project$StringEx$prepend,
+		'px',
+		$elm$core$String$fromInt(
+			$elm$core$Basics$round(factor * (box.size.height - padding))));
+};
+var $elm$svg$Svg$foreignObject = $elm$svg$Svg$trustedNode('foreignObject');
+var $author$project$SvgEx$foreignObject = F3(
+	function (attrs, box, content) {
+		return A2(
+			$elm$svg$Svg$foreignObject,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$x(
+						$author$project$Pos$toXString(box.pos)),
+						$elm$svg$Svg$Attributes$y(
+						$author$project$Pos$toYString(box.pos)),
+						$elm$svg$Svg$Attributes$width(
+						$author$project$Size$toWidthString(box.size)),
+						$elm$svg$Svg$Attributes$height(
+						$author$project$Size$toHeightString(box.size))
+					]),
+				attrs),
+			content);
+	});
+var $author$project$Block$Internal$Section$titleText = function (section) {
+	return section.isMid ? function (_v0) {
+		var w = _v0.a;
+		var h = _v0.b;
+		return h + (' x ' + w);
+	}(
+		A2(
+			$author$project$Pair$map,
+			$elm$core$String$fromInt,
+			$author$project$Size$toPair(section.sizeInUnits))) : $elm$core$String$fromInt(section.quantity);
+};
+var $author$project$Block$Title$getTitleHtml = function (vm) {
+	var _v0 = vm.block.state;
+	if ((_v0.$ === 'Dragging') && (_v0.b.$ === 'DragQuantity')) {
+		var bd = _v0.a.bd;
+		var _v1 = _Utils_Tuple2(vm.block.quantity, bd.quantity);
+		var newQuantity = _v1.a;
+		var oldQuantity = _v1.b;
+		var delta = newQuantity - oldQuantity;
+		return _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('sum')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(newQuantity))
+					])),
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('operator')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(' = ')
+					])),
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('sum')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(oldQuantity))
+					])),
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('operator')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(' + ')
+					])),
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('active')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(delta))
+					]))
+			]);
+	} else {
+		var rhs = _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('operator')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(' = ')
+					])),
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('sum')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(vm.block.quantity))
+					]))
+			]);
+		var lhs = A2(
+			$elm$core$List$intersperse,
+			A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('operator')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(' + ')
+					])),
+			A2(
+				$elm$core$List$map,
+				function (s) {
+					return A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class(s._class)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$Block$Internal$Section$titleText(s))
+							]));
+				},
+				vm.sections));
+		return _Utils_ap(lhs, rhs);
+	}
+};
+var $author$project$Box$pad = F2(
+	function (value, box) {
+		return _Utils_update(
+			box,
+			{
+				pos: A2(
+					$author$project$Pos$addY,
+					value,
+					A2($author$project$Pos$addX, value, box.pos)),
+				size: A2(
+					$author$project$Size$addHeight,
+					-(2 * value),
+					A2($author$project$Size$addWidth, -(2 * value), box.size))
+			});
+	});
+var $author$project$Block$Title$titleBox = function (gd) {
+	return A2(
+		$author$project$Box$pad,
+		gd.unit / 4,
+		A2(
+			$author$project$Pair$uncurry,
+			$author$project$Box$Box,
+			A3(
+				$author$project$Pair$fork,
+				function (s) {
+					return A2(
+						$author$project$Pos$addX,
+						-(s.width / 2),
+						A2($author$project$Pos$addX, gd.size.width / 2, gd.pos));
+				},
+				$elm$core$Basics$identity,
+				A2($author$project$Size$Size, gd.size.width, 2 * gd.unit))));
+};
+var $author$project$Size$toPixelHeightString = function (size) {
+	return A2(
+		$author$project$StringEx$prepend,
+		'px',
+		$author$project$Size$toHeightString(size));
+};
+var $author$project$Block$Title$viewTitle = function (vm) {
+	var box = $author$project$Block$Title$titleBox(vm.grid);
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$class('block-title')
+			]),
+		_List_fromArray(
+			[
+				A3(
+				$author$project$SvgEx$foreignObject,
+				_List_Nil,
+				box,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('container'),
+								A2(
+								$elm$html$Html$Attributes$style,
+								'font-size',
+								$author$project$Block$Title$fontSize(box)),
+								A2(
+								$elm$html$Html$Attributes$style,
+								'height',
+								$author$project$Size$toPixelHeightString(box.size))
+							]),
+						$author$project$Block$Title$getTitleHtml(vm))
+					]))
+			]));
+};
+var $author$project$Block$Title$view = F2(
+	function (gd, block) {
+		return A2(
+			$elm$core$Maybe$map,
+			$author$project$Block$Title$viewTitle,
+			A2(
+				$elm$core$Maybe$map,
+				function (_v0) {
+					var bd = _v0.a;
+					return A2($author$project$Block$Internal$ViewModel$forBlock, gd, bd);
+				},
+				block));
 	});
 var $author$project$CircleButton$view = F3(
 	function (attrs, gd, txt) {
@@ -13500,6 +13585,36 @@ var $author$project$CircleButton$view = F3(
 				]));
 	});
 var $author$project$Main$view = function (m) {
+	var title = $elm_community$maybe_extra$Maybe$Extra$toList(
+		A2($author$project$Block$Title$view, m.grid, m.blocks.active));
+	var elems = _List_fromArray(
+		[
+			A3(
+			$author$project$Grid$viewWithOptions,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$id('grid'),
+					$elm$svg$Svg$Events$onClick($author$project$Main$ClearSelection)
+				]),
+			m.gridOpts,
+			m.grid),
+			A2(
+			$elm$svg$Svg$g,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$id('blocks')
+				]),
+			A2($author$project$Block$Group$view, m.grid, m.blocks)),
+			A3(
+			$author$project$CircleButton$view,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$id('add-block-btn'),
+					$elm$svg$Svg$Events$onClick($author$project$Main$AddBlock)
+				]),
+			m.grid,
+			'+')
+		]);
 	return A2(
 		$elm$svg$Svg$svg,
 		_List_fromArray(
@@ -13509,34 +13624,7 @@ var $author$project$Main$view = function (m) {
 				$elm$svg$Svg$Attributes$height(
 				$author$project$Size$toHeightString(m.viewCtx.size))
 			]),
-		_List_fromArray(
-			[
-				A3(
-				$author$project$Grid$viewWithOptions,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$id('grid'),
-						$elm$svg$Svg$Events$onClick($author$project$Main$ClearSelection)
-					]),
-				m.gridOpts,
-				m.grid),
-				A2(
-				$elm$svg$Svg$g,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$id('blocks')
-					]),
-				A2($author$project$Block$Group$view, m.grid, m.blocks)),
-				A3(
-				$author$project$CircleButton$view,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$id('add-block-btn'),
-						$elm$svg$Svg$Events$onClick($author$project$Main$AddBlock)
-					]),
-				m.grid,
-				'+')
-			]));
+		_Utils_ap(elems, title));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
