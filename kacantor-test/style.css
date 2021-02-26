@@ -1,0 +1,236 @@
+#root {
+    display: flex;
+    justify-content: center;
+    /* margin: 20px; */
+}
+
+
+.invisible {
+    fill: none;
+    stroke:none
+}
+
+.guideline {
+    stroke-dasharray: 4;
+}
+
+/* ADD BlOCK BTN */
+#add-block-btn {
+    stroke: rgb(101,197,219);
+    fill: rgba(101, 197, 219);
+}
+
+#add-block-btn text {
+    font-size: larger;
+    pointer-events: none;
+    fill: rgba(255, 255, 255);
+    stroke: rgb(255, 255, 255);
+}
+
+/* DRAG CONTROL */
+.drag-control {
+    stroke: rgb(101,197,219);
+    fill: rgba(101, 197, 219);
+}
+
+.drag-control .grip {
+    stroke: rgba(101, 197, 219, 0);
+    fill: rgba(101, 197, 219, 0);
+}
+
+
+/* GRID */
+
+#grid rect {
+    stroke: rgb(229, 229, 229);
+    fill: rgb(255, 255, 255);
+}
+
+#grid .hline ,
+#grid .vline {
+    stroke: rgb(247,248,248)
+}
+
+#grid .hline-alternate,
+#grid .vline-alternate {
+    stroke: rgb(229,229,229)
+}
+
+/* TITLE  */
+
+.block-title foreignObject{
+    fill: none;
+    pointer-events: none;
+}
+
+.block-title .container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+.block-title span {
+    border-radius: 15px;
+    color: white;
+    padding: 4px 8px;
+    pointer-events: none;
+}
+
+.block-title span.body-mid {
+    background-color: rgb(101,197,219);
+}
+
+.block-title span.body-top,
+.block-title span.body-bot {
+    background-color: rgb(188,26,105);
+}
+
+.block-title span.sum {
+    background-color: rgb(156, 151, 151);
+}
+
+.block-title span.active {
+    background-color: rgb(192, 74, 221);
+}
+
+.block-title span.operator {
+    color: black;
+    font-weight: bolder;
+}
+
+.title rect {
+    fill:rgb(156, 151, 151);
+}
+
+.title line {
+    stroke: rgb(156, 151, 151);
+    stroke-dasharray: 6;
+    stroke-width: 2;
+}
+
+.title text {
+    fill:rgb(255, 255, 255);
+    font-family: monospace;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+/* BLOCK: HEADER / FOOTER */
+
+.block .body-top .grid rect,
+.block .body-bot .grid rect {
+    stroke: rgb(174,138,180);
+    fill: rgb(188,26,105);
+}
+
+.block .temps .body-top .grid rect,
+.block .temps .body-bot .grid rect {
+    fill: none;
+}
+
+.block .body-top .grid .hline,
+.block .body-bot .grid .hline {
+    stroke: rgb(221,140,180);
+}
+
+.block .body-top .grid .vline,
+.block .body-bot .grid .vline {
+    stroke: rgb(174,138,180);
+}
+
+.block .body-top text,
+.block .body-bot text {
+    pointer-events: none;
+    stroke: rgb(255, 255, 255);
+    fill: rgb(255, 255, 255);
+}
+
+.block .temps .body-top text,
+.block .temps .body-bot text {
+    stroke: rgb(188,26,105);
+    fill: rgb(188,26,105);
+}
+
+/* BLOCK: BODY */
+
+.block .body-mid .grid rect {
+    stroke: rgb(101,197,219);
+    fill: rgba(25, 157, 194);
+}
+
+.block .temps .body-mid .grid rect {
+    fill: none;
+}
+
+.block .body-mid .grid .hline {
+    stroke: rgb(37,166,201);
+}
+
+.block .body-mid .grid .vline {
+    stroke: rgb(37,166,201);
+}
+
+.block .body-mid text {
+    pointer-events: none;
+    stroke: rgb(255, 255, 255);
+    fill: rgb(255, 255, 255);
+}
+
+.block .temps .body-mid text {
+    fill: rgba(25, 157, 194);
+    stroke: rgba(25, 157, 194);
+}
+
+/* CONTROLS */
+
+.block .offset-control {
+    fill: rgb(85,209,229);
+    stroke: rgb(85,209,229);
+}
+
+.block .offset-control line {
+    stroke-width: 3;
+}
+
+.block .outline {
+    fill: none;
+    stroke: rgb(156, 151, 151);
+    stroke-dasharray: 6;
+    stroke-width: 2;
+}
+
+.block .ruler {
+    /* fill: rgb(255, 255, 255);
+    stroke: rgb(255, 255, 255); */
+    fill: rgb(85,209,229);
+    stroke: rgb(85,209,229);
+    stroke-width: 2;
+}
+
+.block .ruler text {
+    fill: rgb(255, 255, 255);
+    font-size: 12px;
+    pointer-events: none;
+    stroke: rgb(255, 255, 255);
+    stroke-width: 1;
+}
+
+.block .width-control {
+    fill: rgb(85,209,229);
+    stroke: rgb(85,209,229);
+}
+
+.block .width-control line {
+    stroke-width: 3;
+}
+
+.block .quantity-control {
+    fill: rgb(85,209,229);
+    stroke: rgb(85,209,229);
+}
+
+.block .quantity-control rect {
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 4;
+}
