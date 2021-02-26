@@ -11690,7 +11690,7 @@ var $author$project$Block$Internal$Section$scale = F2(
 	function (value, section) {
 		return A2($author$project$Box$scale, value, section);
 	});
-var $author$project$Block$Internal$Section$forBlock = F2(
+var $author$project$Block$Internal$Section$forBlockInternal = F2(
 	function (gd, bd) {
 		var topSize = (bd.headerOffset > 0) ? A2(
 			$author$project$Size$IntSize,
@@ -11699,6 +11699,7 @@ var $author$project$Block$Internal$Section$forBlock = F2(
 		var top = {
 			_class: 'body-top',
 			isMid: false,
+			offset: bd.headerOffset,
 			pos: $author$project$Pos$fromInt(
 				_Utils_Tuple2(bd.headerOffset, 0)),
 			quantity: $author$project$Size$area(topSize),
@@ -11709,6 +11710,7 @@ var $author$project$Block$Internal$Section$forBlock = F2(
 		var mid = {
 			_class: 'body-mid',
 			isMid: true,
+			offset: 0,
 			pos: $author$project$Pos$fromInt(
 				_Utils_Tuple2(0, topSize.height)),
 			quantity: $author$project$Size$area(midSize),
@@ -11719,6 +11721,7 @@ var $author$project$Block$Internal$Section$forBlock = F2(
 		var bot = {
 			_class: 'body-bot',
 			isMid: false,
+			offset: 0,
 			pos: $author$project$Pos$fromInt(
 				_Utils_Tuple2(0, topSize.height + midSize.height)),
 			quantity: $author$project$Size$area(botSize),
@@ -11737,6 +11740,67 @@ var $author$project$Block$Internal$Section$forBlock = F2(
 					_List_fromArray(
 						[top, mid, bot]))));
 	});
+var $author$project$Block$Internal$Section$forBlock = F2(
+	function (gd, bd) {
+		return A2($author$project$Block$Internal$Section$forBlockInternal, gd, bd);
+	});
+var $author$project$Pos$updateX = F2(
+	function (xValue, pos) {
+		return {x: xValue, y: pos.y};
+	});
+var $author$project$Block$Internal$Section$forBlockFoo = F2(
+	function (gd, bd) {
+		var _v0 = bd.state;
+		if ((_v0.$ === 'Dragging') && (_v0.b.$ === 'DragQuantity')) {
+			var ctx = _v0.a;
+			var _v1 = _Utils_Tuple2(bd.quantity, ctx.bd.quantity);
+			var newQuantity = _v1.a;
+			var oldQuantity = _v1.b;
+			var delta = newQuantity - oldQuantity;
+			var sections = A2(
+				$author$project$Block$Internal$Section$forBlockInternal,
+				gd,
+				_Utils_update(
+					bd,
+					{
+						quantity: A2($elm$core$Basics$min, oldQuantity, oldQuantity + delta)
+					}));
+			var temps = A2(
+				$author$project$Block$Internal$Section$forBlockInternal,
+				gd,
+				_Utils_update(
+					bd,
+					{
+						headerOffset: A2(
+							$elm$core$Maybe$withDefault,
+							bd.headerOffset,
+							A2(
+								$elm$core$Maybe$map,
+								function (s) {
+									return _Utils_eq(s.sizeInUnits.width, bd.width) ? 0 : (s.sizeInUnits.width + s.offset);
+								},
+								$author$project$Block$Internal$Section$last(sections))),
+						pos: A2(
+							$elm$core$Maybe$withDefault,
+							bd.pos,
+							A2(
+								$elm$core$Maybe$map,
+								function (s) {
+									return _Utils_eq(s.sizeInUnits.width, bd.width) ? A2(
+										$author$project$Pos$updateX,
+										bd.pos.x,
+										A2($author$project$Pos$addY, s.size.height, s.pos)) : A2($author$project$Pos$updateX, bd.pos.x, s.pos);
+								},
+								$author$project$Block$Internal$Section$last(sections))),
+						quantity: $elm$core$Basics$abs(delta)
+					}));
+			return _Utils_Tuple2(sections, temps);
+		} else {
+			return _Utils_Tuple2(
+				A2($author$project$Block$Internal$Section$forBlockInternal, gd, bd),
+				_List_Nil);
+		}
+	});
 var $author$project$Box$Box = F2(
 	function (pos, size) {
 		return {pos: pos, size: size};
@@ -11744,21 +11808,15 @@ var $author$project$Box$Box = F2(
 var $author$project$Block$Internal$Section$toBox = F3(
 	function (gd, bd, sections) {
 		var width = gd.unit * bd.width;
-		var height = A3(
-			$elm$core$List$foldl,
-			$elm$core$Basics$add,
+		var height = A2(
+			$elm$core$Maybe$withDefault,
 			0,
 			A2(
-				$elm$core$List$map,
-				function ($) {
-					return $.height;
+				$elm$core$Maybe$map,
+				function (s) {
+					return (s.pos.y + s.size.height) - bd.pos.y;
 				},
-				A2(
-					$elm$core$List$map,
-					function ($) {
-						return $.size;
-					},
-					sections)));
+				$author$project$Block$Internal$Section$last(sections)));
 		return A2(
 			$author$project$Box$Box,
 			bd.pos,
@@ -11766,9 +11824,23 @@ var $author$project$Block$Internal$Section$toBox = F3(
 	});
 var $author$project$Block$Internal$ViewModel$forBlock = F2(
 	function (gd, bd) {
-		var sections = A2($author$project$Block$Internal$Section$forBlock, gd, bd);
-		var box = A3($author$project$Block$Internal$Section$toBox, gd, bd, sections);
-		return {block: bd, grid: gd, pos: bd.pos, sections: sections, size: box.size};
+		var _v0 = A2($author$project$Block$Internal$Section$forBlockFoo, gd, bd);
+		var sections = _v0.a;
+		var temps = _v0.b;
+		var box = A3(
+			$author$project$Block$Internal$Section$toBox,
+			gd,
+			bd,
+			_Utils_ap(sections, temps));
+		return {
+			block: bd,
+			grid: gd,
+			pos: bd.pos,
+			sections: A2($author$project$Block$Internal$Section$forBlock, gd, bd),
+			size: box.size,
+			tempBodySections: sections,
+			tempChangeSections: temps
+		};
 	});
 var $author$project$Block$Internal$Update$dragStart = F3(
 	function (gd, id, bd) {
@@ -12724,10 +12796,6 @@ var $author$project$Block$Internal$Component$Body$view = F2(
 				$author$project$Block$Internal$Component$Body$viewRect(vm),
 				vm.sections));
 	});
-var $author$project$Pos$updateX = F2(
-	function (xValue, pos) {
-		return {x: xValue, y: pos.y};
-	});
 var $author$project$Pos$updateY = F2(
 	function (yValue, pos) {
 		return {x: pos.x, y: yValue};
@@ -13243,11 +13311,22 @@ var $author$project$Block$Internal$Component$Width$view = F2(
 var $author$project$Block$Internal$View$view = F3(
 	function (context, gd, bd) {
 		var vm = A2($author$project$Block$Internal$ViewModel$forBlock, gd, bd);
+		var temps = A2(
+			$author$project$Block$Internal$Component$Body$view,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$class('temps')
+				]),
+			_Utils_update(
+				vm,
+				{sections: vm.tempChangeSections}));
 		var attrsFn = A2($author$project$Block$Internal$View$eventAttrs, context.envelop, bd.key);
 		var body = A2(
 			$author$project$Block$Internal$Component$Body$view,
 			attrsFn($author$project$Block$Internal$Component$Body),
-			vm);
+			_Utils_update(
+				vm,
+				{sections: vm.tempBodySections}));
 		var elements = $elm_community$maybe_extra$Maybe$Extra$values(
 			A2(
 				$elm$core$List$map,
@@ -13271,7 +13350,10 @@ var $author$project$Block$Internal$View$view = F3(
 				[
 					$elm$svg$Svg$Attributes$class('block')
 				]),
-			A2($elm$core$List$cons, body, elements));
+			_Utils_ap(
+				_List_fromArray(
+					[body, temps]),
+				elements));
 	});
 var $author$project$Block$view = F3(
 	function (_v0, gd, _v1) {
