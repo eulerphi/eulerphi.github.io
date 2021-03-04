@@ -11980,9 +11980,7 @@ var $author$project$Block$Internal$Update$endDrag = function (bd) {
 			function (b) {
 				return _Utils_update(
 					b,
-					{
-						state: A2($author$project$Block$Internal$Types$Dragging, ctx, component)
-					});
+					{state: $author$project$Block$Internal$Types$Selected});
 			},
 			bd_);
 	} else {
@@ -12282,7 +12280,7 @@ var $author$project$Main$update = F2(
 					{
 						key: $elm$core$String$fromInt(key_),
 						pos: pos,
-						quantity: 5,
+						quantity: 35,
 						width: 10
 					});
 				var blocks_ = A2($author$project$Block$Group$addBlock, newBlock, m.blocks);
@@ -12345,7 +12343,6 @@ var $author$project$Size$toWidthString = function (size) {
 var $author$project$Block$Internal$Component$Body = {$: 'Body'};
 var $author$project$Block$Internal$Component$Offset = {$: 'Offset'};
 var $author$project$Block$Internal$Component$Quantity = {$: 'Quantity'};
-var $author$project$Block$Internal$Component$Width = {$: 'Width'};
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$Block$Internal$Types$Id = F2(
 	function (key, part) {
@@ -12775,7 +12772,8 @@ var $author$project$SvgEx$text_ = F3(
 									$elm$svg$Svg$Attributes$x('50%'),
 									$elm$svg$Svg$Attributes$y('50%'),
 									$elm$svg$Svg$Attributes$dominantBaseline('middle'),
-									$elm$svg$Svg$Attributes$textAnchor('middle')
+									$elm$svg$Svg$Attributes$textAnchor('middle'),
+									$elm$svg$Svg$Attributes$class('no-select')
 								]),
 							_List_fromArray(
 								[
@@ -12827,6 +12825,309 @@ var $author$project$Block$Internal$Component$Body$view = F2(
 				$author$project$Block$Internal$Component$Body$viewRect(vm),
 				vm.sections));
 	});
+var $author$project$Size$forSquare = function (value) {
+	return A2($author$project$Size$Size, value, value);
+};
+var $elm$svg$Svg$Attributes$opacity = _VirtualDom_attribute('opacity');
+var $elm$svg$Svg$Attributes$strokeDasharray = _VirtualDom_attribute('stroke-dasharray');
+var $author$project$SvgEx$textWithBackground = F3(
+	function (attrs, box, text) {
+		return A2(
+			$elm$svg$Svg$g,
+			attrs,
+			_List_fromArray(
+				[
+					A2($author$project$SvgEx$rect, _List_Nil, box),
+					A2(
+					$elm$svg$Svg$g,
+					A2(
+						$elm$core$List$cons,
+						$author$project$SvgEx$translateToPos(box.pos),
+						attrs),
+					_List_fromArray(
+						[
+							A2(
+							$elm$svg$Svg$svg,
+							_List_fromArray(
+								[
+									$elm$svg$Svg$Attributes$width(
+									$author$project$Size$toWidthString(box.size)),
+									$elm$svg$Svg$Attributes$height(
+									$author$project$Size$toHeightString(box.size))
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$svg$Svg$text_,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$x('50%'),
+											$elm$svg$Svg$Attributes$y('50%'),
+											$elm$svg$Svg$Attributes$dominantBaseline('middle'),
+											$elm$svg$Svg$Attributes$textAnchor('middle')
+										]),
+									_List_fromArray(
+										[
+											$elm$svg$Svg$text(text)
+										]))
+								]))
+						]))
+				]));
+	});
+var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
+var $author$project$CircleDragControl$controlRadius = function (_v0) {
+	var active = _v0.active;
+	var unit = _v0.unit;
+	return active ? (unit / 1.2) : (unit / 3);
+};
+var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
+var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
+var $author$project$CircleDragControl$gripRadius = function (_v0) {
+	var active = _v0.active;
+	var unit = _v0.unit;
+	return active ? (unit / 1.2) : (unit / 1.5);
+};
+var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var $author$project$CircleDragControl$view2 = F2(
+	function (attrs, input) {
+		var pos_ = input.pos;
+		var _v0 = A3($author$project$Pair$fork, $author$project$CircleDragControl$controlRadius, $author$project$CircleDragControl$gripRadius, input);
+		var cr = _v0.a;
+		var gr = _v0.b;
+		var box = A2(
+			$author$project$Box$Box,
+			A2(
+				$author$project$Pos$addY,
+				-cr,
+				A2($author$project$Pos$addX, -cr, pos_)),
+			$author$project$Size$forSquare(2 * cr));
+		return A2(
+			$elm$svg$Svg$g,
+			A2(
+				$elm$core$List$cons,
+				$elm$svg$Svg$Attributes$class('drag-control'),
+				attrs),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$circle,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$cx(
+							$author$project$Pos$toXString(pos_)),
+							$elm$svg$Svg$Attributes$cy(
+							$author$project$Pos$toYString(pos_)),
+							$elm$svg$Svg$Attributes$r(
+							$elm$core$String$fromFloat(cr))
+						]),
+					_List_Nil),
+					A3($author$project$SvgEx$text_, _List_Nil, box, input.txt),
+					A2(
+					$elm$svg$Svg$circle,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$class('grip'),
+							$elm$svg$Svg$Attributes$cx(
+							$author$project$Pos$toXString(pos_)),
+							$elm$svg$Svg$Attributes$cy(
+							$author$project$Pos$toYString(pos_)),
+							$elm$svg$Svg$Attributes$r(
+							$elm$core$String$fromFloat(gr))
+						]),
+					_List_Nil)
+				]));
+	});
+var $author$project$Block$Internal$Component$Multiplicand$viewRuler = function (input) {
+	var txt = (input.txt.val !== '0') ? _List_fromArray(
+		[
+			A3($author$project$SvgEx$textWithBackground, _List_Nil, input.txt, input.txt.val)
+		]) : _List_Nil;
+	var es = _List_fromArray(
+		[
+			A2(
+			$author$project$SvgEx$line,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$strokeDasharray('6'),
+					$elm$svg$Svg$Attributes$opacity('30%')
+				]),
+			input.line),
+			A2($author$project$SvgEx$line, _List_Nil, input.hash1),
+			A2(
+			$author$project$CircleDragControl$view2,
+			_List_Nil,
+			{active: false, pos: input.cpos, txt: input.txt.val, unit: 33})
+		]);
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$class(input._class)
+			]),
+		es);
+};
+var $author$project$Block$Internal$Component$Multiplicand$viewWidthRuler = function (vm) {
+	var txt = $elm$core$String$fromInt(
+		$elm$core$Basics$round(vm.size.width / vm.grid.unit));
+	var line = A2(
+		$author$project$Line$addX,
+		vm.grid.size.width - vm.pos.x,
+		A2($author$project$Pos$addY, -((3 * vm.grid.unit) / 4), vm.pos));
+	var _v0 = _Utils_Tuple2(vm.grid.unit / 2, vm.grid.unit / 4);
+	var halfUnit = _v0.a;
+	var quarterUnit = _v0.b;
+	var txtSize = $author$project$Size$forSquare(halfUnit);
+	var txtPos = A2(
+		$author$project$Pos$addY,
+		-(txtSize.height / 2),
+		A2(
+			$author$project$Pos$addX,
+			-(txtSize.width / 2),
+			A2($author$project$Pos$addX, vm.size.width / 2, line.p1)));
+	var hash1 = A2(
+		$author$project$Line$Line,
+		A2($author$project$Pos$addY, quarterUnit, line.p1),
+		A2($author$project$Pos$addY, -quarterUnit, line.p1));
+	var hash2 = A2(
+		$author$project$Line$Line,
+		A2($author$project$Pos$addY, quarterUnit, line.p2),
+		A2($author$project$Pos$addY, -quarterUnit, line.p2));
+	return $author$project$Block$Internal$Component$Multiplicand$viewRuler(
+		{
+			_class: 'height-ruler',
+			cpos: A2($author$project$Pos$addX, vm.size.width, line.p1),
+			hash1: hash1,
+			line: line,
+			txt: {pos: txtPos, size: txtSize, val: txt}
+		});
+};
+var $author$project$Block$Internal$Component$Multiplicand$view = F2(
+	function (attrs, vm) {
+		var viewFn = $elm$core$Maybe$Just(
+			function (el) {
+				return A2(
+					$elm$svg$Svg$g,
+					A2(
+						$elm$core$List$cons,
+						$elm$svg$Svg$Attributes$class('multiplicand'),
+						attrs),
+					_List_fromArray(
+						[el]));
+			}(
+				$author$project$Block$Internal$Component$Multiplicand$viewWidthRuler(vm)));
+		var _v0 = vm.block.state;
+		switch (_v0.$) {
+			case 'Dragging':
+				return viewFn;
+			case 'Selected':
+				return viewFn;
+			default:
+				return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Block$Internal$Component$Multiplier$emptyMidSection = function (vm) {
+	return {_class: '', isMid: true, offset: 0, pos: vm.pos, quantity: 0, size: $author$project$Size$none, sizeInUnits: $author$project$Size$noneInt};
+};
+var $author$project$Block$Internal$Section$midSection = function (sections) {
+	return $elm$core$List$head(
+		A2(
+			$elm$core$List$filter,
+			function (s) {
+				return s.isMid;
+			},
+			sections));
+};
+var $author$project$Block$Internal$Component$Multiplier$viewRuler = function (input) {
+	var es = _List_fromArray(
+		[
+			A2(
+			$author$project$SvgEx$line,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$strokeDasharray('6'),
+					$elm$svg$Svg$Attributes$opacity('30%')
+				]),
+			input.line),
+			A2($author$project$SvgEx$line, _List_Nil, input.hash1),
+			A2(
+			$author$project$CircleDragControl$view2,
+			_List_Nil,
+			{active: false, pos: input.cpos, txt: input.txt.val, unit: 33})
+		]);
+	return A2(
+		$elm$svg$Svg$g,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$class(input._class)
+			]),
+		es);
+};
+var $author$project$Block$Internal$Component$Multiplier$viewHeightRuler = F2(
+	function (vm, mid) {
+		var txtSize = $author$project$Size$forSquare((3 * vm.grid.unit) / 4);
+		var txt = $elm$core$String$fromInt(
+			$elm$core$Basics$round(mid.size.height / vm.grid.unit));
+		var line = A2(
+			$author$project$Line$addY,
+			vm.grid.size.height - vm.pos.y,
+			A2($author$project$Pos$addX, -((3 * vm.grid.unit) / 4), mid.pos));
+		var txtPos = A2(
+			$author$project$Pos$addY,
+			-(txtSize.height / 2),
+			A2(
+				$author$project$Pos$addY,
+				-(mid.size.height / 2),
+				A2($author$project$Pos$addX, -(txtSize.width / 2), line.p2)));
+		var _v0 = _Utils_Tuple2(vm.grid.unit / 2, vm.grid.unit / 4);
+		var halfUnit = _v0.a;
+		var quarterUnit = _v0.b;
+		var hash2 = A2(
+			$author$project$Line$Line,
+			A2($author$project$Pos$addX, halfUnit, line.p2),
+			A2($author$project$Pos$addX, -halfUnit, line.p2));
+		var hash1 = A2(
+			$author$project$Line$Line,
+			A2($author$project$Pos$addX, quarterUnit, line.p1),
+			A2($author$project$Pos$addX, -quarterUnit, line.p1));
+		return $author$project$Block$Internal$Component$Multiplier$viewRuler(
+			{
+				_class: 'height-ruler',
+				cpos: A2($author$project$Pos$addY, mid.size.height, line.p1),
+				hash1: hash1,
+				line: line,
+				txt: {pos: txtPos, size: txtSize, val: txt}
+			});
+	});
+var $author$project$Block$Internal$Component$Multiplier$view = F2(
+	function (attrs, vm) {
+		var viewFn = $elm$core$Maybe$Just(
+			function (el) {
+				return A2(
+					$elm$svg$Svg$g,
+					A2(
+						$elm$core$List$cons,
+						$elm$svg$Svg$Attributes$class('multiple'),
+						attrs),
+					_List_fromArray(
+						[el]));
+			}(
+				A2(
+					$author$project$Block$Internal$Component$Multiplier$viewHeightRuler,
+					vm,
+					A2(
+						$elm$core$Maybe$withDefault,
+						$author$project$Block$Internal$Component$Multiplier$emptyMidSection(vm),
+						$author$project$Block$Internal$Section$midSection(vm.sections)))));
+		var _v0 = vm.block.state;
+		switch (_v0.$) {
+			case 'Dragging':
+				return viewFn;
+			case 'Selected':
+				return viewFn;
+			default:
+				return $elm$core$Maybe$Nothing;
+		}
+	});
 var $author$project$Pos$updateY = F2(
 	function (yValue, pos) {
 		return {x: pos.x, y: yValue};
@@ -12848,58 +13149,12 @@ var $author$project$SvgEx$verticalGuideline = F3(
 					$author$project$Pos$addY(box.size.height),
 					A2($author$project$Pos$updateY, box.pos.y, pos))));
 	});
-var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
-var $author$project$CircleDragControl$controlRadius = function (_v0) {
-	var active = _v0.active;
-	var unit = _v0.unit;
-	return active ? (unit / 1.2) : (unit / 3);
-};
-var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
-var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
-var $author$project$CircleDragControl$gripRadius = function (_v0) {
-	var active = _v0.active;
-	var unit = _v0.unit;
-	return active ? (unit / 1.2) : (unit / 1.5);
-};
-var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
 var $author$project$CircleDragControl$view = F2(
 	function (attrs, input) {
 		return A2(
-			$elm$svg$Svg$g,
-			A2(
-				$elm$core$List$cons,
-				$elm$svg$Svg$Attributes$class('drag-control'),
-				attrs),
-			_List_fromArray(
-				[
-					A2(
-					$elm$svg$Svg$circle,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$cx(
-							$author$project$Pos$toXString(input.pos)),
-							$elm$svg$Svg$Attributes$cy(
-							$author$project$Pos$toYString(input.pos)),
-							$elm$svg$Svg$Attributes$r(
-							$elm$core$String$fromFloat(
-								$author$project$CircleDragControl$controlRadius(input)))
-						]),
-					_List_Nil),
-					A2(
-					$elm$svg$Svg$circle,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$class('grip'),
-							$elm$svg$Svg$Attributes$cx(
-							$author$project$Pos$toXString(input.pos)),
-							$elm$svg$Svg$Attributes$cy(
-							$author$project$Pos$toYString(input.pos)),
-							$elm$svg$Svg$Attributes$r(
-							$elm$core$String$fromFloat(
-								$author$project$CircleDragControl$gripRadius(input)))
-						]),
-					_List_Nil)
-				]));
+			$author$project$CircleDragControl$view2,
+			attrs,
+			{active: input.active, pos: input.pos, txt: '', unit: input.unit});
 	});
 var $author$project$Block$Internal$Component$Offset$viewControl = F3(
 	function (attrs, vm, _v0) {
@@ -12940,41 +13195,18 @@ var $author$project$Block$Internal$Component$Offset$viewControl = F3(
 var $author$project$Block$Internal$Component$Offset$view = F2(
 	function (attrs, vm) {
 		var _v0 = vm.block.state;
-		_v0$2:
-		while (true) {
-			switch (_v0.$) {
-				case 'Dragging':
-					if (_v0.b.$ === 'DragOffset') {
-						var root = _v0.b.a.root;
-						var control = _v0.b.a.control;
-						return $elm$core$Maybe$Just(
-							A3(
-								$author$project$Block$Internal$Component$Offset$viewControl,
-								attrs,
-								vm,
-								{active: true, controlPos: control.current, rootPos: root.current}));
-					} else {
-						break _v0$2;
-					}
-				case 'Selected':
-					return A2(
-						$elm$core$Maybe$map,
-						A2($author$project$Block$Internal$Component$Offset$viewControl, attrs, vm),
-						A2(
-							$elm$core$Maybe$map,
-							function (pos) {
-								return {
-									active: false,
-									controlPos: A2($author$project$Block$Internal$Component$Offset$circlePosition, vm, pos),
-									rootPos: pos
-								};
-							},
-							$author$project$Block$Internal$Component$Offset$rootPosition(vm)));
-				default:
-					break _v0$2;
-			}
+		if ((_v0.$ === 'Dragging') && (_v0.b.$ === 'DragOffset')) {
+			var root = _v0.b.a.root;
+			var control = _v0.b.a.control;
+			return $elm$core$Maybe$Just(
+				A3(
+					$author$project$Block$Internal$Component$Offset$viewControl,
+					attrs,
+					vm,
+					{active: true, controlPos: control.current, rootPos: root.current}));
+		} else {
+			return $elm$core$Maybe$Nothing;
 		}
-		return $elm$core$Maybe$Nothing;
 	});
 var $author$project$Block$Internal$Component$Outline$viewOutline = F2(
 	function (attrs, vm) {
@@ -13045,9 +13277,9 @@ var $author$project$Block$Internal$Component$Quantity$viewControl = F3(
 					A2($author$project$SvgEx$rect, _List_Nil, rect),
 					A2($author$project$SvgEx$line, _List_Nil, vline),
 					A2(
-					$author$project$CircleDragControl$view,
+					$author$project$CircleDragControl$view2,
 					attrs,
-					{active: active, pos: cpos, unit: vm.grid.unit})
+					{active: active, pos: cpos, txt: '±', unit: vm.grid.unit})
 				]));
 	});
 var $author$project$Block$Internal$Component$Quantity$view = F2(
@@ -13084,261 +13316,6 @@ var $author$project$Block$Internal$Component$Quantity$view = F2(
 		}
 		return $elm$core$Maybe$Nothing;
 	});
-var $author$project$Block$Internal$Section$midSection = function (sections) {
-	return $elm$core$List$head(
-		A2(
-			$elm$core$List$filter,
-			function (s) {
-				return s.isMid;
-			},
-			sections));
-};
-var $author$project$Size$forSquare = function (value) {
-	return A2($author$project$Size$Size, value, value);
-};
-var $author$project$SvgEx$textWithBackground = F3(
-	function (attrs, box, text) {
-		return A2(
-			$elm$svg$Svg$g,
-			attrs,
-			_List_fromArray(
-				[
-					A2($author$project$SvgEx$rect, _List_Nil, box),
-					A2(
-					$elm$svg$Svg$g,
-					A2(
-						$elm$core$List$cons,
-						$author$project$SvgEx$translateToPos(box.pos),
-						attrs),
-					_List_fromArray(
-						[
-							A2(
-							$elm$svg$Svg$svg,
-							_List_fromArray(
-								[
-									$elm$svg$Svg$Attributes$width(
-									$author$project$Size$toWidthString(box.size)),
-									$elm$svg$Svg$Attributes$height(
-									$author$project$Size$toHeightString(box.size))
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$svg$Svg$text_,
-									_List_fromArray(
-										[
-											$elm$svg$Svg$Attributes$x('50%'),
-											$elm$svg$Svg$Attributes$y('50%'),
-											$elm$svg$Svg$Attributes$dominantBaseline('middle'),
-											$elm$svg$Svg$Attributes$textAnchor('middle')
-										]),
-									_List_fromArray(
-										[
-											$elm$svg$Svg$text(text)
-										]))
-								]))
-						]))
-				]));
-	});
-var $author$project$Block$Internal$Component$Ruler$viewRuler = function (input) {
-	return A2(
-		$elm$svg$Svg$g,
-		_List_fromArray(
-			[
-				$elm$svg$Svg$Attributes$class(input._class)
-			]),
-		_List_fromArray(
-			[
-				A2($author$project$SvgEx$line, _List_Nil, input.line),
-				A2($author$project$SvgEx$line, _List_Nil, input.hash1),
-				A2($author$project$SvgEx$line, _List_Nil, input.hash2),
-				A3($author$project$SvgEx$textWithBackground, _List_Nil, input.txt, input.txt.val)
-			]));
-};
-var $author$project$Block$Internal$Component$Ruler$viewHeightRuler = F2(
-	function (vm, mid) {
-		var txt = $elm$core$String$fromInt(
-			$elm$core$Basics$round(mid.size.height / vm.grid.unit));
-		var _v0 = _Utils_Tuple2(vm.grid.unit / 2, vm.grid.unit / 4);
-		var halfUnit = _v0.a;
-		var quarterUnit = _v0.b;
-		var line = A2(
-			$author$project$Line$addY,
-			mid.size.height,
-			A2($author$project$Pos$addX, -halfUnit, mid.pos));
-		var txtSize = $author$project$Size$forSquare(halfUnit);
-		var txtPos = A2(
-			$author$project$Pos$addY,
-			-(txtSize.height / 2),
-			A2(
-				$author$project$Pos$addX,
-				-(txtSize.width / 2),
-				A2($author$project$Pos$addY, mid.size.height / 2, line.p1)));
-		var hash1 = A2(
-			$author$project$Line$Line,
-			A2($author$project$Pos$addX, quarterUnit, line.p1),
-			A2($author$project$Pos$addX, -quarterUnit, line.p1));
-		var hash2 = A2(
-			$author$project$Line$Line,
-			A2($author$project$Pos$addX, quarterUnit, line.p2),
-			A2($author$project$Pos$addX, -quarterUnit, line.p2));
-		return $author$project$Block$Internal$Component$Ruler$viewRuler(
-			{
-				_class: 'height-ruler',
-				hash1: hash1,
-				hash2: hash2,
-				line: line,
-				txt: {pos: txtPos, size: txtSize, val: txt}
-			});
-	});
-var $author$project$Block$Internal$Component$Ruler$viewWidthRuler = function (vm) {
-	var txt = $elm$core$String$fromInt(
-		$elm$core$Basics$round(vm.size.width / vm.grid.unit));
-	var _v0 = _Utils_Tuple2(vm.grid.unit / 2, vm.grid.unit / 4);
-	var halfUnit = _v0.a;
-	var quarterUnit = _v0.b;
-	var line = A2(
-		$author$project$Line$addX,
-		vm.size.width,
-		A2($author$project$Pos$addY, -halfUnit, vm.pos));
-	var txtSize = $author$project$Size$forSquare(halfUnit);
-	var txtPos = A2(
-		$author$project$Pos$addY,
-		-(txtSize.height / 2),
-		A2(
-			$author$project$Pos$addX,
-			-(txtSize.width / 2),
-			A2($author$project$Pos$addX, vm.size.width / 2, line.p1)));
-	var hash1 = A2(
-		$author$project$Line$Line,
-		A2($author$project$Pos$addY, quarterUnit, line.p1),
-		A2($author$project$Pos$addY, -quarterUnit, line.p1));
-	var hash2 = A2(
-		$author$project$Line$Line,
-		A2($author$project$Pos$addY, quarterUnit, line.p2),
-		A2($author$project$Pos$addY, -quarterUnit, line.p2));
-	return $author$project$Block$Internal$Component$Ruler$viewRuler(
-		{
-			_class: 'height-ruler',
-			hash1: hash1,
-			hash2: hash2,
-			line: line,
-			txt: {pos: txtPos, size: txtSize, val: txt}
-		});
-};
-var $author$project$Block$Internal$Component$Ruler$viewRulers = F2(
-	function (attrs, vm) {
-		var widthRuler = $author$project$Block$Internal$Component$Ruler$viewWidthRuler(vm);
-		var heightRuler = $elm_community$maybe_extra$Maybe$Extra$toList(
-			A2(
-				$elm$core$Maybe$map,
-				$author$project$Block$Internal$Component$Ruler$viewHeightRuler(vm),
-				$author$project$Block$Internal$Section$midSection(vm.sections)));
-		return A2(
-			$elm$svg$Svg$g,
-			A2(
-				$elm$core$List$cons,
-				$elm$svg$Svg$Attributes$class('ruler'),
-				attrs),
-			A2($elm$core$List$cons, widthRuler, heightRuler));
-	});
-var $author$project$Block$Internal$Component$Ruler$view = F2(
-	function (attrs, vm) {
-		var _v0 = vm.block.state;
-		_v0$2:
-		while (true) {
-			if (_v0.$ === 'Dragging') {
-				switch (_v0.b.$) {
-					case 'DragQuantity':
-						return $elm$core$Maybe$Just(
-							A2($author$project$Block$Internal$Component$Ruler$viewRulers, attrs, vm));
-					case 'DragWidth':
-						return $elm$core$Maybe$Just(
-							A2($author$project$Block$Internal$Component$Ruler$viewRulers, attrs, vm));
-					default:
-						break _v0$2;
-				}
-			} else {
-				break _v0$2;
-			}
-		}
-		return $elm$core$Maybe$Nothing;
-	});
-var $author$project$Block$Internal$Component$Width$viewControl = F3(
-	function (attrs, vm, _v0) {
-		var active = _v0.active;
-		var rootPos = _v0.rootPos;
-		var controlPos = _v0.controlPos;
-		var vline = A2($author$project$Line$addY, vm.size.height, rootPos);
-		var hline = A2(
-			$author$project$Pair$uncurry,
-			$author$project$Line$Line,
-			A3(
-				$author$project$Pair$fork,
-				$elm$core$Basics$identity,
-				$author$project$Pos$updateX(controlPos.x),
-				A2($author$project$Pos$addY, vm.size.height / 2, vline.p1)));
-		var guidelines = active ? _List_fromArray(
-			[
-				A3($author$project$SvgEx$verticalGuideline, _List_Nil, vm.grid, controlPos)
-			]) : _List_Nil;
-		return A2(
-			$elm$svg$Svg$g,
-			A2(
-				$elm$core$List$cons,
-				$elm$svg$Svg$Attributes$class('width-control'),
-				attrs),
-			_Utils_ap(
-				guidelines,
-				_List_fromArray(
-					[
-						A2($author$project$SvgEx$line, _List_Nil, vline),
-						A2($author$project$SvgEx$line, _List_Nil, hline),
-						A2(
-						$author$project$CircleDragControl$view,
-						attrs,
-						{active: active, pos: controlPos, unit: vm.grid.unit})
-					])));
-	});
-var $author$project$Block$Internal$Component$Width$view = F2(
-	function (attrs, vm) {
-		var _v0 = vm.block.state;
-		_v0$2:
-		while (true) {
-			switch (_v0.$) {
-				case 'Dragging':
-					if (_v0.b.$ === 'DragWidth') {
-						var root = _v0.b.a.root;
-						var control = _v0.b.a.control;
-						return $elm$core$Maybe$Just(
-							A3(
-								$author$project$Block$Internal$Component$Width$viewControl,
-								attrs,
-								vm,
-								{active: true, controlPos: control.current, rootPos: root.current}));
-					} else {
-						break _v0$2;
-					}
-				case 'Selected':
-					return $elm$core$Maybe$Just(
-						A3(
-							$author$project$Block$Internal$Component$Width$viewControl,
-							attrs,
-							vm,
-							function (pos) {
-								return {
-									active: false,
-									controlPos: A2($author$project$Block$Internal$Component$Width$circlePosition, vm, pos),
-									rootPos: pos
-								};
-							}(
-								$author$project$Block$Internal$Component$Width$rootPosition(vm))));
-				default:
-					break _v0$2;
-			}
-		}
-		return $elm$core$Maybe$Nothing;
-	});
 var $author$project$Block$Internal$View$view = F3(
 	function (context, gd, bd) {
 		var vm = A2($author$project$Block$Internal$ViewModel$forBlock, gd, bd);
@@ -13367,13 +13344,12 @@ var $author$project$Block$Internal$View$view = F3(
 				_List_fromArray(
 					[
 						$author$project$Block$Internal$Component$Outline$view(_List_Nil),
-						$author$project$Block$Internal$Component$Ruler$view(_List_Nil),
+						$author$project$Block$Internal$Component$Multiplier$view(_List_Nil),
+						$author$project$Block$Internal$Component$Multiplicand$view(_List_Nil),
 						$author$project$Block$Internal$Component$Offset$view(
 						attrsFn($author$project$Block$Internal$Component$Offset)),
 						$author$project$Block$Internal$Component$Quantity$view(
-						attrsFn($author$project$Block$Internal$Component$Quantity)),
-						$author$project$Block$Internal$Component$Width$view(
-						attrsFn($author$project$Block$Internal$Component$Width))
+						attrsFn($author$project$Block$Internal$Component$Quantity))
 					])));
 		return A2(
 			$elm$svg$Svg$g,
@@ -13447,7 +13423,7 @@ var $author$project$Block$Internal$Section$titleText = function (section) {
 };
 var $author$project$Block$Title$getTitleHtml = function (vm) {
 	var _v0 = vm.block.state;
-	if ((_v0.$ === 'Dragging') && (_v0.b.$ === 'DragQuantity')) {
+	if ((_v0.$ === 'Dragging') && (_v0.b.$ === 'DragWidth')) {
 		var bd = _v0.a.bd;
 		var _v1 = _Utils_Tuple2(vm.block.quantity, bd.quantity);
 		var newQuantity = _v1.a;
