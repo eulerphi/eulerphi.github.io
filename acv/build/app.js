@@ -4237,7 +4237,7 @@ function _Browser_getViewport()
 			bN: _Browser_window.pageXOffset,
 			bO: _Browser_window.pageYOffset,
 			bL: _Browser_doc.documentElement.clientWidth,
-			ao: _Browser_doc.documentElement.clientHeight
+			ap: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4248,7 +4248,7 @@ function _Browser_getScene()
 	var elem = _Browser_doc.documentElement;
 	return {
 		bL: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ao: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ap: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4273,13 +4273,13 @@ function _Browser_getViewportOf(id)
 		return {
 			bb: {
 				bL: node.scrollWidth,
-				ao: node.scrollHeight
+				ap: node.scrollHeight
 			},
 			bK: {
 				bN: node.scrollLeft,
 				bO: node.scrollTop,
 				bL: node.clientWidth,
-				ao: node.clientHeight
+				ap: node.clientHeight
 			}
 		};
 	});
@@ -4314,13 +4314,13 @@ function _Browser_getElement(id)
 				bN: x,
 				bO: y,
 				bL: _Browser_doc.documentElement.clientWidth,
-				ao: _Browser_doc.documentElement.clientHeight
+				ap: _Browser_doc.documentElement.clientHeight
 			},
 			br: {
 				bN: x + rect.left,
 				bO: y + rect.top,
 				bL: rect.width,
-				ao: rect.height
+				ap: rect.height
 			}
 		};
 	});
@@ -5181,7 +5181,7 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Model$state = function (m) {
-	return m.o.ah;
+	return m.o.ai;
 };
 var $author$project$Model$step = function (m) {
 	return $author$project$Model$state(m).be;
@@ -5189,8 +5189,8 @@ var $author$project$Model$step = function (m) {
 var $author$project$Model$fromModel2 = function (m) {
 	return {
 		aE: $author$project$Model$state(m).aE,
-		bl: m.ag,
-		ap: m.ap,
+		bl: m.ah,
+		ag: m.ag,
 		aV: $author$project$Model$state(m).aV,
 		ar: m.ar,
 		aw: m.aw,
@@ -5198,7 +5198,7 @@ var $author$project$Model$fromModel2 = function (m) {
 		ab: m.ab,
 		be: $elm$core$Maybe$Just(
 			$author$project$Model$step(m)),
-		ak: m.ak,
+		al: m.al,
 		bi: m.bi
 	};
 };
@@ -5243,7 +5243,7 @@ var $author$project$Types$ViewCtxMsg = function (a) {
 };
 var $elm_community$undo_redo$UndoList$UndoList = F3(
 	function (past, present, future) {
-		return {h: future, f: past, ah: present};
+		return {h: future, f: past, ai: present};
 	});
 var $elm_community$undo_redo$UndoList$fresh = function (state) {
 	return A3($elm_community$undo_redo$UndoList$UndoList, _List_Nil, state, _List_Nil);
@@ -5337,7 +5337,7 @@ var $elm$core$List$filter = F2(
 	});
 var $romstad$elm_chess$Internal$Board$ReadFenState = F3(
 	function (board, fileIndex, rankIndex) {
-		return {bl: board, E: fileIndex, ai: rankIndex};
+		return {bl: board, E: fileIndex, aj: rankIndex};
 	});
 var $romstad$elm_chess$Internal$PieceColor$empty = 2;
 var $romstad$elm_chess$Internal$PieceType$none = 0;
@@ -5515,7 +5515,7 @@ var $romstad$elm_chess$Internal$Board$readFenPiece = F2(
 		return A3(
 			$romstad$elm_chess$Internal$Board$putPiece,
 			piece,
-			$romstad$elm_chess$Internal$Square$expand(state.E + (8 * state.ai)),
+			$romstad$elm_chess$Internal$Square$expand(state.E + (8 * state.aj)),
 			state.bl);
 	});
 var $romstad$elm_chess$Internal$Board$processFenChar = F2(
@@ -5536,7 +5536,7 @@ var $romstad$elm_chess$Internal$Board$processFenChar = F2(
 					E: (state.E + $elm$core$Char$toCode(_char)) - $elm$core$Char$toCode('0')
 				}) : ((_char === '/') ? _Utils_update(
 				state,
-				{E: 0, ai: state.ai - 1}) : state);
+				{E: 0, aj: state.aj - 1}) : state);
 		}
 	});
 var $elm$core$String$foldr = _String_foldr;
@@ -7050,11 +7050,11 @@ var $author$project$State$fromStep = function (step) {
 };
 var $author$project$ViewContext$ViewContext = F3(
 	function (devicePixelRatio, envelope, size) {
-		return {S: devicePixelRatio, bs: envelope, aj: size};
+		return {S: devicePixelRatio, bs: envelope, ak: size};
 	});
 var $author$project$Size$Size = F2(
 	function (width, height) {
-		return {ao: height, bL: width};
+		return {ap: height, bL: width};
 	});
 var $author$project$Size$none = A2($author$project$Size$Size, 0, 0);
 var $author$project$ViewContext$init = function (input) {
@@ -7068,7 +7068,7 @@ var $romstad$elm_chess$Internal$Position$initial = A2(
 	$romstad$elm_chess$Internal$Position$fromFen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'));
 var $romstad$elm_chess$Position$initial = $romstad$elm_chess$Internal$Position$initial;
 var $author$project$Step$initial = {z: $elm$core$Maybe$Nothing, Y: 0, a$: $romstad$elm_chess$Position$initial, _: $elm$core$Maybe$Nothing};
-var $author$project$Board$none = {al: 0, am: 0, an: 0, au: 0, av: 0, az: 0, aC: ''};
+var $author$project$Board$none = {am: 0, an: 0, ao: 0, au: 0, av: 0, az: 0, aC: ''};
 var $author$project$Model$fromInput = function (input) {
 	var steps = $author$project$Step$fromInput(input);
 	var s = A2(
@@ -7077,15 +7077,15 @@ var $author$project$Model$fromInput = function (input) {
 		A2($elm$core$Array$get, 0, steps));
 	var playerColor = $romstad$elm_chess$Position$sideToMove(s.a$);
 	return {
-		ap: 0,
-		ag: $author$project$Board$none,
+		ag: 0,
+		ah: $author$project$Board$none,
 		ar: 1,
 		aw: playerColor,
 		aa: input.aa,
 		ab: $elm$core$Maybe$Nothing,
 		o: $elm_community$undo_redo$UndoList$fresh(
 			$author$project$State$fromStep(s)),
-		ak: steps,
+		al: steps,
 		bi: $author$project$ViewContext$init(
 			{S: input.S, bs: $author$project$Types$ViewCtxMsg})
 	};
@@ -7574,7 +7574,7 @@ var $author$project$Model$updateSelection = F3(
 var $elm_community$undo_redo$UndoList$new = F2(
 	function (event, _v0) {
 		var past = _v0.f;
-		var present = _v0.ah;
+		var present = _v0.ai;
 		return A3(
 			$elm_community$undo_redo$UndoList$UndoList,
 			A2($elm$core$List$cons, present, past),
@@ -7583,7 +7583,7 @@ var $elm_community$undo_redo$UndoList$new = F2(
 	});
 var $author$project$Model$updateState = F2(
 	function (m, state_) {
-		return (!_Utils_eq(m.o.ah, state_)) ? _Utils_update(
+		return (!_Utils_eq(m.o.ai, state_)) ? _Utils_update(
 			m,
 			{
 				o: A2($elm_community$undo_redo$UndoList$new, state_, m.o)
@@ -8141,7 +8141,7 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm_community$undo_redo$UndoList$redo = function (_v0) {
 	var past = _v0.f;
-	var present = _v0.ah;
+	var present = _v0.ai;
 	var future = _v0.h;
 	if (!future.b) {
 		return A3($elm_community$undo_redo$UndoList$UndoList, past, present, future);
@@ -8164,7 +8164,7 @@ var $author$project$Model$redo = function (m) {
 };
 var $elm_community$undo_redo$UndoList$undo = function (_v0) {
 	var past = _v0.f;
-	var present = _v0.ah;
+	var present = _v0.ai;
 	var future = _v0.h;
 	if (!past.b) {
 		return A3($elm_community$undo_redo$UndoList$UndoList, past, present, future);
@@ -8192,7 +8192,7 @@ var $author$project$ViewContext$updateOnSizeChanged = F2(
 		return _Utils_update(
 			vc,
 			{
-				aj: A2($author$project$Size$Size, viewport.bL - $author$project$ViewContext$magic, viewport.ao - $author$project$ViewContext$magic)
+				ak: A2($author$project$Size$Size, viewport.bL - $author$project$ViewContext$magic, viewport.ap - $author$project$ViewContext$magic)
 			});
 	});
 var $author$project$ViewContext$update = F2(
@@ -8213,37 +8213,42 @@ var $author$project$ViewContext$update = F2(
 	});
 var $author$project$Model$updateIndex = F2(
 	function (m, idx_) {
-		var _v0 = A2($elm$core$Array$get, idx_, m.ak);
+		var _v0 = A2($elm$core$Array$get, idx_, m.al);
 		if (_v0.$ === 1) {
 			return m;
 		} else {
 			var step_ = _v0.a;
-			return A2(
-				$author$project$Model$updateState,
-				m,
-				A2($author$project$State$updateStep, m.o.ah, step_));
+			return function (m_) {
+				return _Utils_update(
+					m_,
+					{ag: idx_});
+			}(
+				A2(
+					$author$project$Model$updateState,
+					m,
+					A2($author$project$State$updateStep, m.o.ai, step_)));
 		}
 	});
 var $author$project$Board$fromViewContext = F2(
 	function (_v0, vc) {
 		var minMarginWidths = 100.0;
-		var headerHeight = 0.1 * vc.aj.ao;
-		var footerHeight = 0.2 * vc.aj.ao;
-		var contentWidth = vc.aj.bL - minMarginWidths;
-		var boardSize = A2($elm$core$Basics$min, (vc.aj.ao - headerHeight) - footerHeight, 0.6 * contentWidth);
+		var headerHeight = 0.1 * vc.ak.ap;
+		var footerHeight = 0.2 * vc.ak.ap;
+		var contentWidth = vc.ak.bL - minMarginWidths;
+		var boardSize = A2($elm$core$Basics$min, (vc.ak.ap - headerHeight) - footerHeight, 0.6 * contentWidth);
 		var panelHeight = boardSize;
 		var panelWidth = A2($elm$core$Basics$min, 0.4 * contentWidth, boardSize / 2);
 		var squareSize = boardSize / 8;
-		return {al: boardSize, am: 0.8 * squareSize, an: headerHeight, au: panelHeight, av: panelWidth, az: squareSize, aC: ''};
+		return {am: boardSize, an: 0.8 * squareSize, ao: headerHeight, au: panelHeight, av: panelWidth, az: squareSize, aC: ''};
 	});
 var $author$project$Model$updateViewContext = F2(
 	function (m, vc_) {
 		return function (b_) {
 			return _Utils_update(
 				m,
-				{ag: b_, bi: vc_});
+				{ah: b_, bi: vc_});
 		}(
-			A2($author$project$Board$fromViewContext, m.ag, vc_));
+			A2($author$project$Board$fromViewContext, m.ah, vc_));
 	});
 var $author$project$Update$update = F2(
 	function (msg, m) {
@@ -8260,7 +8265,7 @@ var $author$project$Update$update = F2(
 					$elm$core$Platform$Cmd$none);
 			case 1:
 				return _Utils_Tuple2(
-					A2($author$project$Model$updateIndex, m, m.ap),
+					A2($author$project$Model$updateIndex, m, m.ag),
 					$elm$core$Platform$Cmd$none);
 			case 6:
 				var sq = msg.a;
@@ -8288,8 +8293,8 @@ var $author$project$Update$update = F2(
 						m,
 						A2(
 							$elm$core$Basics$min,
-							m.ap + 1,
-							$elm$core$Array$length(m.ak) - 1)));
+							m.ag + 1,
+							$elm$core$Array$length(m.al) - 1)));
 			case 5:
 				return function (m_) {
 					return _Utils_Tuple2(m_, $elm$core$Platform$Cmd$none);
@@ -8297,7 +8302,7 @@ var $author$project$Update$update = F2(
 					A2(
 						$author$project$Model$updateIndex,
 						m,
-						A2($elm$core$Basics$max, 0, m.ap - 1)));
+						A2($elm$core$Basics$max, 0, m.ag - 1)));
 			case 7:
 				var mode = msg.a;
 				return _Utils_Tuple2(
@@ -8997,11 +9002,11 @@ var $author$project$View$board_ = function (m) {
 					A2(
 					$elm$html$Html$Attributes$style,
 					'width',
-					$author$project$CssEx$px(m.bl.al)),
+					$author$project$CssEx$px(m.bl.am)),
 					A2(
 					$elm$html$Html$Attributes$style,
 					'height',
-					$author$project$CssEx$px(m.bl.al)),
+					$author$project$CssEx$px(m.bl.am)),
 					A2(
 					$elm$html$Html$Attributes$style,
 					'margin-left',
@@ -9035,7 +9040,7 @@ var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$tr = _VirtualDom_node('tr');
 var $author$project$View$logStep = F3(
 	function (m, idx, step) {
-		var selectedCss = _Utils_eq(idx, m.ap) ? _List_fromArray(
+		var selectedCss = _Utils_eq(idx, m.ag) ? _List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$style, 'width', '0px'),
 				A2($elm$html$Html$Attributes$style, 'height', '0px'),
@@ -9048,7 +9053,7 @@ var $author$project$View$logStep = F3(
 			_Utils_eq(
 				$romstad$elm_chess$Position$sideToMove(step.a$),
 				$romstad$elm_chess$PieceColor$white) ? '.  ' : '...');
-		var _v0 = (_Utils_cmp(idx, m.ap) < 0) ? _Utils_Tuple2(
+		var _v0 = (_Utils_cmp(idx, m.ag) < 0) ? _Utils_Tuple2(
 			num,
 			A2(
 				$elm$core$Maybe$withDefault,
@@ -9060,7 +9065,7 @@ var $author$project$View$logStep = F3(
 					},
 					step.z))) : (_Utils_eq(
 			idx,
-			$elm$core$Array$length(m.ak) - 1) ? _Utils_Tuple2('', '✅') : _Utils_Tuple2(num, '???'));
+			$elm$core$Array$length(m.al) - 1) ? _Utils_Tuple2('', '✅') : _Utils_Tuple2(num, '???'));
 		var num_ = _v0.a;
 		var text = _v0.b;
 		return A2(
@@ -9145,7 +9150,7 @@ var $author$project$View$log = function (m) {
 					A2(
 						$elm$core$List$indexedMap,
 						$author$project$View$logStep(m),
-						$elm$core$Array$toList(m.ak))))));
+						$elm$core$Array$toList(m.al))))));
 };
 var $author$project$View$center = function (m) {
 	return A2(
@@ -9155,7 +9160,7 @@ var $author$project$View$center = function (m) {
 				A2(
 				$elm$html$Html$Attributes$style,
 				'height',
-				$author$project$CssEx$px(m.bi.aj.ao)),
+				$author$project$CssEx$px(m.bi.ak.ap)),
 				A2($elm$html$Html$Attributes$style, 'width', '100%'),
 				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 				A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
@@ -9191,7 +9196,7 @@ var $author$project$View$sidebar = F3(
 						A2(
 						$elm$html$Html$Attributes$style,
 						'height',
-						$author$project$CssEx$px(m.bi.aj.ao)),
+						$author$project$CssEx$px(m.bi.ak.ap)),
 						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 						A2($elm$html$Html$Attributes$style, 'align-items', 'center')
 					])));
@@ -9256,8 +9261,8 @@ var $author$project$View$leftBar = function (m) {
 			_List_Nil,
 			_List_fromArray(
 				[
-					A4($author$project$View$sidebarButton, m.bl.am, $author$project$Types$PrevMove, $author$project$Images$prevUri, false),
-					A4($author$project$View$sidebarButton, m.bl.am, $author$project$Types$NextMove, $author$project$Images$nextUri, false)
+					A4($author$project$View$sidebarButton, m.bl.an, $author$project$Types$PrevMove, $author$project$Images$prevUri, false),
+					A4($author$project$View$sidebarButton, m.bl.an, $author$project$Types$NextMove, $author$project$Images$nextUri, false)
 				])));
 };
 var $author$project$Types$Arrowing = 0;
@@ -9294,7 +9299,7 @@ var $author$project$View$rightBar = function (m) {
 				A2($elm$html$Html$Attributes$style, 'margin', '20px 0px')
 			]),
 		_List_Nil);
-	var btnFn = $author$project$View$sidebarButton(m.bl.am);
+	var btnFn = $author$project$View$sidebarButton(m.bl.an);
 	var top = _List_fromArray(
 		[
 			A3(btnFn, $author$project$Types$Undo, $author$project$Images$undoUri, false),
