@@ -8853,86 +8853,27 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
-var $elm$json$Json$Decode$map3 = _Json_map3;
-var $debois$elm_dom$DOM$offsetHeight = A2($elm$json$Json$Decode$field, 'offsetHeight', $elm$json$Json$Decode$float);
-var $debois$elm_dom$DOM$offsetWidth = A2($elm$json$Json$Decode$field, 'offsetWidth', $elm$json$Json$Decode$float);
-var $elm$json$Json$Decode$andThen = _Json_andThen;
-var $elm$json$Json$Decode$map4 = _Json_map4;
-var $debois$elm_dom$DOM$offsetLeft = A2($elm$json$Json$Decode$field, 'offsetLeft', $elm$json$Json$Decode$float);
-var $elm$json$Json$Decode$null = _Json_decodeNull;
-var $elm$json$Json$Decode$oneOf = _Json_oneOf;
-var $debois$elm_dom$DOM$offsetParent = F2(
-	function (x, decoder) {
-		return $elm$json$Json$Decode$oneOf(
-			_List_fromArray(
-				[
-					A2(
-					$elm$json$Json$Decode$field,
-					'offsetParent',
-					$elm$json$Json$Decode$null(x)),
-					A2($elm$json$Json$Decode$field, 'offsetParent', decoder)
-				]));
-	});
-var $debois$elm_dom$DOM$offsetTop = A2($elm$json$Json$Decode$field, 'offsetTop', $elm$json$Json$Decode$float);
-var $debois$elm_dom$DOM$scrollLeft = A2($elm$json$Json$Decode$field, 'scrollLeft', $elm$json$Json$Decode$float);
-var $debois$elm_dom$DOM$scrollTop = A2($elm$json$Json$Decode$field, 'scrollTop', $elm$json$Json$Decode$float);
-var $debois$elm_dom$DOM$position = F2(
-	function (x, y) {
+var $author$project$MouseEvents$alwaysPreventDefault = function (msg) {
+	return _Utils_Tuple2(msg, true);
+};
+var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
+	return {$: 2, a: a};
+};
+var $elm$html$Html$Events$preventDefaultOn = F2(
+	function (event, decoder) {
 		return A2(
-			$elm$json$Json$Decode$andThen,
-			function (_v0) {
-				var x_ = _v0.a;
-				var y_ = _v0.b;
-				return A2(
-					$debois$elm_dom$DOM$offsetParent,
-					_Utils_Tuple2(x_, y_),
-					A2($debois$elm_dom$DOM$position, x_, y_));
-			},
-			A5(
-				$elm$json$Json$Decode$map4,
-				F4(
-					function (scrollLeftP, scrollTopP, offsetLeftP, offsetTopP) {
-						return _Utils_Tuple2((x + offsetLeftP) - scrollLeftP, (y + offsetTopP) - scrollTopP);
-					}),
-				$debois$elm_dom$DOM$scrollLeft,
-				$debois$elm_dom$DOM$scrollTop,
-				$debois$elm_dom$DOM$offsetLeft,
-				$debois$elm_dom$DOM$offsetTop));
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayPreventDefault(decoder));
 	});
-var $debois$elm_dom$DOM$boundingClientRect = A4(
-	$elm$json$Json$Decode$map3,
-	F3(
-		function (_v0, width, height) {
-			var x = _v0.a;
-			var y = _v0.b;
-			return {ao: height, bF: x, bQ: y, bp: width};
-		}),
-	A2($debois$elm_dom$DOM$position, 0, 0),
-	$debois$elm_dom$DOM$offsetWidth,
-	$debois$elm_dom$DOM$offsetHeight);
-var $author$project$MouseEvents$Position = F2(
-	function (x, y) {
-		return {aI: x, aJ: y};
-	});
-var $elm$core$Basics$truncate = _Basics_truncate;
-var $author$project$MouseEvents$mouseEvent = F3(
-	function (clientX, clientY, target) {
-		return {
-			ah: A2($author$project$MouseEvents$Position, clientX, clientY),
-			ak: A2($author$project$MouseEvents$Position, target.bF | 0, target.bQ | 0)
-		};
-	});
-var $author$project$MouseEvents$mouseEventDecoder = A4(
-	$elm$json$Json$Decode$map3,
-	$author$project$MouseEvents$mouseEvent,
-	A2($elm$json$Json$Decode$field, 'clientX', $elm$json$Json$Decode$int),
-	A2($elm$json$Json$Decode$field, 'clientY', $elm$json$Json$Decode$int),
-	A2($elm$json$Json$Decode$field, 'target', $debois$elm_dom$DOM$boundingClientRect));
 var $author$project$MouseEvents$onContextMenu = function (target) {
 	return A2(
-		$elm$html$Html$Events$on,
+		$elm$html$Html$Events$preventDefaultOn,
 		'contextmenu',
-		A2($elm$json$Json$Decode$map, target, $author$project$MouseEvents$mouseEventDecoder));
+		A2(
+			$elm$json$Json$Decode$map,
+			$author$project$MouseEvents$alwaysPreventDefault,
+			$elm$json$Json$Decode$succeed(target)));
 };
 var $elm$html$Html$Events$onDoubleClick = function (msg) {
 	return A2(
@@ -8943,14 +8884,14 @@ var $elm$html$Html$Events$onDoubleClick = function (msg) {
 var $author$project$View$square_ = F3(
 	function (step, m, sq) {
 		var moveAttrs = function () {
-			var _v1 = step.Z;
-			if (_v1.$ === 1) {
+			var _v0 = step.Z;
+			if (_v0.$ === 1) {
 				return _List_fromArray(
 					[
 						A2($elm$html$Html$Attributes$style, 'opacity', '0')
 					]);
 			} else {
-				var pm = _v1.a;
+				var pm = _v0.a;
 				return (_Utils_eq(
 					$romstad$elm_chess$Move$from(pm),
 					sq) || _Utils_eq(
@@ -8979,10 +8920,7 @@ var $author$project$View$square_ = F3(
 				A2($elm$html$Html$Attributes$style, 'border', 'none'),
 				$elm$html$Html$Events$onClick(
 				$author$project$Types$ClickSquare(sq)),
-				$author$project$MouseEvents$onContextMenu(
-				function (_v0) {
-					return $author$project$Types$Clear;
-				}),
+				$author$project$MouseEvents$onContextMenu($author$project$Types$Clear),
 				$elm$html$Html$Events$onDoubleClick($author$project$Types$NoOp)
 			]);
 		return A2(
@@ -9024,7 +8962,7 @@ var $author$project$View$board_ = function (m) {
 					A2(
 					$elm$html$Html$Attributes$style,
 					'background-image',
-					$author$project$Images$boardUri(m.bs.aG)),
+					$author$project$Images$boardUri('blue')),
 					A2($elm$html$Html$Attributes$style, 'background-repeat', 'no-repeat')
 				]),
 			A2(
@@ -9064,6 +9002,32 @@ var $author$project$View$center = function (m) {
 			_List_fromArray(
 				[$author$project$View$board_])));
 };
+var $author$project$View$test1 = function (m) {
+	return A2(
+		$elm$html$Html$button,
+		_List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$style, 'width', '44px'),
+				A2($elm$html$Html$Attributes$style, 'height', '44px')
+			]),
+		_List_Nil);
+};
+var $author$project$View$test2 = function (m) {
+	return A2(
+		$elm$html$Html$button,
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$Attributes$style,
+				'width',
+				$author$project$CssEx$px(44 * m.bn.T)),
+				A2(
+				$elm$html$Html$Attributes$style,
+				'height',
+				$author$project$CssEx$px(44 * m.bn.T))
+			]),
+		_List_Nil);
+};
 var $author$project$View$view = function (m) {
 	return A2(
 		$elm$html$Html$div,
@@ -9074,7 +9038,7 @@ var $author$project$View$view = function (m) {
 				return fn(m);
 			},
 			_List_fromArray(
-				[$author$project$View$center])));
+				[$author$project$View$test1, $author$project$View$test2, $author$project$View$center])));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
