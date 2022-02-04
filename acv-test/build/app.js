@@ -9002,15 +9002,81 @@ var $author$project$View$center = function (m) {
 			_List_fromArray(
 				[$author$project$View$board_])));
 };
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$View$test1 = function (m) {
 	return A2(
-		$elm$html$Html$button,
+		$elm$html$Html$div,
+		_List_Nil,
 		_List_fromArray(
 			[
-				A2($elm$html$Html$Attributes$style, 'width', '2.5rem'),
-				A2($elm$html$Html$Attributes$style, 'height', '2.5rem')
-			]),
-		_List_Nil);
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'width', '1rem'),
+						A2($elm$html$Html$Attributes$style, 'height', '1rem')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('1')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'width', '2rem'),
+						A2($elm$html$Html$Attributes$style, 'height', '2rem')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('2')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'width', '2.5rem'),
+						A2($elm$html$Html$Attributes$style, 'height', '2.5rem')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('2.5')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'width', '3rem'),
+						A2($elm$html$Html$Attributes$style, 'height', '3rem')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('3')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'width', '5rem'),
+						A2($elm$html$Html$Attributes$style, 'height', '5rem')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('5')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'width', '10rem'),
+						A2($elm$html$Html$Attributes$style, 'height', '10rem')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('10')
+					]))
+			]));
 };
 var $author$project$View$test2 = function (m) {
 	return A2(
