@@ -9007,8 +9007,8 @@ var $author$project$View$test1 = function (m) {
 		$elm$html$Html$button,
 		_List_fromArray(
 			[
-				A2($elm$html$Html$Attributes$style, 'width', '44px'),
-				A2($elm$html$Html$Attributes$style, 'height', '44px')
+				A2($elm$html$Html$Attributes$style, 'width', '2.5rem'),
+				A2($elm$html$Html$Attributes$style, 'height', '2.5rem')
 			]),
 		_List_Nil);
 };
