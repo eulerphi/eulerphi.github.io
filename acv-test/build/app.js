@@ -9032,12 +9032,14 @@ var $author$project$View$test1 = function (m) {
 						A2(
 						$elm$html$Html$Attributes$style,
 						'height',
-						$author$project$CssEx$px(m.bs.am * 0.75))
+						$author$project$CssEx$px(m.bs.am * 0.75)),
+						A2(
+						$elm$html$Html$Attributes$style,
+						'background-image',
+						$author$project$Images$pieceUri('K')),
+						A2($elm$html$Html$Attributes$style, 'background-size', 'cover')
 					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('L')
-					])),
+				_List_Nil),
 				A2(
 				$elm$html$Html$button,
 				_List_fromArray(
