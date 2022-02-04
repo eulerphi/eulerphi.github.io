@@ -9091,16 +9091,14 @@ var $author$project$View$test2 = function (m) {
 		$elm$html$Html$button,
 		_List_fromArray(
 			[
-				A2(
-				$elm$html$Html$Attributes$style,
-				'width',
-				$author$project$CssEx$px(44 * m.bn.T)),
-				A2(
-				$elm$html$Html$Attributes$style,
-				'height',
-				$author$project$CssEx$px(44 * m.bn.T))
+				A2($elm$html$Html$Attributes$style, 'width', '1in'),
+				A2($elm$html$Html$Attributes$style, 'height', '1in')
 			]),
-		_List_Nil);
+		_List_fromArray(
+			[
+				$elm$html$Html$text(
+				$elm$core$String$fromFloat(m.bn.T))
+			]));
 };
 var $author$project$View$view = function (m) {
 	return A2(
