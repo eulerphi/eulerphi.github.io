@@ -9014,8 +9014,8 @@ var $author$project$View$test1 = function (m) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						A2($elm$html$Html$Attributes$style, 'width', '1rem'),
-						A2($elm$html$Html$Attributes$style, 'height', '1rem')
+						A2($elm$html$Html$Attributes$style, 'width', '10mm'),
+						A2($elm$html$Html$Attributes$style, 'height', '10mm')
 					]),
 				_List_fromArray(
 					[
@@ -9025,12 +9025,18 @@ var $author$project$View$test1 = function (m) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						A2($elm$html$Html$Attributes$style, 'width', '2rem'),
-						A2($elm$html$Html$Attributes$style, 'height', '2rem')
+						A2(
+						$elm$html$Html$Attributes$style,
+						'width',
+						$author$project$CssEx$px(m.bs.am * 0.75)),
+						A2(
+						$elm$html$Html$Attributes$style,
+						'height',
+						$author$project$CssEx$px(m.bs.am * 0.75))
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('2')
+						$elm$html$Html$text('L')
 					])),
 				A2(
 				$elm$html$Html$button,
