@@ -9375,10 +9375,11 @@ var $author$project$View$logItem = function (item) {
 			A2($elm$html$Html$Attributes$style, 'line-height', '2.07em'),
 			A2($elm$html$Html$Attributes$style, 'color', '#4d4d4d'),
 			A2($elm$html$Html$Attributes$style, 'background-color', backgroundColor),
+			A2($elm$html$Html$Attributes$style, 'border-style', 'none'),
 			$elm$html$Html$Events$onDoubleClick($author$project$Types$NoOp)
 		]);
 	return A2(
-		$elm$html$Html$div,
+		$elm$html$Html$button,
 		_Utils_ap(
 			attrs,
 			_Utils_ap(idAttrs, clickAttrs)),
