@@ -9398,7 +9398,7 @@ var $author$project$View$logLine = F2(
 				_List_fromArray(
 					[
 						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2($elm$html$Html$Attributes$style, 'flex', '0 0 14%'),
+						A2($elm$html$Html$Attributes$style, 'flex', '0 0 10%'),
 						A2($elm$html$Html$Attributes$style, 'box-sizing', 'border-box'),
 						A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
 						A2($elm$html$Html$Attributes$style, 'line-height', '2.07em'),
