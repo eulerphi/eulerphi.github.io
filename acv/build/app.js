@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.at.U === region.aH.U)
+	if (region.at.T === region.aH.T)
 	{
-		return 'on line ' + region.at.U;
+		return 'on line ' + region.at.T;
 	}
-	return 'on lines ' + region.at.U + ' through ' + region.aH.U;
+	return 'on lines ' + region.at.T + ' through ' + region.aH.T;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bx,
-		impl.bN,
-		impl.bL,
+		impl.bw,
+		impl.bM,
+		impl.bK,
 		function() { return function() {} }
 	);
 });
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bx,
-		impl.bN,
-		impl.bL,
+		impl.bw,
+		impl.bM,
+		impl.bK,
 		function(sendToApp, initialModel) {
-			var view = impl.bO;
+			var view = impl.bN;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bx,
-		impl.bN,
-		impl.bL,
+		impl.bw,
+		impl.bM,
+		impl.bK,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.ar && impl.ar(sendToApp)
-			var view = impl.bO;
+			var view = impl.bN;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bo);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bn);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bM) && (_VirtualDom_doc.title = title = doc.bM);
+				(title !== doc.bL) && (_VirtualDom_doc.title = title = doc.bL);
 			});
 		}
 	);
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bB;
-	var onUrlRequest = impl.bC;
+	var onUrlChange = impl.bA;
+	var onUrlRequest = impl.bB;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		bx: function(flags)
+		bw: function(flags)
 		{
-			return A3(impl.bx, flags, _Browser_getUrl(), key);
+			return A3(impl.bw, flags, _Browser_getUrl(), key);
 		},
-		bO: impl.bO,
 		bN: impl.bN,
-		bL: impl.bL
+		bM: impl.bM,
+		bK: impl.bK
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { bv: 'hidden', bp: 'visibilitychange' }
+		? { bu: 'hidden', bo: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { bv: 'mozHidden', bp: 'mozvisibilitychange' }
+		? { bu: 'mozHidden', bo: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { bv: 'msHidden', bp: 'msvisibilitychange' }
+		? { bu: 'msHidden', bo: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { bv: 'webkitHidden', bp: 'webkitvisibilitychange' }
-		: { bv: 'hidden', bp: 'visibilitychange' };
+		? { bu: 'webkitHidden', bo: 'webkitvisibilitychange' }
+		: { bu: 'hidden', bo: 'visibilitychange' };
 }
 
 
@@ -4233,7 +4233,7 @@ function _Browser_getViewport()
 {
 	return {
 		a9: _Browser_getScene(),
-		bh: {
+		bO: {
 			az: _Browser_window.pageXOffset,
 			aA: _Browser_window.pageYOffset,
 			bP: _Browser_doc.documentElement.clientWidth,
@@ -4275,7 +4275,7 @@ function _Browser_getViewportOf(id)
 				bP: node.scrollWidth,
 				ah: node.scrollHeight
 			},
-			bh: {
+			bO: {
 				az: node.scrollLeft,
 				aA: node.scrollTop,
 				bP: node.clientWidth,
@@ -4310,13 +4310,13 @@ function _Browser_getElement(id)
 		var y = _Browser_window.pageYOffset;
 		return {
 			a9: _Browser_getScene(),
-			bh: {
+			bO: {
 				az: x,
 				aA: y,
 				bP: _Browser_doc.documentElement.clientWidth,
 				ah: _Browser_doc.documentElement.clientHeight
 			},
-			M: {
+			_: {
 				az: x + rect.left,
 				aA: y + rect.top,
 				bP: rect.width,
@@ -5188,16 +5188,16 @@ var $author$project$Model$step = function (m) {
 };
 var $author$project$Model$fromModel2 = function (m) {
 	return {
-		bk: m.bk,
-		bm: $author$project$Model$state(m).bm,
-		bn: m.T,
+		bj: m.bj,
+		bl: $author$project$Model$state(m).bl,
+		bm: m.S,
 		ai: m.ai,
 		aU: $author$project$Model$state(m).aU,
 		aa: m.aa,
 		ab: m.ab,
-		bF: m.bF,
+		bE: m.bE,
 		aq: m.aq,
-		bI: m.bI,
+		bH: m.bH,
 		au: $elm$core$Maybe$Just(
 			$author$project$Model$step(m)),
 		bc: m.bc,
@@ -5206,7 +5206,7 @@ var $author$project$Model$fromModel2 = function (m) {
 };
 var $author$project$Input$Input = F6(
 	function (answer, arrows, devicePixelRatio, prompt, puzzle, showAnswer) {
-		return {bk: answer, bm: arrows, br: devicePixelRatio, bF: prompt, bG: puzzle, bI: showAnswer};
+		return {bj: answer, bl: arrows, bq: devicePixelRatio, bE: prompt, bF: puzzle, bH: showAnswer};
 	});
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$andThen = _Json_andThen;
@@ -5426,7 +5426,7 @@ var $romstad$elm_chess$Internal$Position$pieceOn = F2(
 		return A2(
 			$romstad$elm_chess$Internal$Board$pieceOn,
 			square,
-			$romstad$elm_chess$Internal$Position$unwrap(pos).bn);
+			$romstad$elm_chess$Internal$Position$unwrap(pos).bm);
 	});
 var $romstad$elm_chess$Position$pieceOn = F2(
 	function (square, pos) {
@@ -5497,7 +5497,7 @@ var $author$project$Puzzle$parseMoves = function (val) {
 var $romstad$elm_chess$Internal$Position$Position = $elm$core$Basics$identity;
 var $romstad$elm_chess$Internal$Board$ReadFenState = F3(
 	function (board, fileIndex, rankIndex) {
-		return {bn: board, D: fileIndex, ac: rankIndex};
+		return {bm: board, D: fileIndex, ac: rankIndex};
 	});
 var $romstad$elm_chess$Internal$BoardDimensions$extendedBoardSize = ((($romstad$elm_chess$Internal$BoardDimensions$rankCount + 3) * $romstad$elm_chess$Internal$BoardDimensions$extendedFileCount) + $romstad$elm_chess$Internal$BoardDimensions$fileCount) + 2;
 var $elm$core$List$repeatHelp = F3(
@@ -5613,7 +5613,7 @@ var $romstad$elm_chess$Internal$Board$readFenPiece = F2(
 			$romstad$elm_chess$Internal$Board$putPiece,
 			piece,
 			$romstad$elm_chess$Internal$Square$expand(state.D + (8 * state.ac)),
-			state.bn);
+			state.bm);
 	});
 var $romstad$elm_chess$Internal$Board$processFenChar = F2(
 	function (_char, state) {
@@ -5623,7 +5623,7 @@ var $romstad$elm_chess$Internal$Board$processFenChar = F2(
 			return _Utils_update(
 				state,
 				{
-					bn: A2($romstad$elm_chess$Internal$Board$readFenPiece, piece, state),
+					bm: A2($romstad$elm_chess$Internal$Board$readFenPiece, piece, state),
 					D: state.D + 1
 				});
 		} else {
@@ -5642,7 +5642,7 @@ var $elm$core$String$toList = function (string) {
 };
 var $romstad$elm_chess$Internal$Board$fromFen = function (fen) {
 	return function ($) {
-		return $.bn;
+		return $.bm;
 	}(
 		A3(
 			$elm$core$List$foldl,
@@ -5754,12 +5754,12 @@ var $romstad$elm_chess$Internal$Position$fromFen = function (fen) {
 	return $elm$core$Maybe$Just(
 		{
 			w: blackKingSquare,
-			bn: board,
+			bm: board,
 			x: castleRights,
-			O: epSquare_,
+			N: epSquare_,
 			F: 0,
-			S: $elm$core$Maybe$Nothing,
-			V: $elm$core$Maybe$Nothing,
+			R: $elm$core$Maybe$Nothing,
+			U: $elm$core$Maybe$Nothing,
 			I: 0,
 			J: A2($elm$core$Maybe$withDefault, $romstad$elm_chess$Internal$PieceColor$white, sideToMove_),
 			C: whiteKingSquare
@@ -5767,7 +5767,7 @@ var $romstad$elm_chess$Internal$Position$fromFen = function (fen) {
 };
 var $romstad$elm_chess$Position$fromFen = $romstad$elm_chess$Internal$Position$fromFen;
 var $romstad$elm_chess$Internal$CastleRights$empty = 0;
-var $romstad$elm_chess$Internal$Position$empty = {w: $elm$core$Maybe$Nothing, bn: $romstad$elm_chess$Internal$Board$empty, x: $romstad$elm_chess$Internal$CastleRights$empty, O: $elm$core$Maybe$Nothing, F: 0, S: $elm$core$Maybe$Nothing, V: $elm$core$Maybe$Nothing, I: 0, J: $romstad$elm_chess$Internal$PieceColor$white, C: $elm$core$Maybe$Nothing};
+var $romstad$elm_chess$Internal$Position$empty = {w: $elm$core$Maybe$Nothing, bm: $romstad$elm_chess$Internal$Board$empty, x: $romstad$elm_chess$Internal$CastleRights$empty, N: $elm$core$Maybe$Nothing, F: 0, R: $elm$core$Maybe$Nothing, U: $elm$core$Maybe$Nothing, I: 0, J: $romstad$elm_chess$Internal$PieceColor$white, C: $elm$core$Maybe$Nothing};
 var $romstad$elm_chess$Internal$Position$initial = A2(
 	$elm$core$Maybe$withDefault,
 	$romstad$elm_chess$Internal$Position$empty,
@@ -5821,7 +5821,7 @@ var $author$project$Puzzle$decodePuzzle = function (val) {
 	} else {
 		var p = position.a;
 		return $author$project$Puzzle$isValidPosition(p) ? $elm$json$Json$Decode$succeed(
-			{aW: moves, bE: p, bK: idx}) : $elm$json$Json$Decode$fail($author$project$Puzzle$fenParseErrorMessage);
+			{aW: moves, bD: p, bJ: idx}) : $elm$json$Json$Decode$fail($author$project$Puzzle$fenParseErrorMessage);
 	}
 };
 var $elm$json$Json$Decode$string = _Json_decodeString;
@@ -5845,8 +5845,8 @@ var $author$project$Types$ViewCtxMsg = function (a) {
 };
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
-var $author$project$Step$initial = {bz: $elm$core$Maybe$Nothing, bE: $romstad$elm_chess$Position$initial, W: $elm$core$Maybe$Nothing};
-var $author$project$State$empty = {bm: _List_Nil, aU: $elm$core$Dict$empty, au: $author$project$Step$initial};
+var $author$project$Step$initial = {by: $elm$core$Maybe$Nothing, bD: $romstad$elm_chess$Position$initial, V: $elm$core$Maybe$Nothing};
+var $author$project$State$empty = {bl: _List_Nil, aU: $elm$core$Dict$empty, au: $author$project$Step$initial};
 var $elm_community$undo_redo$UndoList$UndoList = F3(
 	function (past, present, future) {
 		return {h: future, f: past, ao: present};
@@ -5856,7 +5856,7 @@ var $elm_community$undo_redo$UndoList$fresh = function (state) {
 };
 var $author$project$ViewContext$ViewContext = F3(
 	function (devicePixelRatio, envelope, size) {
-		return {br: devicePixelRatio, aI: envelope, ad: size};
+		return {bq: devicePixelRatio, aI: envelope, ad: size};
 	});
 var $author$project$Size$Size = F2(
 	function (width, height) {
@@ -5864,24 +5864,24 @@ var $author$project$Size$Size = F2(
 	});
 var $author$project$Size$none = A2($author$project$Size$Size, 0, 0);
 var $author$project$ViewContext$init = function (input) {
-	return A3($author$project$ViewContext$ViewContext, input.br, input.aI, $author$project$Size$none);
+	return A3($author$project$ViewContext$ViewContext, input.bq, input.aI, $author$project$Size$none);
 };
 var $author$project$Board$none = {ae: 0, af: 0, ag: 0, am: 0, an: 0, as: 0, ax: ''};
 var $romstad$elm_chess$PieceColor$white = $romstad$elm_chess$Internal$PieceColor$white;
 var $author$project$Model$fromError = function (error) {
 	return {
-		bk: '',
+		bj: '',
 		ai: 0,
-		T: $author$project$Board$none,
+		S: $author$project$Board$none,
 		aa: 2,
 		ab: $romstad$elm_chess$PieceColor$white,
-		bF: '**ERROR**: ' + error,
+		bE: '**ERROR**: ' + error,
 		aq: $elm$core$Maybe$Nothing,
-		bI: false,
+		bH: false,
 		o: $elm_community$undo_redo$UndoList$fresh($author$project$State$empty),
 		bc: $elm$core$Array$fromList(_List_Nil),
 		bg: $author$project$ViewContext$init(
-			{br: 1, aI: $author$project$Types$ViewCtxMsg})
+			{bq: 1, aI: $author$project$Types$ViewCtxMsg})
 	};
 };
 var $romstad$elm_chess$Internal$SquareDelta$unwrap = function (delta) {
@@ -6103,9 +6103,9 @@ var $romstad$elm_chess$Internal$Position$doMove = F2(
 		var pos = position;
 		return {
 			w: _Utils_eq(piece, $romstad$elm_chess$Internal$Piece$blackKing) ? $elm$core$Maybe$Just(to) : pos.w,
-			bn: A2($romstad$elm_chess$Internal$Board$doMove, move, pos.bn),
+			bm: A2($romstad$elm_chess$Internal$Board$doMove, move, pos.bm),
 			x: A2($romstad$elm_chess$Internal$CastleRights$doMove, move, pos.x),
-			O: (_Utils_eq(piece, $romstad$elm_chess$Internal$Piece$whitePawn) && _Utils_eq(
+			N: (_Utils_eq(piece, $romstad$elm_chess$Internal$Piece$whitePawn) && _Utils_eq(
 				A2($romstad$elm_chess$Internal$Square$subtract, to, from),
 				$romstad$elm_chess$Internal$SquareDelta$nn)) ? $elm$core$Maybe$Just(
 				A2($romstad$elm_chess$Internal$Square$add, from, $romstad$elm_chess$Internal$SquareDelta$n)) : ((_Utils_eq(piece, $romstad$elm_chess$Internal$Piece$blackPawn) && _Utils_eq(
@@ -6113,8 +6113,8 @@ var $romstad$elm_chess$Internal$Position$doMove = F2(
 				$romstad$elm_chess$Internal$SquareDelta$ss)) ? $elm$core$Maybe$Just(
 				A2($romstad$elm_chess$Internal$Square$add, from, $romstad$elm_chess$Internal$SquareDelta$s)) : $elm$core$Maybe$Nothing),
 			F: pos.F + 1,
-			S: $elm$core$Maybe$Just(move),
-			V: $elm$core$Maybe$Just(position),
+			R: $elm$core$Maybe$Just(move),
+			U: $elm$core$Maybe$Just(position),
 			I: (_Utils_eq(
 				$romstad$elm_chess$Internal$Piece$kind(piece),
 				$romstad$elm_chess$Internal$PieceType$pawn) || (!_Utils_eq(
@@ -6395,7 +6395,7 @@ var $romstad$elm_chess$Internal$Position$sideAttacksSquare = F3(
 			$romstad$elm_chess$Internal$Board$sideAttacksSquare,
 			side,
 			square,
-			$romstad$elm_chess$Internal$Position$unwrap(position).bn);
+			$romstad$elm_chess$Internal$Position$unwrap(position).bm);
 	});
 var $romstad$elm_chess$Internal$Position$isInCheck = F2(
 	function (side, position) {
@@ -6432,7 +6432,7 @@ var $romstad$elm_chess$Internal$Position$isEmpty = F2(
 		return A2(
 			$romstad$elm_chess$Internal$Board$isEmpty,
 			square,
-			$romstad$elm_chess$Internal$Position$unwrap(pos).bn);
+			$romstad$elm_chess$Internal$Position$unwrap(pos).bm);
 	});
 var $romstad$elm_chess$Internal$Move$Move = $elm$core$Basics$identity;
 var $romstad$elm_chess$Internal$Square$compress = function (square) {
@@ -6642,7 +6642,7 @@ var $romstad$elm_chess$Internal$Position$pawnCaptures = F4(
 			toSqs);
 	});
 var $romstad$elm_chess$Internal$Position$epSquare = function (position) {
-	return $romstad$elm_chess$Internal$Position$unwrap(position).O;
+	return $romstad$elm_chess$Internal$Position$unwrap(position).N;
 };
 var $romstad$elm_chess$Internal$Move$makeEp = F2(
 	function (from_, to_) {
@@ -6920,7 +6920,7 @@ var $romstad$elm_chess$Internal$Position$scan = F3(
 	function (position, square, delta) {
 		return A3(
 			$romstad$elm_chess$Internal$Board$scan,
-			$romstad$elm_chess$Internal$Position$unwrap(position).bn,
+			$romstad$elm_chess$Internal$Position$unwrap(position).bm,
 			square,
 			delta);
 	});
@@ -7120,13 +7120,13 @@ var $author$project$Step$makeSteps = F3(
 		if (!sans.b) {
 			return _List_fromArray(
 				[
-					{bz: $elm$core$Maybe$Nothing, bE: position, W: prevMove}
+					{by: $elm$core$Maybe$Nothing, bD: position, V: prevMove}
 				]);
 		} else {
 			var x = sans.a;
 			var xs = sans.b;
 			var move = A2($romstad$elm_chess$Notation$fromSan, x, position);
-			var step = {bz: move, bE: position, W: prevMove};
+			var step = {by: move, bD: position, V: prevMove};
 			var tail = A2(
 				$elm$core$Maybe$map,
 				function (p) {
@@ -7151,13 +7151,13 @@ var $author$project$Step$makeSteps = F3(
 		}
 	});
 var $author$project$Step$fromInput = function (input) {
-	var p = input.bG.bE;
-	var moves = input.bG.aW;
+	var p = input.bF.bD;
+	var moves = input.bF.aW;
 	return $elm$core$Array$fromList(
 		A3($author$project$Step$makeSteps, p, $elm$core$Maybe$Nothing, moves));
 };
 var $author$project$State$fromStep = function (step) {
-	return {bm: _List_Nil, aU: $elm$core$Dict$empty, au: step};
+	return {bl: _List_Nil, aU: $elm$core$Dict$empty, au: step};
 };
 var $elm$core$Array$length = function (_v0) {
 	var len = _v0.a;
@@ -7178,7 +7178,7 @@ var $author$project$Model$parseArrow = function (_v0) {
 		var src_ = squares.a.a;
 		var dst_ = squares.b.a;
 		return $elm$core$Maybe$Just(
-			{bt: dst_, bJ: src_});
+			{bs: dst_, bI: src_});
 	} else {
 		return $elm$core$Maybe$Nothing;
 	}
@@ -7204,17 +7204,17 @@ var $author$project$State$updateArrows = F2(
 	function (s, arrows) {
 		return _Utils_update(
 			s,
-			{bm: arrows});
+			{bl: arrows});
 	});
 var $author$project$Model$fromInput = function (input) {
 	var steps = $author$project$Step$fromInput(input);
 	var idx = A2(
 		$elm$core$Basics$min,
 		$elm$core$Array$length(steps) - 1,
-		input.bG.bK);
+		input.bF.bJ);
 	var s = function (fn) {
 		return fn(
-			$author$project$Model$parseArrows(input.bm));
+			$author$project$Model$parseArrows(input.bl));
 	}(
 		$author$project$State$updateArrows(
 			$author$project$State$fromStep(
@@ -7222,20 +7222,20 @@ var $author$project$Model$fromInput = function (input) {
 					$elm$core$Maybe$withDefault,
 					$author$project$Step$initial,
 					A2($elm$core$Array$get, idx, steps)))));
-	var playerColor = $romstad$elm_chess$Position$sideToMove(s.au.bE);
+	var playerColor = $romstad$elm_chess$Position$sideToMove(s.au.bD);
 	return {
-		bk: $author$project$StringEx$unencodeNewlines(input.bk),
+		bj: $author$project$StringEx$unencodeNewlines(input.bj),
 		ai: idx,
-		T: $author$project$Board$none,
+		S: $author$project$Board$none,
 		aa: 2,
 		ab: playerColor,
-		bF: $author$project$StringEx$unencodeNewlines(input.bF),
+		bE: $author$project$StringEx$unencodeNewlines(input.bE),
 		aq: $elm$core$Maybe$Nothing,
-		bI: input.bI,
+		bH: input.bH,
 		o: $elm_community$undo_redo$UndoList$fresh(s),
 		bc: steps,
 		bg: $author$project$ViewContext$init(
-			{br: input.br, aI: $author$project$Types$ViewCtxMsg})
+			{bq: input.bq, aI: $author$project$Types$ViewCtxMsg})
 	};
 };
 var $author$project$ViewContext$ViewportChanged = function (a) {
@@ -7680,7 +7680,7 @@ var $author$project$Main$subscriptions = function (m) {
 };
 var $author$project$Types$Arrow = F2(
 	function (src, dst) {
-		return {bt: dst, bJ: src};
+		return {bs: dst, bI: src};
 	});
 var $author$project$Model$clearSelection = function (m) {
 	return _Utils_update(
@@ -7712,13 +7712,13 @@ var $author$project$State$updateArrow = F2(
 			function (a) {
 				return _Utils_eq(a, arrow);
 			},
-			s.bm);
+			s.bl);
 		var haves = _v0.a;
 		var havenots = _v0.b;
-		var arrows_ = ($elm$core$List$length(haves) > 0) ? havenots : A2($elm$core$List$cons, arrow, s.bm);
+		var arrows_ = ($elm$core$List$length(haves) > 0) ? havenots : A2($elm$core$List$cons, arrow, s.bl);
 		return _Utils_update(
 			s,
-			{bm: arrows_});
+			{bl: arrows_});
 	});
 var $author$project$Model$updateSelection = F3(
 	function (m, sq, canSelect) {
@@ -8195,7 +8195,7 @@ var $author$project$Update$clickMark = F2(
 	});
 var $romstad$elm_chess$Piece$color = $romstad$elm_chess$Internal$Piece$color;
 var $author$project$Model$position = function (m) {
-	return $author$project$Model$step(m).bE;
+	return $author$project$Model$step(m).bD;
 };
 var $author$project$Model$canSelectPiece = F2(
 	function (m, sq) {
@@ -8218,9 +8218,9 @@ var $author$project$Model$canSelectPiece = F2(
 var $author$project$Step$doMove = F2(
 	function (step, mv) {
 		return {
-			bz: $elm$core$Maybe$Nothing,
-			bE: A2($romstad$elm_chess$Position$doMove, mv, step.bE),
-			W: $elm$core$Maybe$Just(mv)
+			by: $elm$core$Maybe$Nothing,
+			bD: A2($romstad$elm_chess$Position$doMove, mv, step.bD),
+			V: $elm$core$Maybe$Just(mv)
 		};
 	});
 var $romstad$elm_chess$Position$movesFrom = $romstad$elm_chess$Internal$Position$movesFrom;
@@ -8330,7 +8330,7 @@ var $author$project$Model$undo = function (m) {
 var $author$project$ViewContext$magic = 30;
 var $author$project$ViewContext$updateOnSizeChanged = F2(
 	function (_v0, vc) {
-		var viewport = _v0.bh;
+		var viewport = _v0.bO;
 		return _Utils_update(
 			vc,
 			{
@@ -8374,6 +8374,10 @@ var $elm$core$Task$attempt = F2(
 	});
 var $elm$browser$Browser$Dom$getElement = _Browser_getElement;
 var $elm$browser$Browser$Dom$getViewportOf = _Browser_getViewportOf;
+var $author$project$Log$itemElementId = function (idx) {
+	return 'move-item-' + $elm$core$String$fromInt(idx);
+};
+var $author$project$Log$logElementId = 'move-log';
 var $elm$core$Task$map3 = F4(
 	function (func, taskA, taskB, taskC) {
 		return A2(
@@ -8395,7 +8399,7 @@ var $elm$core$Task$map3 = F4(
 			taskA);
 	});
 var $elm$browser$Browser$Dom$setViewportOf = _Browser_setViewportOf;
-var $author$project$Update$scrollLogItemIntoView = function (itemId) {
+var $author$project$Update$scrollLogItemIntoView = function (itemIdx) {
 	return A2(
 		$elm$core$Task$attempt,
 		function (_v1) {
@@ -8415,21 +8419,21 @@ var $author$project$Update$scrollLogItemIntoView = function (itemId) {
 				$elm$core$Task$map3,
 				F3(
 					function (item, log, viewport) {
-						var itemY2 = item.M.aA + item.M.ah;
-						var itemY1 = item.M.aA;
-						var contY2 = log.M.aA + log.M.ah;
-						var contY1 = log.M.aA;
-						return (_Utils_cmp(itemY2, contY2) > 0) ? $elm$core$Maybe$Just(viewport.bh.aA + (itemY2 - contY2)) : ((_Utils_cmp(itemY1, contY1) < 0) ? $elm$core$Maybe$Just(
-							A2($elm$core$Basics$max, 0, viewport.bh.aA - (contY1 - itemY1))) : $elm$core$Maybe$Nothing);
+						var topDiff = item._.aA - log._.aA;
+						var scrollY = viewport.bO.aA;
+						var botDiff = (topDiff + item._.ah) - log._.ah;
+						return (topDiff < 0) ? $elm$core$Maybe$Just(
+							A2($elm$core$Basics$max, 0, scrollY + topDiff)) : ((botDiff > 0) ? $elm$core$Maybe$Just(scrollY + botDiff) : $elm$core$Maybe$Nothing);
 					}),
-				$elm$browser$Browser$Dom$getElement(itemId),
-				$elm$browser$Browser$Dom$getElement('movelog'),
-				$elm$browser$Browser$Dom$getViewportOf('movelog'))));
+				$elm$browser$Browser$Dom$getElement(
+					$author$project$Log$itemElementId(itemIdx)),
+				$elm$browser$Browser$Dom$getElement($author$project$Log$logElementId),
+				$elm$browser$Browser$Dom$getViewportOf($author$project$Log$logElementId))));
 };
 var $author$project$State$clearAnnotations = function (s) {
 	return _Utils_update(
 		s,
-		{bm: _List_Nil, aU: $elm$core$Dict$empty});
+		{bl: _List_Nil, aU: $elm$core$Dict$empty});
 };
 var $author$project$Model$updateIndex = F2(
 	function (m, idx_) {
@@ -8456,31 +8460,38 @@ var $author$project$Model$updateIndex = F2(
 var $author$project$Update$updateIndex = F2(
 	function (m, idx) {
 		var m_ = A2($author$project$Model$updateIndex, m, idx);
-		var id = 'move-item-' + $elm$core$String$fromInt(m_.ai);
 		return _Utils_Tuple2(
 			m_,
-			$author$project$Update$scrollLogItemIntoView(id));
+			$author$project$Update$scrollLogItemIntoView(m_.ai));
 	});
 var $author$project$Board$fromViewContext = F2(
 	function (_v0, vc) {
-		var minMarginWidths = 100.0;
+		var minMarginWidths = 80.0;
 		var headerHeight = 0.1 * vc.ad.ah;
 		var footerHeight = 0.1 * vc.ad.ah;
-		var contentWidth = vc.ad.bP - minMarginWidths;
+		var contentWidth = vc.ad.bP - (2 * minMarginWidths);
 		var boardSize = A2($elm$core$Basics$min, (vc.ad.ah - headerHeight) - footerHeight, 0.6 * contentWidth);
 		var panelHeight = boardSize;
-		var panelWidth = A2($elm$core$Basics$min, 0.4 * contentWidth, boardSize / 1.5);
 		var squareSize = boardSize / 8;
-		return {ae: boardSize, af: 0.8 * squareSize, ag: headerHeight, am: panelHeight, an: panelWidth, as: squareSize, ax: ''};
+		var panelWidth = A2($elm$core$Basics$min, (0.4 * contentWidth) - squareSize, boardSize / 1.5);
+		return {
+			ae: boardSize,
+			af: 0.8 * A2($elm$core$Basics$min, squareSize, minMarginWidths),
+			ag: headerHeight,
+			am: panelHeight,
+			an: panelWidth,
+			as: squareSize,
+			ax: ''
+		};
 	});
 var $author$project$Model$updateViewContext = F2(
 	function (m, vc_) {
 		return function (b_) {
 			return _Utils_update(
 				m,
-				{T: b_, bg: vc_});
+				{S: b_, bg: vc_});
 		}(
-			A2($author$project$Board$fromViewContext, m.T, vc_));
+			A2($author$project$Board$fromViewContext, m.S, vc_));
 	});
 var $author$project$Update$update = F2(
 	function (msg, m) {
@@ -8610,9 +8621,9 @@ var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
 var $author$project$View$arrow_ = F2(
 	function (m, arrow) {
 		var src = $author$project$Point$center(
-			A2($author$project$Point$forSquare, m, arrow.bJ));
+			A2($author$project$Point$forSquare, m, arrow.bI));
 		var dst = $author$project$Point$center(
-			A2($author$project$Point$forSquare, m, arrow.bt));
+			A2($author$project$Point$forSquare, m, arrow.bs));
 		return A2(
 			$elm$svg$Svg$line,
 			_List_fromArray(
@@ -8693,7 +8704,7 @@ var $author$project$View$arrows = function (m) {
 		A2(
 			$elm$core$List$map,
 			$author$project$View$arrow_(m),
-			m.bm));
+			m.bl));
 };
 var $author$project$Images$boardUri = function (name) {
 	switch (name) {
@@ -8723,9 +8734,9 @@ var $author$project$Point$translate = F2(
 			_List_fromArray(
 				[
 					'translate(',
-					$author$project$CssEx$px(p.az * m.bn.as),
+					$author$project$CssEx$px(p.az * m.bm.as),
 					', ',
-					$author$project$CssEx$px(p.aA * m.bn.as),
+					$author$project$CssEx$px(p.aA * m.bm.as),
 					')'
 				]));
 	});
@@ -8974,7 +8985,7 @@ var $romstad$elm_chess$Internal$Piece$toChar = function (piece) {
 var $romstad$elm_chess$Piece$toChar = $romstad$elm_chess$Internal$Piece$toChar;
 var $author$project$View$piece_ = F3(
 	function (step, m, sq) {
-		var _v0 = A2($romstad$elm_chess$Position$pieceOn, sq, step.bE);
+		var _v0 = A2($romstad$elm_chess$Position$pieceOn, sq, step.bD);
 		if (_v0.$ === 1) {
 			return _List_Nil;
 		} else {
@@ -9129,7 +9140,7 @@ var $elm$html$Html$Events$onDoubleClick = function (msg) {
 var $author$project$View$square_ = F3(
 	function (step, m, sq) {
 		var moveAttrs = function () {
-			var _v0 = step.W;
+			var _v0 = step.V;
 			if (_v0.$ === 1) {
 				return _List_fromArray(
 					[
@@ -9197,21 +9208,21 @@ var $author$project$View$board_ = function (m) {
 					A2(
 					$elm$html$Html$Attributes$style,
 					'width',
-					$author$project$CssEx$px(m.bn.ae)),
+					$author$project$CssEx$px(m.bm.ae)),
 					A2(
 					$elm$html$Html$Attributes$style,
 					'height',
-					$author$project$CssEx$px(m.bn.ae)),
+					$author$project$CssEx$px(m.bm.ae)),
 					A2(
 					$elm$html$Html$Attributes$style,
 					'margin-left',
-					$author$project$CssEx$px(m.bn.as)),
+					$author$project$CssEx$px(m.bm.as)),
 					A2($elm$html$Html$Attributes$style, 'border', '2px solid gray'),
 					A2($elm$html$Html$Attributes$style, 'background-size', 'cover'),
 					A2(
 					$elm$html$Html$Attributes$style,
 					'background-image',
-					$author$project$Images$boardUri(m.bn.ax)),
+					$author$project$Images$boardUri(m.bm.ax)),
 					A2($elm$html$Html$Attributes$style, 'background-repeat', 'no-repeat')
 				]),
 			A2(
@@ -9232,7 +9243,7 @@ var $author$project$View$board_ = function (m) {
 };
 var $elm$html$Html$hr = _VirtualDom_node('hr');
 var $author$project$View$header = function (m) {
-	var answer = $elm$core$String$isEmpty(m.bk) ? '' : (m.bI ? m.bk : '[...]');
+	var answer = $elm$core$String$isEmpty(m.bj) ? '' : (m.bH ? m.bj : '[...]');
 	var cloze = $elm$core$String$isEmpty(answer) ? _List_Nil : _List_fromArray(
 		[
 			A2($elm$html$Html$hr, _List_Nil, _List_Nil),
@@ -9257,7 +9268,7 @@ var $author$project$View$header = function (m) {
 			]),
 		A2(
 			$elm$core$List$cons,
-			$elm$html$Html$text(m.bF),
+			$elm$html$Html$text(m.bE),
 			cloze));
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -9345,7 +9356,7 @@ var $author$project$View$logItem = function (item) {
 			return _List_fromArray(
 				[
 					$elm$html$Html$Attributes$id(
-					'move-item-' + $elm$core$String$fromInt(idx))
+					$author$project$Log$itemElementId(idx))
 				]);
 		} else {
 			return _List_Nil;
@@ -9411,7 +9422,7 @@ var $author$project$View$logLine = F2(
 						$elm$html$Html$text(
 						$elm$core$String$fromInt(idx + 1))
 					])),
-				$author$project$View$logItem(line.bi),
+				$author$project$View$logItem(line.bh),
 				$author$project$View$logItem(line.aD)
 			]);
 	});
@@ -9424,7 +9435,7 @@ var $author$project$Log$makeLines = function (sans) {
 			var x1 = sans.a;
 			return _List_fromArray(
 				[
-					{aD: $author$project$Log$dummyLastItem, bi: x1}
+					{aD: $author$project$Log$dummyLastItem, bh: x1}
 				]);
 		} else {
 			var x1 = sans.a;
@@ -9433,7 +9444,7 @@ var $author$project$Log$makeLines = function (sans) {
 			var xs = _v1.b;
 			return A2(
 				$elm$core$List$cons,
-				{aD: x2, bi: x1},
+				{aD: x2, bh: x1},
 				$author$project$Log$makeLines(xs));
 		}
 	}
@@ -9475,7 +9486,7 @@ var $author$project$Model$startColor = function (m) {
 		A2(
 			$elm$core$Maybe$map,
 			function (s) {
-				return $romstad$elm_chess$Position$sideToMove(s.bE);
+				return $romstad$elm_chess$Position$sideToMove(s.bD);
 			},
 			A2($elm$core$Array$get, 0, m.bc)));
 };
@@ -9628,9 +9639,9 @@ var $author$project$Log$toItem = F3(
 			ay: isLastItem ? $elm$core$Maybe$Nothing : ((_Utils_cmp(m.ai, stepIdx) > -1) ? A2(
 				$elm$core$Maybe$map,
 				function (mv) {
-					return A2($romstad$elm_chess$Notation$toSan, mv, s.bE);
+					return A2($romstad$elm_chess$Notation$toSan, mv, s.bD);
 				},
-				s.bz) : $elm$core$Maybe$Just('???'))
+				s.by) : $elm$core$Maybe$Just('???'))
 		};
 	});
 var $author$project$Log$toItems = function (m) {
@@ -9680,7 +9691,7 @@ var $author$project$View$log = function (m) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$id('movelog'),
+						$elm$html$Html$Attributes$id($author$project$Log$logElementId),
 						A2($elm$html$Html$Attributes$style, 'flex', '1 0 auto'),
 						A2($elm$html$Html$Attributes$style, 'height', '1px'),
 						A2($elm$html$Html$Attributes$style, 'overflow-y', 'scroll')
@@ -9705,11 +9716,11 @@ var $author$project$View$panel = function (m) {
 				A2(
 				$elm$html$Html$Attributes$style,
 				'height',
-				$author$project$CssEx$px(m.bn.am)),
+				$author$project$CssEx$px(m.bm.am)),
 				A2(
 				$elm$html$Html$Attributes$style,
 				'width',
-				$author$project$CssEx$px(m.bn.an)),
+				$author$project$CssEx$px(m.bm.an)),
 				A2($elm$html$Html$Attributes$style, 'overflow', 'hidden'),
 				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 				A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
@@ -9809,7 +9820,7 @@ var $author$project$View$sidebarButton = F4(
 				A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
 				A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
 				A2($elm$html$Html$Attributes$style, 'background-color', 'transparent'),
-				A2($elm$html$Html$Attributes$style, 'border-width', '4px'),
+				A2($elm$html$Html$Attributes$style, 'border-width', '2px'),
 				A2($elm$html$Html$Attributes$style, 'margin', '10px 0px'),
 				A2(
 				$elm$html$Html$Attributes$style,
@@ -9860,7 +9871,7 @@ var $author$project$View$rightBar = function (m) {
 			A2(
 				$elm$core$Maybe$map,
 				function (s) {
-					return $romstad$elm_chess$Position$sideToMove(s.bE);
+					return $romstad$elm_chess$Position$sideToMove(s.bD);
 				},
 				m.au)));
 	var hr = A2(
@@ -9870,7 +9881,7 @@ var $author$project$View$rightBar = function (m) {
 				A2($elm$html$Html$Attributes$style, 'margin', '20px 0px')
 			]),
 		_List_Nil);
-	var btnFn = $author$project$View$sidebarButton(m.bn.af);
+	var btnFn = $author$project$View$sidebarButton(m.bm.af);
 	var top = _List_fromArray(
 		[
 			A3(btnFn, $author$project$Types$Undo, $author$project$Images$undoUri, false),
@@ -9922,9 +9933,9 @@ var $author$project$View$view = function (m) {
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		bx: $author$project$Main$init,
-		bL: $author$project$Main$subscriptions,
-		bN: $author$project$Update$update,
-		bO: A2($elm$core$Basics$composeL, $author$project$View$view, $author$project$Model$fromModel2)
+		bw: $author$project$Main$init,
+		bK: $author$project$Main$subscriptions,
+		bM: $author$project$Update$update,
+		bN: A2($elm$core$Basics$composeL, $author$project$View$view, $author$project$Model$fromModel2)
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));
