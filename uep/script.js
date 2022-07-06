@@ -14,6 +14,8 @@ function moveHand(x, y) {
 }
 
 function animateHand(x, y, duration) {
+    const startStep = step;
+
     hand.show();
 
     let start = getHandPos();
@@ -28,8 +30,11 @@ function animateHand(x, y, duration) {
             moveHand(start[0] + (pos * dX), start[1] + (pos * dY));
         })
         .after(function () {
-            ++step;
-            runStep();
+            if (startStep === step) {
+                console.log('++step (animateHand)');
+                ++step;
+                runStep();
+            }
         });
 }
 
@@ -260,6 +265,7 @@ function runStep() {
 
 player.addEventListener("ended", function () {
     player.currentTime = 0;
+    console.log('++step (audio ended)');
     ++step;
     runStep();
 });
