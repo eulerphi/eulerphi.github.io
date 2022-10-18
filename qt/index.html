@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quality Time Academy</title>
+    <link rel="stylesheet" href="css/base.css?v=1.0">
+    <link rel="stylesheet" href="css/style.css?v=1.0">
+    <script type="text/javascript" src="build/app.js"></script>
+</head>
+
+<body>
+    <main></main>
+    <script type="text/javascript">
+        var elmApp = Elm.Main.init({
+            node: document.querySelector('main'),
+            flags: {
+                time: Date.now(),
+                viewport: {
+                    width: window.innerHeight
+                    , height: window.innerHeight
+                }
+            }
+        });
+
+        elmApp.ports.videoPort.subscribe(function (evt) {
+            let player = document.getElementById('player');
+
+            switch (evt.kind) {
+                case "play":
+                    player.currentTime = evt.time;
+                    player.play();
+                    break;
+
+                case "pause":
+                    player.pause();
+                    break;
+
+                default:
+                    console.log('Unknown event:');
+                    console.log(evt);
+                    break;
+            }
+        });
+    </script>
+</body>
+
+</html>

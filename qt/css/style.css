@@ -1,0 +1,534 @@
+body {
+    background-color: black;
+}
+
+p {
+    font-size: 128px;
+    width: fit-content;
+    margin: auto;
+}
+
+#wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes growY {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0%);
+    }
+}
+
+#panelContainer {
+    position: fixed;
+    box-sizing: border-box;
+    left: 0px;
+    bottom: 7px;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    transform-origin: bottom;
+}
+
+#panel {
+    border-radius: 60px;
+    padding: 10px 50px;
+    background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 100%);
+    /* background: linear-gradient(90deg, hsla(14, 93%, 53%, 1) 0%, hsla(30, 10%, 20%, 1) 100%); */
+    animation-name: drain;
+    animation-duration: 15s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+
+
+.growY1s {
+    animation-name: growY;
+    animation-duration: 200ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+
+@keyframes shrinkX {
+    from {
+        /* width: 100%; */
+        transform: scaleX(1);
+    }
+
+    to {
+        /* width: 0%; */
+        transform: scaleX(0);
+    }
+}
+
+#countdown {
+    width: 100%;
+    height: 10px;
+    transform-origin: left;
+    background: hsla(225, 78%, 59%, 1);
+    background: linear-gradient(90deg, hsla(225, 78%, 59%, 1) 0%, hsla(197, 85%, 51%, 1) 100%);
+    border-bottom: black solid 1px;
+}
+
+.shrinkX10s {
+    animation-name: shrinkX;
+    animation-duration: 10s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+
+.optionContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#welcome>button {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+button {
+    border: none;
+    border-radius: 100px;
+    padding: 10px 30px;
+    font-size: larger;
+    font-weight: 600;
+}
+
+.br {
+    display: block;
+    margin-bottom: 2em;
+}
+
+main {
+    width: 100%;
+}
+
+/* #media-video {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    background-size: cover;
+    overflow: hidden;
+} */
+
+@keyframes drain {
+    0% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 99%, transparent 100%);
+    }
+
+    1% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 98%, transparent 99%);
+    }
+
+    2% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 97%, transparent 98%);
+    }
+
+    3% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 96%, transparent 97%);
+    }
+
+    4% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 95%, transparent 96%);
+    }
+
+    5% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 94%, transparent 95%);
+    }
+
+    6% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 93%, transparent 94%);
+    }
+
+    7% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 92%, transparent 93%);
+    }
+
+    8% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 91%, transparent 92%);
+    }
+
+    9% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 90%, transparent 91%);
+    }
+
+    10% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 89%, transparent 90%);
+    }
+
+    11% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 88%, transparent 89%);
+    }
+
+    12% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 87%, transparent 88%);
+    }
+
+    13% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 86%, transparent 87%);
+    }
+
+    14% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 85%, transparent 86%);
+    }
+
+    15% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 84%, transparent 85%);
+    }
+
+    16% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 83%, transparent 84%);
+    }
+
+    17% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 82%, transparent 83%);
+    }
+
+    18% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 81%, transparent 82%);
+    }
+
+    19% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 80%, transparent 81%);
+    }
+
+    20% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 79%, transparent 80%);
+    }
+
+    21% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 78%, transparent 79%);
+    }
+
+    22% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 77%, transparent 78%);
+    }
+
+    23% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 76%, transparent 77%);
+    }
+
+    24% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 75%, transparent 76%);
+    }
+
+    25% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 74%, transparent 75%);
+    }
+
+    26% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 73%, transparent 74%);
+    }
+
+    27% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 72%, transparent 73%);
+    }
+
+    28% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 71%, transparent 72%);
+    }
+
+    29% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 70%, transparent 71%);
+    }
+
+    30% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 69%, transparent 70%);
+    }
+
+    31% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 68%, transparent 69%);
+    }
+
+    32% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 67%, transparent 68%);
+    }
+
+    33% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 66%, transparent 67%);
+    }
+
+    34% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 65%, transparent 66%);
+    }
+
+    35% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 64%, transparent 65%);
+    }
+
+    36% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 63%, transparent 64%);
+    }
+
+    37% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 62%, transparent 63%);
+    }
+
+    38% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 61%, transparent 62%);
+    }
+
+    39% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 60%, transparent 61%);
+    }
+
+    40% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 59%, transparent 60%);
+    }
+
+    41% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 58%, transparent 59%);
+    }
+
+    42% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 57%, transparent 58%);
+    }
+
+    43% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 56%, transparent 57%);
+    }
+
+    44% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 55%, transparent 56%);
+    }
+
+    45% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 54%, transparent 55%);
+    }
+
+    46% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 53%, transparent 54%);
+    }
+
+    47% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 52%, transparent 53%);
+    }
+
+    48% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 51%, transparent 52%);
+    }
+
+    49% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 50%, transparent 51%);
+    }
+
+    50% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 49%, transparent 50%);
+    }
+
+    51% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 48%, transparent 49%);
+    }
+
+    52% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 47%, transparent 48%);
+    }
+
+    53% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 46%, transparent 47%);
+    }
+
+    54% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 45%, transparent 46%);
+    }
+
+    55% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 44%, transparent 45%);
+    }
+
+    56% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 43%, transparent 44%);
+    }
+
+    57% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 42%, transparent 43%);
+    }
+
+    58% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 41%, transparent 42%);
+    }
+
+    59% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 40%, transparent 41%);
+    }
+
+    60% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 39%, transparent 40%);
+    }
+
+    61% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 38%, transparent 39%);
+    }
+
+    62% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 37%, transparent 38%);
+    }
+
+    63% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 36%, transparent 37%);
+    }
+
+    64% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 35%, transparent 36%);
+    }
+
+    65% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 34%, transparent 35%);
+    }
+
+    66% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 33%, transparent 34%);
+    }
+
+    67% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 32%, transparent 33%);
+    }
+
+    68% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 31%, transparent 32%);
+    }
+
+    69% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 30%, transparent 31%);
+    }
+
+    70% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 29%, transparent 30%);
+    }
+
+    71% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 28%, transparent 29%);
+    }
+
+    72% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 27%, transparent 28%);
+    }
+
+    73% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 26%, transparent 27%);
+    }
+
+    74% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 25%, transparent 26%);
+    }
+
+    75% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 24%, transparent 25%);
+    }
+
+    76% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 23%, transparent 24%);
+    }
+
+    77% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 22%, transparent 23%);
+    }
+
+    78% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 21%, transparent 22%);
+    }
+
+    79% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 20%, transparent 21%);
+    }
+
+    80% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 19%, transparent 20%);
+    }
+
+    81% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 18%, transparent 19%);
+    }
+
+    82% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 17%, transparent 18%);
+    }
+
+    83% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 16%, transparent 17%);
+    }
+
+    84% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 15%, transparent 16%);
+    }
+
+    85% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 14%, transparent 15%);
+    }
+
+    86% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 13%, transparent 14%);
+    }
+
+    87% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 12%, transparent 13%);
+    }
+
+    88% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 11%, transparent 12%);
+    }
+
+    89% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 10%, transparent 11%);
+    }
+
+    90% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 9%, transparent 10%);
+    }
+
+    91% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 8%, transparent 9%);
+    }
+
+    92% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 7%, transparent 8%);
+    }
+
+    93% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 6%, transparent 7%);
+    }
+
+    94% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 5%, transparent 6%);
+    }
+
+    95% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 4%, transparent 5%);
+    }
+
+    96% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 3%, transparent 4%);
+    }
+
+    97% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 2%, transparent 3%);
+    }
+
+    98% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 1%, transparent 2%);
+    }
+
+    99% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 0%, transparent 1%);
+    }
+
+    100% {
+        background: linear-gradient(90deg, rgb(20, 75, 138) 0%, rgb(91, 139, 211) 0%, transparent 0%);
+    }
+}
