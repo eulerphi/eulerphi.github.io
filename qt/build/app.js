@@ -5730,7 +5730,7 @@ var $author$project$Segment$find = F2(
 						var _v2 = segments.b;
 						var s2 = _v2.a;
 						var xs = _v2.b;
-						if ((_Utils_cmp(time, s1.g) > -1) && (_Utils_cmp(time, s2.g) < 0)) {
+						if ((_Utils_cmp(time, s1.g - 0.5) > -1) && (_Utils_cmp(time, s2.g - 0.5) < 0)) {
 							return $elm$core$Result$Ok(s1);
 						} else {
 							var $temp$query = query,
@@ -5741,7 +5741,7 @@ var $author$project$Segment$find = F2(
 						}
 					} else {
 						var x = segments.a;
-						return (_Utils_cmp(time, x.g) > -1) ? $elm$core$Result$Ok(x) : $elm$core$Result$Err(
+						return (_Utils_cmp(time, x.g - 0.5) > -1) ? $elm$core$Result$Ok(x) : $elm$core$Result$Err(
 							'Unable to find segment at time \'' + ($author$project$TimeEx$toStr(time) + '\''));
 					}
 				} else {
@@ -5770,7 +5770,7 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 				B: 15,
 				I: _List_fromArray(
 					[
-						{l: 'say-m-together-again', m: 'Again '},
+						{l: 'say-m-together-again', m: 'Again'},
 						{l: 'say-m-together-good', m: 'Good'}
 					]),
 				J: 14
@@ -5785,14 +5785,14 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 				B: 15,
 				I: _List_fromArray(
 					[
-						{l: 'say-m-again', m: 'Again '},
+						{l: 'say-m-again', m: 'Again'},
 						{l: 'say-m-good', m: 'Good'}
 					]),
 				J: 28
 			}),
 		g: 26
 	},
-		{h: 'intro', f: $elm$core$Maybe$Nothing, g: 33.5},
+		{h: 'intro', f: $elm$core$Maybe$Nothing, g: 34},
 		{
 		h: 'say-m-together',
 		f: $elm$core$Maybe$Just(
@@ -5800,7 +5800,7 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 				B: 15,
 				I: _List_fromArray(
 					[
-						{l: 'say-m-together-again', m: 'Again '},
+						{l: 'say-m-together-again', m: 'Again'},
 						{l: 'say-m-together-again', m: 'Didn\'t Respond'},
 						{l: 'say-m-together-good', m: 'Good'}
 					]),
@@ -5816,7 +5816,7 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 				B: 15,
 				I: _List_fromArray(
 					[
-						{l: 'say-m-again', m: 'Again '},
+						{l: 'say-m-again', m: 'Again'},
 						{l: 'say-m-again', m: 'Didn\'t Respond'},
 						{l: 'say-m-good', m: 'Good'}
 					]),
@@ -6293,6 +6293,7 @@ var $author$project$Video$onTimeUpdate = function (msg) {
 				'target',
 				A2($elm$json$Json$Decode$field, 'currentTime', $elm$json$Json$Decode$float))));
 };
+var $elm$html$Html$Attributes$preload = $elm$html$Html$Attributes$stringProperty('preload');
 var $elm$html$Html$source = _VirtualDom_node('source');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -6321,7 +6322,11 @@ var $author$project$View$viewVideo = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$id('wrapper')
+					$elm$html$Html$Attributes$id('wrapper'),
+					A2(
+					$elm$html$Html$Attributes$style,
+					'height',
+					$author$project$Size$toHeightStr(viewport))
 				]),
 			_List_fromArray(
 				[
@@ -6341,6 +6346,7 @@ var $author$project$View$viewVideo = F2(
 								$elm$html$Html$Attributes$style,
 								'width',
 								$author$project$Size$toWidthStr(size)),
+								$elm$html$Html$Attributes$preload('auto'),
 								A2($elm$html$Html$Attributes$attribute, 'playsinline', 'playsinline')
 							])),
 					_List_fromArray(
