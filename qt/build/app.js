@@ -10761,12 +10761,13 @@ var $author$project$Subscriptions$subscriptions = function (_v0) {
 				return $author$project$Model$WindowResized;
 			}));
 };
+var $author$project$Model$LoadVideo = function (a) {
+	return {$: 'LoadVideo', a: a};
+};
+var $author$project$Video$Loading = {$: 'Loading'};
 var $author$project$Video$Playing = {$: 'Playing'};
 var $author$project$Model$SelectOption = function (a) {
 	return {$: 'SelectOption', a: a};
-};
-var $author$project$Model$StartVideo = function (a) {
-	return {$: 'StartVideo', a: a};
 };
 var $author$project$Segment$dummyOption = {_goto: 'invalid-invalid-segment', label: 'invalid-option'};
 var $elm$core$List$head = function (list) {
@@ -11015,28 +11016,26 @@ var $author$project$Lesson$load = function (name) {
 		};
 	}
 };
-var $author$project$CmdEx$none = function (m) {
-	return _Utils_Tuple2(m, $elm$core$Platform$Cmd$none);
-};
-var $author$project$Video$PlayVideo = function (a) {
-	return {$: 'PlayVideo', a: a};
-};
+var $author$project$Video$LoadVideo = {$: 'LoadVideo'};
 var $elm$json$Json$Encode$float = _Json_wrap;
 var $author$project$Video$videoPort = _Platform_outgoingPort('videoPort', $elm$core$Basics$identity);
 var $author$project$Video$sendAsync = function (event) {
 	var _v0 = function () {
-		if (event.$ === 'PlayVideo') {
-			var time = event.a;
-			return _Utils_Tuple2(
-				'play',
-				_List_fromArray(
-					[
-						_Utils_Tuple2(
-						'time',
-						$elm$json$Json$Encode$float(time))
-					]));
-		} else {
-			return _Utils_Tuple2('pause', _List_Nil);
+		switch (event.$) {
+			case 'LoadVideo':
+				return _Utils_Tuple2('load', _List_Nil);
+			case 'PlayVideo':
+				var time = event.a;
+				return _Utils_Tuple2(
+					'play',
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'time',
+							$elm$json$Json$Encode$float(time))
+						]));
+			default:
+				return _Utils_Tuple2('pause', _List_Nil);
 		}
 	}();
 	var kind = _v0.a;
@@ -11049,6 +11048,13 @@ var $author$project$Video$sendAsync = function (event) {
 				$elm$json$Json$Encode$string(kind)),
 			xs));
 	return $author$project$Video$videoPort(obj);
+};
+var $author$project$Video$loadAsync = $author$project$Video$sendAsync($author$project$Video$LoadVideo);
+var $author$project$CmdEx$none = function (m) {
+	return _Utils_Tuple2(m, $elm$core$Platform$Cmd$none);
+};
+var $author$project$Video$PlayVideo = function (a) {
+	return {$: 'PlayVideo', a: a};
 };
 var $author$project$Video$playAsync = function (time) {
 	return $author$project$Video$sendAsync(
@@ -11237,22 +11243,39 @@ var $author$project$Update$update = F2(
 				case 'Start':
 					return A2(
 						$author$project$CmdEx$with,
-						$author$project$Video$getPlayerElementAsync($author$project$Model$StartVideo),
+						$author$project$Video$getPlayerElementAsync($author$project$Model$LoadVideo),
 						A2(
 							$author$project$Model$setLesson,
 							m,
 							$author$project$Lesson$load('l1t2')));
-				case 'StartVideo':
+				case 'LoadVideo':
 					var elem = msg.a;
 					if (elem.$ === 'Nothing') {
 						return A2(
 							$author$project$CmdEx$with,
-							$author$project$Video$getPlayerElementAsync($author$project$Model$StartVideo),
+							$author$project$Video$getPlayerElementAsync($author$project$Model$LoadVideo),
 							m);
 					} else {
 						var _v5 = m.mode;
 						if (_v5.$ === 'Learning') {
 							var lesson = _v5.a;
+							return A2(
+								$author$project$CmdEx$with,
+								$author$project$Video$loadAsync,
+								A2(
+									$author$project$Model$setLesson,
+									m,
+									A2($author$project$Lesson$setVideoState, $author$project$Video$Loading, lesson)));
+						} else {
+							return $author$project$CmdEx$none(m);
+						}
+					}
+				case 'StartVideo':
+					var _v6 = m.mode;
+					if (_v6.$ === 'Learning') {
+						var lesson = _v6.a;
+						var _v7 = lesson.videoState;
+						if (_v7.$ === 'Loading') {
 							return A2(
 								$author$project$CmdEx$with,
 								$author$project$Video$playAsync(lesson.currentSegment.startsAt),
@@ -11263,12 +11286,14 @@ var $author$project$Update$update = F2(
 						} else {
 							return $author$project$CmdEx$none(m);
 						}
+					} else {
+						return $author$project$CmdEx$none(m);
 					}
 				case 'VideoTick':
 					var time = msg.a;
-					var _v6 = m.mode;
-					if (_v6.$ === 'Learning') {
-						var lesson = _v6.a;
+					var _v8 = m.mode;
+					if (_v8.$ === 'Learning') {
+						var lesson = _v8.a;
 						return A3($author$project$Update$onVideoTick, time, lesson, m);
 					} else {
 						return $author$project$CmdEx$none(m);
@@ -11340,10 +11365,17 @@ var $author$project$View$viewInteractionPanel = F2(
 					]));
 		}
 	});
+var $author$project$Model$StartVideo = {$: 'StartVideo'};
 var $author$project$Model$VideoTick = function (a) {
 	return {$: 'VideoTick', a: a};
 };
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $author$project$Video$onCanPlayThrough = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'canplaythrough',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $author$project$Video$onTimeUpdate = function (msg) {
 	return A2(
 		$elm$html$Html$Events$on,
@@ -11374,6 +11406,10 @@ var $author$project$View$videoSize = function (viewport) {
 };
 var $author$project$View$viewVideo = F2(
 	function (viewport, lesson) {
+		var tickEvent = _Utils_eq(lesson.videoState, $author$project$Video$Playing) ? _List_fromArray(
+			[
+				$author$project$Video$onTimeUpdate($author$project$Model$VideoTick)
+			]) : _List_Nil;
 		var size = $author$project$View$videoSize(viewport);
 		return A2(
 			$elm$html$Html$div,
@@ -11385,20 +11421,22 @@ var $author$project$View$viewVideo = F2(
 				[
 					A2(
 					$elm$html$Html$video,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$id($author$project$Video$playerElementId),
-							$author$project$Video$onTimeUpdate($author$project$Model$VideoTick),
-							A2(
-							$elm$html$Html$Attributes$style,
-							'height',
-							$author$project$Size$toHeightStr(size)),
-							A2(
-							$elm$html$Html$Attributes$style,
-							'width',
-							$author$project$Size$toWidthStr(size)),
-							A2($elm$html$Html$Attributes$attribute, 'playsinline', 'playsinline')
-						]),
+					_Utils_ap(
+						tickEvent,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$id($author$project$Video$playerElementId),
+								$author$project$Video$onCanPlayThrough($author$project$Model$StartVideo),
+								A2(
+								$elm$html$Html$Attributes$style,
+								'height',
+								$author$project$Size$toHeightStr(size)),
+								A2(
+								$elm$html$Html$Attributes$style,
+								'width',
+								$author$project$Size$toWidthStr(size)),
+								A2($elm$html$Html$Attributes$attribute, 'playsinline', 'playsinline')
+							])),
 					_List_fromArray(
 						[
 							A2(
@@ -11498,4 +11536,4 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 						},
 						A2($elm$json$Json$Decode$field, 'height', $elm$json$Json$Decode$float));
 				},
-				A2($elm$json$Json$Decode$field, 'width', $elm$json$Json$Decode$float)))))({"versions":{"elm":"0.19.1"},"types":{"message":"Model.Msg","aliases":{"Browser.Dom.Element":{"args":[],"type":"{ scene : { width : Basics.Float, height : Basics.Float }, viewport : { x : Basics.Float, y : Basics.Float, width : Basics.Float, height : Basics.Float }, element : { x : Basics.Float, y : Basics.Float, width : Basics.Float, height : Basics.Float } }"},"Segment.Option":{"args":[],"type":"{ label : String.String, goto : String.String }"},"Browser.Dom.Viewport":{"args":[],"type":"{ scene : { width : Basics.Float, height : Basics.Float }, viewport : { x : Basics.Float, y : Basics.Float, width : Basics.Float, height : Basics.Float } }"}},"unions":{"Model.Msg":{"args":[],"tags":{"NoOp":[],"ExpireInteraction":["Basics.Int"],"Start":[],"StartVideo":["Maybe.Maybe Browser.Dom.Element"],"SelectOption":["Segment.Option"],"VideoTick":["Basics.Float"],"ViewportChanged":["Browser.Dom.Viewport"],"WindowResized":[]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
+				A2($elm$json$Json$Decode$field, 'width', $elm$json$Json$Decode$float)))))({"versions":{"elm":"0.19.1"},"types":{"message":"Model.Msg","aliases":{"Browser.Dom.Element":{"args":[],"type":"{ scene : { width : Basics.Float, height : Basics.Float }, viewport : { x : Basics.Float, y : Basics.Float, width : Basics.Float, height : Basics.Float }, element : { x : Basics.Float, y : Basics.Float, width : Basics.Float, height : Basics.Float } }"},"Segment.Option":{"args":[],"type":"{ label : String.String, goto : String.String }"},"Browser.Dom.Viewport":{"args":[],"type":"{ scene : { width : Basics.Float, height : Basics.Float }, viewport : { x : Basics.Float, y : Basics.Float, width : Basics.Float, height : Basics.Float } }"}},"unions":{"Model.Msg":{"args":[],"tags":{"NoOp":[],"ExpireInteraction":["Basics.Int"],"Start":[],"LoadVideo":["Maybe.Maybe Browser.Dom.Element"],"StartVideo":[],"SelectOption":["Segment.Option"],"VideoTick":["Basics.Float"],"ViewportChanged":["Browser.Dom.Viewport"],"WindowResized":[]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));

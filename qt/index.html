@@ -25,8 +25,13 @@
 
         elmApp.ports.videoPort.subscribe(function (evt) {
             let player = document.getElementById('player');
+            console.log(evt);
 
             switch (evt.kind) {
+                case "load":
+                    player.load();
+                    break;
+
                 case "play":
                     player.currentTime = evt.time;
                     player.play();
