@@ -6241,6 +6241,14 @@ var $author$project$View$viewInteractionPanel = F2(
 var $author$project$Model$VideoTick = function (a) {
 	return {$: 5, a: a};
 };
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $author$project$Video$onTimeUpdate = function (msg) {
 	return A2(
 		$elm$html$Html$Events$on,
@@ -6294,7 +6302,8 @@ var $author$project$View$viewVideo = F2(
 							A2(
 							$elm$html$Html$Attributes$style,
 							'width',
-							$author$project$Size$toWidthStr(size))
+							$author$project$Size$toWidthStr(size)),
+							A2($elm$html$Html$Attributes$attribute, 'playsinline', 'playsinline')
 						]),
 					_List_fromArray(
 						[
