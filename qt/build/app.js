@@ -5767,7 +5767,7 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 		h: 'say-m-together-again-ix',
 		f: $elm$core$Maybe$Just(
 			{
-				B: 15,
+				B: 10,
 				I: _List_fromArray(
 					[
 						{l: 'say-m-together-again', m: 'Again'},
@@ -5775,14 +5775,14 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 					]),
 				J: 14
 			}),
-		g: 9
+		g: 13.7
 	},
 		{h: 'say-m-again', f: $elm$core$Maybe$Nothing, g: 17},
 		{
 		h: 'say-m-again-ix',
 		f: $elm$core$Maybe$Just(
 			{
-				B: 15,
+				B: 10,
 				I: _List_fromArray(
 					[
 						{l: 'say-m-again', m: 'Again'},
@@ -5790,7 +5790,7 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 					]),
 				J: 28
 			}),
-		g: 26
+		g: 27.3
 	},
 		{h: 'intro', f: $elm$core$Maybe$Nothing, g: 34},
 		{
@@ -5806,7 +5806,7 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 					]),
 				J: 85.3
 			}),
-		g: 80
+		g: 85
 	},
 		{h: 'say-m-together-good', f: $elm$core$Maybe$Nothing, g: 86},
 		{
@@ -5822,7 +5822,7 @@ var $author$project$Lesson$l1t2Segments = _List_fromArray(
 					]),
 				J: 95
 			}),
-		g: 92
+		g: 94.7
 	},
 		{h: 'say-m-good', f: $elm$core$Maybe$Nothing, g: 99}
 	]);
