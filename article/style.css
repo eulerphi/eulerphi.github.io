@@ -1,0 +1,11 @@
+body {
+    line-height: calc(1ex / 0.32);
+    margin: 0 auto;
+    max-width: 100%;
+    width: 80ch;
+    padding: 5px;
+}
+
+p {
+    text-align: justify;
+}
